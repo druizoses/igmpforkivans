@@ -1,7 +1,7 @@
 /*
     Simulador de redes IP (KIVA). API de Simulacion, permite simular
     redes de tipo IP que usen IP, ARP, e ICMP.
-    Copyright (C) 2004, José María Díaz Gorriz
+    Copyright (C) 2004, Josï¿½ Marï¿½a Dï¿½az Gorriz
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -45,6 +45,11 @@ public abstract class Equipo extends Objeto
      */
     public static final int kICMP  = 3;
     
+    /**
+     * Constante asociada a la simulacion de errores en IGMP
+     */
+    public static final int kIGMP  = 4;
+    
 	/**
 	 * Tabla de rutas
 	 */
@@ -64,7 +69,7 @@ public abstract class Equipo extends Objeto
     
     
 	/**
-	 * Añade una interfaz al equipo
+	 * Aï¿½ade una interfaz al equipo
 	 * @param interfaz Interfaz
 	 * @throws IllegalArgumentException
 	 */
@@ -81,7 +86,7 @@ public abstract class Equipo extends Objeto
 	    // 1. Creamos el nivel de enlace
 	    interfaz.CreaNivelEnlace(this);
 
-	    // 2. Añadimos la interfaz a la lista
+	    // 2. Aï¿½adimos la interfaz a la lista
 	    Interfaces.add(interfaz);
 	    
 	    // 3. Comprobamos que la interfaz se puede conectar a la red
