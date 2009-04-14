@@ -1,7 +1,7 @@
 /*
     Simulador de redes IP (KIVA). API de Simulacion, permite simular
     redes de tipo IP que usen IP, ARP, e ICMP.
-    Copyright (C) 2004, José María Díaz Gorriz
+    Copyright (C) 2004, Josï¿½ Marï¿½a Dï¿½az Gorriz
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -28,6 +28,8 @@ package Equipos;
 import Redes.*;
 import Redes.IPv4.*;
 import Redes.IPv4.ICMP.*;
+import Redes.IPv4.IGMP.MensajeIGMP;
+import Redes.IPv4.IGMP.ModuloIGMP;
 import Redes.IPv4.ARP.*;
 import Proyecto.*;
 
@@ -42,6 +44,11 @@ public class Router extends Equipo
      * Modulo ICMP
      */
     ModuloICMP moduloICMP;
+    
+    /**
+     * Modulo IGMP
+     */
+    ModuloIGMP moduloIGMP;
     
     /**
      * Nivel IPv4
@@ -82,13 +89,16 @@ public class Router extends Equipo
         // 1. Definimos los niveles de la pila
         moduloARP=new ModuloARP(this);
         moduloICMP=new ModuloICMP(this);
+        moduloIGMP=new ModuloIGMP(this);
         nivelIPv4=new NivelIPv4(this,moduloARP,moduloICMP);
 
         // 2. Interconectamos los niveles
         moduloICMP.setNivelInferior(nivelIPv4);
+        moduloIGMP.setNivelInferior(nivelIPv4);
         nivelIPv4.setNivelInferior(moduloARP);
         nivelIPv4.setNivelSuperior(moduloICMP);
-
+        nivelIPv4.setNivelSuperior(moduloIGMP);
+        
         // 3. Enlazamos la tabla de rutas
         tablaDeRutas=nivelIPv4.tablaDeRutas;
 
@@ -104,7 +114,7 @@ public class Router extends Equipo
      */
     public void setInterfaz(Interfaz interfaz)
     {
-        // 1. Añadimos la interfaz
+        // 1. Aï¿½adimos la interfaz
         super.setInterfaz(interfaz);
         
         // 2. Enlazamos el nivel de enlace
@@ -124,13 +134,16 @@ public class Router extends Equipo
         // 1. Comprobamos si hay algo que procesar en el modulo ICMP
         moduloICMP.Procesar(instante);
         
-        // 2. Comprobamos si hay algo en el nivel IPv4
+        // 2. Comprobamos si hay algo que procesar en el modulo IGMP
+        moduloIGMP.Procesar(instante);
+        
+        // 3. Comprobamos si hay algo en el nivel IPv4
         nivelIPv4.Procesar(instante);
         
-        // 3. Comprobamos si el modulo ARP tiene que enviar peticiones
+        // 4. Comprobamos si el modulo ARP tiene que enviar peticiones
         moduloARP.Procesar(instante);
         
-        // 4. Comprobamos si hay algo que procesar en los niveles de enlace
+        // 5. Comprobamos si hay algo que procesar en los niveles de enlace
         for(int i=0;i<NumInterfaces();i++)
             getInterfaz(i).getNivelEnlace().Procesar(instante);
     }
@@ -150,7 +163,7 @@ public class Router extends Equipo
             pendientes+=getInterfaz(i).getNivelEnlace().Pendientes();
         
         // 2. Devolvemos el numero de paquetes que nos han quedado por procesar;
-        pendientes+=moduloARP.Pendientes()+moduloICMP.Pendientes()+nivelIPv4.Pendientes();
+        pendientes+=moduloARP.Pendientes()+moduloICMP.Pendientes()+nivelIPv4.Pendientes()+moduloIGMP.Pendientes();
         return(pendientes);
     }
     
@@ -193,7 +206,14 @@ public class Router extends Equipo
                 NuevoEvento('E',dato.instante,dato.paquete,"Envio de datos programado en ICMP");
         }
         
-        // 3. Otros (DatagramaIPv4 y otros tipos de paquete)
+       // 3. Mensaje IGMP
+        else if(dato.paquete instanceof MensajeIGMP)
+        {
+            if(moduloIGMP.ProgramarSalida(dato))
+                NuevoEvento('E',dato.instante,dato.paquete,"Envio de datos programado en IGMP");
+        }
+        
+        // 4. Otros (DatagramaIPv4 y otros tipos de paquete)
         else
         {   if(nivelIPv4.ProgramarSalida(dato))
             NuevoEvento('E',dato.instante,dato.paquete,"Envio de datos programado en IP");
@@ -230,6 +250,12 @@ public class Router extends Equipo
             case Equipo.kICMP:
             {
                 correcto=moduloICMP.SimularError(flag,activar);
+                break;
+            }
+            
+            case Equipo.kIGMP:
+            {
+                correcto=moduloIGMP.SimularError(flag,activar);
                 break;
             }
         
@@ -269,6 +295,12 @@ public class Router extends Equipo
             case Equipo.kICMP:
             {
                 moduloICMP.parametros.setValor(parametro,valor);
+                break;
+            }
+            
+            case Equipo.kIGMP:
+            {
+                moduloIGMP.parametros.setValor(parametro,valor);
                 break;
             }
         }
