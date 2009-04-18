@@ -97,16 +97,27 @@
  */
 package Redes.IPv4.IGMP;
 
+
+
+import java.util.Hashtable;
+import java.util.Set;
+
 import Equipos.Equipo;
+import Equipos.Ordenador;
+import Equipos.Router;
+import Equipos.RouterMultiCast;
 import Redes.Dato;
+import Redes.Direccion;
 import Redes.LocalizadorRedes;
 import Redes.Nivel;
 import Redes.IPv4.DireccionIPv4;
 
+
 /**
  * Modulo IGMP
  */
-public class ModuloIGMP extends Nivel {
+public abstract class ModuloIGMP extends Nivel {
+	
 
 	/**
 	 * Inicializador de la clase
@@ -200,12 +211,30 @@ public class ModuloIGMP extends Nivel {
 	            // 2. Mensaje IGMP
 	            if(dato.paquete instanceof MensajeIGMP)
 	            {
-	                MensajeIGMP mensajeIGMP=(MensajeIGMP)dato.paquete;
-	                // veo que hacer....
+	               MensajeIGMP mensajeIGMP=(MensajeIGMP)dato.paquete;
+                   // Enviamos el mensaje
+                   Nivel nivel=getNivelInferior("ipv4",0);
+                   if(nivel!=null)
+                   {
+                       // Creamos el dato
+                       Dato datoAux=new Dato(instante,mensajeIGMP);
+                       datoAux.direccion=dato.direccion;
+                       datoAux.protocolo=getID(nivel.ID());
+                
+                       // Registramos el evento
+                       int tipo=mensajeIGMP.getTipo();	                       
+                       equipo.NuevoEvento('E',datoAux.instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(tipo));
+                       datoAux.instante+=getRetardo();
+                    
+                       // Pasamos el dato al nivel inferior
+                       //datoAux.protocolo=getID(nivel.ID());
+                       nivel.ProgramarSalida(datoAux);
+                    }
 	            }
 	        }
 	    }
 	}
+	protected abstract void procesarMensajeEntrante(MensajeIGMP mensajeIGMP,int instante);
 	
 	/**
 	 * Procesa los mensajes de un determinado instante de tiempo
@@ -224,7 +253,8 @@ public class ModuloIGMP extends Nivel {
 	            i--;
 	            // 2. Mensaje IGMP
 	            MensajeIGMP mensajeIGMP=new MensajeIGMP(dato.paquete);
-	            // Veo que hacer...
+	            this.procesarMensajeEntrante(mensajeIGMP,instante);           
+	           
 	        }
 	    }
 	}
@@ -248,14 +278,14 @@ public class ModuloIGMP extends Nivel {
 	public static int QUERY_RESPONSE_INTERVAL = 10;
 	
 	/*
-	 * Group Membership Interval - time elapsed where if a router doesn’t receive an IGMP Report,
-	 * the router assumes there’s no more members in that multicast group on the segment (seconds).
+	 * Group Membership Interval - time elapsed where if a router doesnï¿½t receive an IGMP Report,
+	 * the router assumes thereï¿½s no more members in that multicast group on the segment (seconds).
 	 * This value MUST be ((the Robustness Variable) times (the Query Interval)) plus (one Query Response Interval)
 	 */
 	public static int GROUP_MEMBERSHIP_INTERVAL = 260;
 	
 	/*
-	 * Other Querier Present Interval - time where non-querier routers don’t hear from the querier router,
+	 * Other Querier Present Interval - time where non-querier routers donï¿½t hear from the querier router,
 	 * and then assume the querier router is dead (seconds).
 	 * This value MUST be ((the Robustness Variable) times (the Query Interval)) plus (one half of one Query Response Interval)
 	 */
@@ -294,7 +324,7 @@ public class ModuloIGMP extends Nivel {
 	public static int UNSOLICITED_REPORT_INTERVAL = 10;
 	
 	/*
-	 * Version 1 Router Present Timeout - if an IGMPv2 host doesn’t hear an IGMPv1 Query for this time
+	 * Version 1 Router Present Timeout - if an IGMPv2 host doesnï¿½t hear an IGMPv1 Query for this time
 	 * period, the host assumes he can resume sending IGMPv2 messages (seconds).
 	 */
 	public static int VERSION_1_ROUTER_PRESENT_TIMEOUT = 400;

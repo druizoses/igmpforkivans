@@ -6,7 +6,7 @@ import Equipos.*;
 import Redes.IPv4.ICMP.*;
 
 /**
- * Más de 35 ejemplos del uso de la API de Simulación de redes IP
+ * Mï¿½s de 35 ejemplos del uso de la API de Simulaciï¿½n de redes IP
  */
 public class Ejemplos
 {
@@ -20,7 +20,8 @@ public class Ejemplos
 		
 		// 0. Registramos los componentes
 		RegistrarComponentes();
-		
+		Simulacion4();
+		/*
 		// 1. Una red ethernet con solo un ordenador, que se envia a si mismo un
 		//    datagrama sin fragmentacion
 		Simulacion1();
@@ -70,14 +71,14 @@ public class Ejemplos
 		// 6b. con switch
 		Simulacion6B();
 		
-		// 7. Una red con dos ordenadores, en la que uno envia un datagrama de tamaño
+		// 7. Una red con dos ordenadores, en la que uno envia un datagrama de tamaï¿½o
 		//    superior a la MTU de la red al otro ordenador
 		Simulacion7();
 		
 		// 7b. Sin permitir fragmentacion
 		Simulacion7B();
 		
-		// 8. Una red con un ordenador, en la que se envia un datagrama de tamaño
+		// 8. Una red con un ordenador, en la que se envia un datagrama de tamaï¿½o
 		//    superior a la MTU de la red a un ordenador inexistente de la misma red
 		Simulacion8();
 		
@@ -101,7 +102,7 @@ public class Ejemplos
 		
 		// 11c. Tres redes, donde un ordenador de la primera red envia un datagrama
 		// a un ordenador de la tercera red pero al NO permitirse la fragmentacion
-		// el dtgrm no puede pasar por la tercera red (al tener una mtu pequeña)
+		// el dtgrm no puede pasar por la tercera red (al tener una mtu pequeï¿½a)
 		// y se envia al origen un mensaje icmp
 		Simulacion11C();
 		
@@ -138,7 +139,7 @@ public class Ejemplos
 		
 		// 21. Ping en una misma red sin fragmentacion
 		Simulacion21();
-		
+		*/
 		System.out.println();
 	}
 
