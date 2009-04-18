@@ -26,6 +26,7 @@ import Redes.IPv4.*;
 import Redes.IPv4.ICMP.*;
 import Redes.IPv4.IGMP.MensajeIGMP;
 import Redes.IPv4.IGMP.ModuloIGMP;
+import Redes.IPv4.IGMP.ModuloIGMPOrdenador;
 import Redes.IPv4.ARP.*;
 import Proyecto.*;
 
@@ -87,7 +88,7 @@ public class Ordenador extends Equipo
     	// 1. Definimos los niveles de la pila
     	moduloARP=new ModuloARP(this);
     	moduloICMP=new ModuloICMP(this);
-    	moduloIGMP=new ModuloIGMP(this);
+    	moduloIGMP=new ModuloIGMPOrdenador(this);
     	nivelIPv4=new NivelIPv4(this,moduloARP,moduloICMP);
     	nivelIPv4.IPForwarding(false);
     	

@@ -45,10 +45,7 @@ public class Router extends Equipo
      */
     ModuloICMP moduloICMP;
     
-    /**
-     * Modulo IGMP
-     */
-    ModuloIGMP moduloIGMP;
+    
     
     /**
      * Nivel IPv4
@@ -89,15 +86,12 @@ public class Router extends Equipo
         // 1. Definimos los niveles de la pila
         moduloARP=new ModuloARP(this);
         moduloICMP=new ModuloICMP(this);
-        moduloIGMP=new ModuloIGMP(this);
         nivelIPv4=new NivelIPv4(this,moduloARP,moduloICMP);
 
         // 2. Interconectamos los niveles
         moduloICMP.setNivelInferior(nivelIPv4);
-        moduloIGMP.setNivelInferior(nivelIPv4);
         nivelIPv4.setNivelInferior(moduloARP);
         nivelIPv4.setNivelSuperior(moduloICMP);
-        nivelIPv4.setNivelSuperior(moduloIGMP);
         
         // 3. Enlazamos la tabla de rutas
         tablaDeRutas=nivelIPv4.tablaDeRutas;
@@ -134,16 +128,13 @@ public class Router extends Equipo
         // 1. Comprobamos si hay algo que procesar en el modulo ICMP
         moduloICMP.Procesar(instante);
         
-        // 2. Comprobamos si hay algo que procesar en el modulo IGMP
-        moduloIGMP.Procesar(instante);
-        
-        // 3. Comprobamos si hay algo en el nivel IPv4
+        // 2. Comprobamos si hay algo en el nivel IPv4
         nivelIPv4.Procesar(instante);
         
-        // 4. Comprobamos si el modulo ARP tiene que enviar peticiones
+        // 3. Comprobamos si el modulo ARP tiene que enviar peticiones
         moduloARP.Procesar(instante);
         
-        // 5. Comprobamos si hay algo que procesar en los niveles de enlace
+        // 4. Comprobamos si hay algo que procesar en los niveles de enlace
         for(int i=0;i<NumInterfaces();i++)
             getInterfaz(i).getNivelEnlace().Procesar(instante);
     }
@@ -163,7 +154,7 @@ public class Router extends Equipo
             pendientes+=getInterfaz(i).getNivelEnlace().Pendientes();
         
         // 2. Devolvemos el numero de paquetes que nos han quedado por procesar;
-        pendientes+=moduloARP.Pendientes()+moduloICMP.Pendientes()+nivelIPv4.Pendientes()+moduloIGMP.Pendientes();
+        pendientes+=moduloARP.Pendientes()+moduloICMP.Pendientes()+nivelIPv4.Pendientes();
         return(pendientes);
     }
     
@@ -205,15 +196,8 @@ public class Router extends Equipo
             if(moduloICMP.ProgramarSalida(dato))
                 NuevoEvento('E',dato.instante,dato.paquete,"Envio de datos programado en ICMP");
         }
-        
-       // 3. Mensaje IGMP
-        else if(dato.paquete instanceof MensajeIGMP)
-        {
-            if(moduloIGMP.ProgramarSalida(dato))
-                NuevoEvento('E',dato.instante,dato.paquete,"Envio de datos programado en IGMP");
-        }
-        
-        // 4. Otros (DatagramaIPv4 y otros tipos de paquete)
+         
+        // 3. Otros (DatagramaIPv4 y otros tipos de paquete)
         else
         {   if(nivelIPv4.ProgramarSalida(dato))
             NuevoEvento('E',dato.instante,dato.paquete,"Envio de datos programado en IP");
@@ -253,12 +237,6 @@ public class Router extends Equipo
                 break;
             }
             
-            case Equipo.kIGMP:
-            {
-                correcto=moduloIGMP.SimularError(flag,activar);
-                break;
-            }
-        
             default:
             {
                 correcto=false;  // nivel no permitido (desconocido)   
@@ -295,12 +273,6 @@ public class Router extends Equipo
             case Equipo.kICMP:
             {
                 moduloICMP.parametros.setValor(parametro,valor);
-                break;
-            }
-            
-            case Equipo.kIGMP:
-            {
-                moduloIGMP.parametros.setValor(parametro,valor);
                 break;
             }
         }

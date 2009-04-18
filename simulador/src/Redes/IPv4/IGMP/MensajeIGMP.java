@@ -38,7 +38,7 @@ public class MensajeIGMP extends Buffer {
 	
 	/**
 	 * Crea un mensaje IGMP de tipo MEMBERSHIP_QUERY
-	 * @param dirGrupo grupo por el cual se realizará la consulta
+	 * @param dirGrupo grupo por el cual se realizarï¿½ la consulta
 	 * @return mensaje creado
 	 */
 	public static MensajeIGMP createMembershipQueryMessage(DireccionIPv4 dirGrupo){
@@ -184,5 +184,35 @@ public class MensajeIGMP extends Buffer {
 		super.setByte(6,dirGrupo.getByte(2));
 		super.setByte(7,dirGrupo.getByte(3));    
 	}
-
+	
+	/**
+     * Devuelve la descripcion de un tipo de mensaje ICMP
+     * @param tipo Tipo de mensaje
+     * @param codigo Codigo del mensaje
+     * @return Cadena de texto explicativa del proposito del mensaje ICMP
+     */
+    public static String Descripcion(int tipo)
+    {
+    	switch(tipo)
+		{
+    	    case MEMBERSHIP_QUERY:
+    	    {
+    	    	return("Membership Query");
+    	    }
+    	    case MEMBERSHIP_REPORT_V1:
+    	    {
+    	    	return("Version 1 Membership Report");
+    	    }
+    	    case MEMBERSHIP_REPORT_V2:
+    	    {
+    	    	return("Version 2 Membership Report");
+    	    }
+    	    case MEMBERSHIP_LEAVE_GROUP:
+    	    {
+    	    	return("Leave Group");
+    	    }
+		}
+    	
+    	return("Tipo de mensaje IGMP y codigo desconocido");
+    }
 }
