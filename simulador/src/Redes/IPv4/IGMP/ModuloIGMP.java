@@ -37,7 +37,6 @@
  *  is less than the remaining value of the running timer.  When a
  *  group's timer expires, the host multicasts a Version 2 Membership
  *  Report to the group, with IP TTL of 1.  If the host receives another
- *  
  *  host's Report (version 1 or 2) while it has a timer running, it stops
  *  its timer for the specified group and does not send a Report, in
  *  order to suppress duplicate Reports.
@@ -99,15 +98,14 @@ package Redes.IPv4.IGMP;
 
 
 
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import Equipos.Equipo;
-import Equipos.Ordenador;
-import Equipos.Router;
-import Equipos.RouterMultiCast;
 import Redes.Dato;
-import Redes.Direccion;
+import Redes.Interfaz;
 import Redes.LocalizadorRedes;
 import Redes.Nivel;
 import Redes.IPv4.DireccionIPv4;
@@ -118,7 +116,8 @@ import Redes.IPv4.DireccionIPv4;
  */
 public abstract class ModuloIGMP extends Nivel {
 	
-
+	//protected Map<Interfaz, Set<DireccionIPv4>> grupos;
+	
 	/**
 	 * Inicializador de la clase
 	 */
@@ -135,7 +134,11 @@ public abstract class ModuloIGMP extends Nivel {
 	 */
 	public ModuloIGMP(Equipo equipo) {
 		super(equipo);
-		// TODO Auto-generated constructor stub
+		/*grupos  = new HashMap<Interfaz, Set<DireccionIPv4>>();
+		for (int i = 0; i < equipo.NumInterfaces(); i++) {
+			Interfaz interfaz = equipo.getInterfaz(i);
+			grupos.put(interfaz, new HashSet<DireccionIPv4>());
+		}*/
 	}
 
 	/**
@@ -234,7 +237,7 @@ public abstract class ModuloIGMP extends Nivel {
 	        }
 	    }
 	}
-	protected abstract void procesarMensajeEntrante(MensajeIGMP mensajeIGMP,int instante);
+	protected abstract void procesarMensajeEntrante(Dato dato,int instante);
 	
 	/**
 	 * Procesa los mensajes de un determinado instante de tiempo
@@ -252,9 +255,7 @@ public abstract class ModuloIGMP extends Nivel {
 	            colaEntrada.remove(i);
 	            i--;
 	            // 2. Mensaje IGMP
-	            MensajeIGMP mensajeIGMP=new MensajeIGMP(dato.paquete);
-	            this.procesarMensajeEntrante(mensajeIGMP,instante);           
-	           
+	            this.procesarMensajeEntrante(dato,instante);           
 	        }
 	    }
 	}

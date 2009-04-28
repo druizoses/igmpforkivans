@@ -86,8 +86,6 @@ public abstract class Objeto
 		return((Interfaz)Interfaces.get(numero));
 	}
 	
-	
-	
 	/**
 	 * Devuelve la interfaz con el nombre indicado
 	 * @param nombreInterfaz Nombre de la interfaz

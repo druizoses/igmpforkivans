@@ -1,6 +1,7 @@
 package Redes.IPv4.IGMP;
 
 import Equipos.Equipo;
+import Redes.Dato;
 
 public class ModuloIGMPRouter extends ModuloIGMP{
 
@@ -10,7 +11,7 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 	}
 
 	@Override
-	protected void procesarMensajeEntrante(MensajeIGMP mensajeIGMP, int instante) {
+	protected void procesarMensajeEntrante(Dato dato, int instante) {
 		// TODO Auto-generated method stub
 		
 	}

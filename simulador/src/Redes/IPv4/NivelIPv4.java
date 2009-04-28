@@ -845,6 +845,7 @@ public class NivelIPv4 extends Nivel
 	        }
 	        
 	        // 1.4 Comprobar multicasts
+	        
 	        // ...sin implementar...
 	    }
 	    catch(Exception e)
