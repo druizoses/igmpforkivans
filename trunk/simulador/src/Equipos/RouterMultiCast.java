@@ -24,6 +24,7 @@ public class RouterMultiCast extends Router{
         moduloIGMP=new ModuloIGMPRouter(this);
         moduloIGMP.setNivelInferior(nivelIPv4);
         nivelIPv4.setNivelSuperior(moduloIGMP);
+        nivelIPv4.setModuloIGMP(moduloIGMP);
     }
     
     

@@ -166,7 +166,23 @@ public class DireccionIPv4 extends Direccion
 		return(mascara);
 	}
 	
-	
+	/**
+	 * Permite conocer la clase a la cual pertenece la direccion
+	 * @return "A" si pertenece a la clase A, "B" si pertenece a la clase B, etc
+	 */
+	public String getClaseDireccion()
+	{
+		int b0=getByte(0);
+		if(b0>=1 && b0<=127)                            // clase A
+			return "A";    
+		else if(b0>=128 && b0<=191)                     // clase B
+			return "B";
+		else if(b0>=192 && b0<=223)                     // clase C
+			return "C";
+		else if(b0>=224 && b0<=239)                     // multidifusion, clase D
+			return "D";
+		else return "E";                    			// reservado para uso futuro, clase E
+	}
 	
 	/**
 	 * Aplica una mascara a la direccion ip y devuelve el resultado

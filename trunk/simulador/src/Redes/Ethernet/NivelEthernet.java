@@ -247,6 +247,9 @@ public class NivelEthernet extends Nivel
     	   // 1.2 La trama va destinada a la direccion de broadcast Ethernet
     	   else if(destino.EsBroadcast())
     	      retorno=true;
+    	   // 1.3 La trama va destinada a una dirección multicast Ethernet
+    	   else if(destino.EsMulticast())
+    		  retorno=true;
     	}
     
     	// 2. Devolvemos el resultado

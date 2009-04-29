@@ -141,4 +141,12 @@ public class ModuloIGMPOrdenador extends ModuloIGMP{
 		super.ProgramarSalida(datoAux);
 	}
 	
+	/*
+	 * El mensaje debe ser aceptado si esta dirijido a uno de los grupos a los que esta suscripto.
+	 * @see Redes.IPv4.IGMP.ModuloIGMP#esParaMi(Redes.IPv4.DireccionIPv4, Redes.Interfaz)
+	 */
+	@Override
+	public boolean esParaMi(DireccionIPv4 direccion,Interfaz interfaz) {
+		return grupos.get(interfaz).containsKey(direccion) || ModuloIGMP.ALL_SYSTEMS_MULTICAST_GROUP.equals(direccion);
+	}
 }
