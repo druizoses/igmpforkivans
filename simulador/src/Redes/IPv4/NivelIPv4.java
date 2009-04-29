@@ -29,6 +29,7 @@ import Proyecto.*;
 import Redes.*;
 import Redes.IPv4.ARP.*;
 import Redes.IPv4.ICMP.*;
+import Redes.IPv4.IGMP.ModuloIGMP;
 import Equipos.Equipo;
 import java.util.Vector;
 
@@ -57,6 +58,11 @@ public class NivelIPv4 extends Nivel
 	 * Modulo ICMP asociado al nivel IPv4
 	 */
 	ModuloICMP moduloICMP;
+	
+	/**
+	 * Modulo IGMP asociado al nivel IPv4
+	 */
+	ModuloIGMP moduloIGMP;
 	
 	/**
 	 * Cola de datagramas que estan en espera de que se reciba una respuesta ARP
@@ -248,15 +254,20 @@ public class NivelIPv4 extends Nivel
 					i--;
 					
 					// 2. Enviamos el datagrama
-                    if(EsParaMi((DireccionIPv4)dato.direccion))
+                    if(EsParaMi((DireccionIPv4)dato.direccion,dato.interfaz))
                     {
                         if(dato.paquete instanceof DatagramaIPv4)
                         {
-                            colaEntrada.add(dato);
+                            DatagramaIPv4 datagrama = (DatagramaIPv4) dato.paquete;
+                            if (datagrama.getProtocol()!=2) // Si no es un paquete IGMP
+                            	colaEntrada.add(dato);
+                            if (datagrama.getDestino().getClaseDireccion().equals("D"))
+                            	Enviar(dato,false);
                         }
                         else
                         {    
-                            DireccionIPv4 origen=new DireccionIPv4("127.0.0.1"); //loopback
+                            //DireccionIPv4 origen=new DireccionIPv4("127.0.0.1"); //loopback
+                            DireccionIPv4 origen=dato.interfaz.getIP();
                             DireccionIPv4 destino=(DireccionIPv4)dato.direccion;
                             DatagramaIPv4 datagrama=new DatagramaIPv4(origen,destino,dato.paquete);
                             datagrama.setProtocol(dato.protocolo);
@@ -265,7 +276,10 @@ public class NivelIPv4 extends Nivel
                             	datagrama.setDF(0);
                             else
                             	datagrama.setDF(1);
-                            colaEntrada.add(dato);
+                            if (datagrama.getProtocol()!=2) // Si no es un paquete IGMP
+                            	colaEntrada.add(dato);
+                            if (datagrama.getDestino().getClaseDireccion().equals("D"))
+                            	Enviar(dato,false);
                         }
                     }
                     else
@@ -360,7 +374,7 @@ public class NivelIPv4 extends Nivel
 	            Dato datoAux=new Dato(instanteActual+retardo,mensaje,0);
 	            datoAux.direccion=datagramaOriginal.getOrigen();
 	        
-	            if(EsParaMi(destino))
+	            if(EsParaMi(destino,null))
 	            {    
 	                //Autoenvio (marcamos en 'virtual' envio, por claridad en los eventos)
 	                MensajeICMP m2=new MensajeICMP(mensaje);
@@ -373,7 +387,7 @@ public class NivelIPv4 extends Nivel
 	            else
 	                moduloICMP.ProgramarSalida(datoAux);
 	        }
-	        else if(EsParaMi(destino)) //caso especial -> destino = loopback
+	        else if(EsParaMi(destino,null)) //caso especial -> destino = loopback
 	        {
 	            MensajeICMP mensaje=new MensajeICMP(tipo,codigo,datagramaOriginal);
 	            Dato datoAux=new Dato(instanteActual+retardo,mensaje,0);
@@ -603,7 +617,7 @@ public class NivelIPv4 extends Nivel
 		    boolean ipForwarding=((Boolean)parametros.getValor("IP Forwarding")).booleanValue();
 		    	
             // 1. Comprobamos el destinatario del datagrama
-		    if(EsParaMi(datagrama.getDestino()))
+		    if(EsParaMi(datagrama.getDestino(),dato.interfaz))
 		    {
 		        // 1.1 Comprobamos si es un framento
 		        if(EsFragmento(datagrama))
@@ -819,7 +833,7 @@ public class NivelIPv4 extends Nivel
 	 * @param direccion Direccion que se va a comprobar
 	 * @return Cierto si el un datagrama enviado a esa direccion debe ser procesado
 	 */
-	private boolean EsParaMi(DireccionIPv4 direccion)
+	private boolean EsParaMi(DireccionIPv4 direccion,Interfaz interfaz)
 	{
 	    boolean esparami=false;
 	    
@@ -838,15 +852,16 @@ public class NivelIPv4 extends Nivel
 	        // 1.3 Comprobamos las direcciones de broadacasts de los interfaces
 	        for(int i=0;i<equipo.NumInterfaces() && !esparami;i++)
 	        {
-	            Interfaz interfaz=equipo.getInterfaz(i);
-	            MascaraIPv4 mascara=interfaz.getMascara();
-	            if(direccion.equals(interfaz.getIP().getIPdeBroadcast(mascara)))
+	            Interfaz interfazEquipo=equipo.getInterfaz(i);
+	            MascaraIPv4 mascara=interfazEquipo.getMascara();
+	            if(direccion.equals(interfazEquipo.getIP().getIPdeBroadcast(mascara)))
 	                esparami=true;
 	        }
 	        
 	        // 1.4 Comprobar multicasts
-	        
-	        // ...sin implementar...
+	        if (moduloIGMP != null && interfaz != null) {
+	        	esparami = moduloIGMP.esParaMi(direccion,interfaz);
+	        }
 	    }
 	    catch(Exception e)
 	    {
@@ -1175,6 +1190,12 @@ public class NivelIPv4 extends Nivel
 	    }
 	    
 	    return(correcto);
+	}
+
+
+
+	public void setModuloIGMP(ModuloIGMP moduloIGMP) {
+		this.moduloIGMP = moduloIGMP;
 	}
 }
 

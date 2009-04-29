@@ -340,4 +340,12 @@ public abstract class ModuloIGMP extends Nivel {
 	 */
 	public static DireccionIPv4 ALL_ROUTERS_MULTICAST_GROUP = new DireccionIPv4("224.0.0.2");
 
+	/**
+	 * Funcion utilizada por un equipo para saber si el mensaje esta dirijido a él.
+	 * @param direccion
+	 * @param interfaz
+	 * @return
+	 */
+	public abstract boolean esParaMi(DireccionIPv4 direccion,Interfaz interfaz);
+
 }

@@ -95,6 +95,7 @@ public class Ordenador extends Equipo
         // 2. Interconectamos los niveles
         moduloICMP.setNivelInferior(nivelIPv4);
         moduloIGMP.setNivelInferior(nivelIPv4);
+        nivelIPv4.setModuloIGMP(moduloIGMP);
     	nivelIPv4.setNivelInferior(moduloARP);
     	nivelIPv4.setNivelSuperior(moduloIGMP);
     	nivelIPv4.setNivelSuperior(moduloICMP);
