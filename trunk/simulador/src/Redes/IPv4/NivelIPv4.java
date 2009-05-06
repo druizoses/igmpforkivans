@@ -482,123 +482,130 @@ public class NivelIPv4 extends Nivel
 	 */
 	private void Enviar(Dato dato, boolean enEsperaARP)
 	{
-	    int numEntrada;                //Numero de entrada en la tabla de rutas
-	    DireccionIPv4 destino;         //Direccion IP de destino del datagrama
-	    DireccionIPv4 destinoFisico;   //Direccion IP de destino o del gateway a usar
-	    
-		try
-		{		    		    
-		    // 1. Comprobamos la tabla de rutas
-		    destino=(DireccionIPv4)dato.direccion;
-		    numEntrada=tablaDeRutas.SiguienteSalto(destino);
-	        
-	        // 2. Comprobamos la ruta encontrada
-	        if(numEntrada!=-1)
-	        {
-	        	// 2.0 Comprobamos si hay que fragmentar pero
-	        	
-	            // 2.1 Si la ruta es directa, obtenemos la direccion fisica del destino
-	            if(tablaDeRutas.EsDirecta(numEntrada))
-	            {
-	        	    destinoFisico=destino; 
-	            }
-	        
-	            // 2.2 Si la ruta es indirecta, obtenemos la direccion del gateway
-	            else
-	            { 
-	        	    destinoFisico=tablaDeRutas.getGateway(numEntrada);
-	            }
-	            
-	            // Ha llegado un datagrama que no es para mi, pero segun la tabla de
-	            // encaminamiento, tengo que pasarmelo a mi mismo (como siguiente salto
-	            // en el camino). Es una situacion absurda, que indica que mi tabla
-	            // de encaminamiento esta mal
-	            if(EsMiDireccion(destinoFisico))   //¿error en la tabla de encaminamiento?
-	            {
-	                if(enEsperaARP)                //eliminamos el dato de la cola de
-	                    enEspera.remove(dato);     // espera para que no moleste
-	                
-	                throw new Exception();         //salimos del metodo (break)
-	            }
-	            
-	            
-	            // 2.3 Comprobamos la tabla ARP (si procede)
-                Direccion dirFisica=moduloARP.cacheARP.getDireccionFisica(destinoFisico);
-                Red red=tablaDeRutas.getInterfaz(numEntrada).getRed();
-                if(dirFisica==null && red.SoportaARP())
-	            {                	                	
-                    // Comprobamos si el datagrama ya esta en la cola de espera por ARP 
-                	if(!enEsperaARP)
-	                {    
-	            	    // 2.3.1 Añadimos el datagrama a la cola de espera para ser enviado
-	                    Objeto.DEBUG(equipo.getNombre()+": No se ha resuelto la direccion "+destinoFisico.getIP());
-	                    enEspera.add(dato);
-	            	
-	            	    // 2.3.2 Generamos el mensaje para el moduloARP
-
-	                    // No hacemos peticiones ARP para fragmentos distintos del primero
-	                	if(dato.paquete instanceof DatagramaIPv4)
-	                	{
-	                		DatagramaIPv4 datagrama=(DatagramaIPv4)dato.paquete;
-	                		if(datagrama.getFragmentOffset()==0)
-	                		{
-	    	                    Objeto.DEBUG(equipo.getNombre()+": PeticionARP");
+		if (((DatagramaIPv4) dato.paquete).getProtocol()!=2) {// Si no es un paquete IGMP
+		    int numEntrada;                //Numero de entrada en la tabla de rutas
+		    DireccionIPv4 destino;         //Direccion IP de destino del datagrama
+		    DireccionIPv4 destinoFisico;   //Direccion IP de destino o del gateway a usar
+		    
+			try
+			{		    		    
+			    // 1. Comprobamos la tabla de rutas
+			    destino=(DireccionIPv4)dato.direccion;
+			    numEntrada=tablaDeRutas.SiguienteSalto(destino);
+		        
+		        // 2. Comprobamos la ruta encontrada
+		        if(numEntrada!=-1)
+		        {
+		        	// 2.0 Comprobamos si hay que fragmentar pero
+		        	
+		            // 2.1 Si la ruta es directa, obtenemos la direccion fisica del destino
+		            if(tablaDeRutas.EsDirecta(numEntrada))
+		            {
+		        	    destinoFisico=destino; 
+		            }
+		        
+		            // 2.2 Si la ruta es indirecta, obtenemos la direccion del gateway
+		            else
+		            { 
+		        	    destinoFisico=tablaDeRutas.getGateway(numEntrada);
+		            }
+		            
+		            // Ha llegado un datagrama que no es para mi, pero segun la tabla de
+		            // encaminamiento, tengo que pasarmelo a mi mismo (como siguiente salto
+		            // en el camino). Es una situacion absurda, que indica que mi tabla
+		            // de encaminamiento esta mal
+		            if(EsMiDireccion(destinoFisico))   //¿error en la tabla de encaminamiento?
+		            {
+		                if(enEsperaARP)                //eliminamos el dato de la cola de
+		                    enEspera.remove(dato);     // espera para que no moleste
+		                
+		                throw new Exception();         //salimos del metodo (break)
+		            }
+		            
+		            
+		            // 2.3 Comprobamos la tabla ARP (si procede)
+	                Direccion dirFisica=moduloARP.cacheARP.getDireccionFisica(destinoFisico);
+	                Red red=tablaDeRutas.getInterfaz(numEntrada).getRed();
+	                if(dirFisica==null && red.SoportaARP())
+		            {                	                	
+	                    // Comprobamos si el datagrama ya esta en la cola de espera por ARP 
+	                	if(!enEsperaARP)
+		                {    
+		            	    // 2.3.1 Añadimos el datagrama a la cola de espera para ser enviado
+		                    Objeto.DEBUG(equipo.getNombre()+": No se ha resuelto la direccion "+destinoFisico.getIP());
+		                    enEspera.add(dato);
+		            	
+		            	    // 2.3.2 Generamos el mensaje para el moduloARP
+	
+		                    // No hacemos peticiones ARP para fragmentos distintos del primero
+		                	if(dato.paquete instanceof DatagramaIPv4)
+		                	{
+		                		DatagramaIPv4 datagrama=(DatagramaIPv4)dato.paquete;
+		                		if(datagrama.getFragmentOffset()==0)
+		                		{
+		    	                    Objeto.DEBUG(equipo.getNombre()+": PeticionARP");
+		                            Interfaz interfaz=tablaDeRutas.getInterfaz(numEntrada);
+		                            PeticionARP pARP=new PeticionARP(interfaz.getDirFisica(),interfaz.getIP(),destinoFisico);
+		                            Dato datoAux=new Dato(instanteActual+1,pARP,0);
+		                            //datoAux.protocolo=0;  // arp no necesita identificador del nivelIP 
+		                            datoAux.interfaz=interfaz;
+		    					
+		                            // 2.3.3 Enviamos la peticion al modulo ARP
+		                            moduloARP.ProgramarSalida(datoAux);
+		                		}
+		                	}
+		                	else
+		                	{
+		                        Objeto.DEBUG(equipo.getNombre()+": PeticionARP");
 	                            Interfaz interfaz=tablaDeRutas.getInterfaz(numEntrada);
 	                            PeticionARP pARP=new PeticionARP(interfaz.getDirFisica(),interfaz.getIP(),destinoFisico);
 	                            Dato datoAux=new Dato(instanteActual+1,pARP,0);
 	                            //datoAux.protocolo=0;  // arp no necesita identificador del nivelIP 
 	                            datoAux.interfaz=interfaz;
-	    					
+						
 	                            // 2.3.3 Enviamos la peticion al modulo ARP
 	                            moduloARP.ProgramarSalida(datoAux);
-	                		}
-	                	}
-	                	else
-	                	{
-	                        Objeto.DEBUG(equipo.getNombre()+": PeticionARP");
-                            Interfaz interfaz=tablaDeRutas.getInterfaz(numEntrada);
-                            PeticionARP pARP=new PeticionARP(interfaz.getDirFisica(),interfaz.getIP(),destinoFisico);
-                            Dato datoAux=new Dato(instanteActual+1,pARP,0);
-                            //datoAux.protocolo=0;  // arp no necesita identificador del nivelIP 
-                            datoAux.interfaz=interfaz;
-					
-                            // 2.3.3 Enviamos la peticion al modulo ARP
-                            moduloARP.ProgramarSalida(datoAux);
-	                	}
-	                }
-	            }
-	            else
-	            {
-	            	//System.out.println(equipo.getNombre()+": Enviando datagrama a "+destinoFisico.getIP()+" -> "+(((Redes.Ethernet.DireccionEthernet)dirFisica).toString()));               
-	            	
-	            	// 2.4 Si el datagrama estaba en la cola de espera lo eliminamos de
-	            	//     dicha cola
-	            	if(enEsperaARP)
-	            	    enEspera.remove(dato);
-	            	
-	                // 2.5 Comprobamos si hay que fragmentar para enviar
-	                int tamDatos=dato.paquete.Tam();
-	                Interfaz interfaz=tablaDeRutas.getInterfaz(numEntrada);
-	                int mtu=interfaz.getRed().getMTU();
-	                
-	                // 2.6 Enviamos fragmentando o sin fragmentar
-	                if(tamDatos<=mtu)
-	            	    EnviarSinFragmentacion(dato,dirFisica,interfaz);
-	            	else
-	            	    EnviarConFragmentacion(dato,dirFisica,interfaz);
-	            }
-	        }
-	        
-	        // 3. No hay ruta
-	        else
-	        {
-	            //enviar icmp 'destination unreachable'
-	            EnviarICMP(3,0,dato);
-	        }
-		}
-		catch(Exception e)
-		{
-		
+		                	}
+		                }
+		            }
+		            else
+		            {
+		            	//System.out.println(equipo.getNombre()+": Enviando datagrama a "+destinoFisico.getIP()+" -> "+(((Redes.Ethernet.DireccionEthernet)dirFisica).toString()));               
+		            	
+		            	// 2.4 Si el datagrama estaba en la cola de espera lo eliminamos de
+		            	//     dicha cola
+		            	if(enEsperaARP)
+		            	    enEspera.remove(dato);
+		            	
+		                // 2.5 Comprobamos si hay que fragmentar para enviar
+		                int tamDatos=dato.paquete.Tam();
+		                Interfaz interfaz=tablaDeRutas.getInterfaz(numEntrada);
+		                int mtu=interfaz.getRed().getMTU();
+		                
+		                // 2.6 Enviamos fragmentando o sin fragmentar
+		                if(tamDatos<=mtu)
+		            	    EnviarSinFragmentacion(dato,dirFisica,interfaz);
+		            	else
+		            	    EnviarConFragmentacion(dato,dirFisica,interfaz);
+		            }
+		        }
+		        
+		        // 3. No hay ruta
+		        else
+		        {
+		            //enviar icmp 'destination unreachable'
+		            EnviarICMP(3,0,dato);
+		        }
+			}
+			catch(Exception e)
+			{
+			
+			}
+		} else { //Hay que enviar un paquete IGMP
+			Interfaz interfaz=dato.interfaz;
+			DireccionIPv4 destino = (DireccionIPv4)dato.direccion;
+			Direccion dirFisica = interfaz.getRed().getDireccionMulticast(destino);
+       	    EnviarSinFragmentacion(dato,dirFisica,interfaz);
 		}
 	}
 	
