@@ -26,6 +26,7 @@
 package Redes.PuntoAPunto;
 
 import Redes.*;
+import Redes.IPv4.DireccionIPv4;
 import Proyecto.*;
 import Equipos.Equipo;
 
@@ -187,5 +188,10 @@ public class PuntoAPunto extends Red
     {
     	return(false);
     }
+
+	@Override
+	public Direccion getDireccionMulticast(DireccionIPv4 dirMulticast) {
+		return new DireccionPuntoAPunto(255);
+	}
 }
 

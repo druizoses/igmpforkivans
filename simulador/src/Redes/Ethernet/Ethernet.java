@@ -22,6 +22,7 @@
 package Redes.Ethernet;
 
 import Redes.*;
+import Redes.IPv4.DireccionIPv4;
 import Equipos.Equipo;
 import Proyecto.ListaParametros;
 import Proyecto.Parametro;
@@ -179,4 +180,13 @@ public class Ethernet extends Red
 	{
     	return(caracteristicas);
     }
+
+	@Override
+	public Direccion getDireccionMulticast(DireccionIPv4 dirMulticast) {
+		int b1 = dirMulticast.getByte(1);
+		b1 = b1 & 0x7f; // le aplico la mascara 01111111 para poner un 0 en la posicion que va
+	    DireccionEthernet dirDestino;
+	    dirDestino=new DireccionEthernet(0x01,0x00,0x5E,b1,dirMulticast.getByte(2),dirMulticast.getByte(3));
+	    return dirDestino;
+	}
 }
