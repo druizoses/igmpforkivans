@@ -38,7 +38,7 @@ public class MensajeIGMP extends Buffer {
 	
 	/**
 	 * Crea un mensaje IGMP de tipo MEMBERSHIP_QUERY
-	 * @param dirGrupo grupo por el cual se realizarï¿½ la consulta
+	 * @param dirGrupo grupo por el cual se realizará la consulta
 	 * @return mensaje creado
 	 */
 	public static MensajeIGMP createMembershipQueryMessage(DireccionIPv4 dirGrupo){

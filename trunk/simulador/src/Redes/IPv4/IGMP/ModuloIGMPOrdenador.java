@@ -121,7 +121,7 @@ public class ModuloIGMPOrdenador extends ModuloIGMP{
 	private void enviarReport(Interfaz interfaz,DireccionIPv4 dirGroup,int instante){
 		MensajeIGMP mensaje = MensajeIGMP.createMembershipReportV2Message(dirGroup);
 		int retardo = (int) Math.round((Math.random() * QUERY_RESPONSE_INTERVAL));
-		Dato datoAux=new Dato(instante+1+retardo,mensaje,0);
+		Dato datoAux=new Dato(instante+1+retardo,mensaje,1);
         datoAux.direccion=dirGroup;
         datoAux.interfaz=interfaz;
 		super.ProgramarSalida(datoAux);
@@ -135,7 +135,7 @@ public class ModuloIGMPOrdenador extends ModuloIGMP{
 	 */
 	private void enviarLeave(Interfaz interfaz,DireccionIPv4 dirGroup,int instante){
 		MensajeIGMP mensaje = MensajeIGMP.createMembershipLeaveGroupMessage(dirGroup);
-		Dato datoAux=new Dato(instante+1,mensaje,0);
+		Dato datoAux=new Dato(instante+1,mensaje,1);
         datoAux.direccion=ModuloIGMP.ALL_ROUTERS_MULTICAST_GROUP;
         datoAux.interfaz=interfaz;
 		super.ProgramarSalida(datoAux);
@@ -149,4 +149,7 @@ public class ModuloIGMPOrdenador extends ModuloIGMP{
 	public boolean esParaMi(DireccionIPv4 direccion,Interfaz interfaz) {
 		return grupos.get(interfaz).containsKey(direccion) || ModuloIGMP.ALL_SYSTEMS_MULTICAST_GROUP.equals(direccion);
 	}
+
+	@Override
+	protected void ProcesarTimers(int instante) {}
 }
