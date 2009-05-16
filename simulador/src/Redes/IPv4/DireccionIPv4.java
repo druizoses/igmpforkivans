@@ -27,7 +27,7 @@ import Redes.Direccion;
 /**
  * Direccion IP
  */
-public class DireccionIPv4 extends Direccion
+public class DireccionIPv4 extends Direccion implements Comparable
 {
 	/**
 	 * Constructor a partir de una cadena
@@ -274,5 +274,11 @@ public class DireccionIPv4 extends Direccion
 	    if(getByte(0)==127) // && getByte(1)==0 && getByte(2)==0 && getByte(3)==1)
 	        return(true);
 	    return(false);
+	}
+
+
+
+	public int compareTo(Object o) {
+ 		return this.getIP().compareTo(((DireccionIPv4) o).getIP());
 	}
 }
