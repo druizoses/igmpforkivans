@@ -189,12 +189,17 @@ public abstract class ModuloIGMP extends Nivel {
 	 */
 	@Override
 	public void Procesar(int instante) {
-        // 1. Procesamos las entradas
+        // 1. Procesamos los timers
+		ProcesarTimers(instante);
+		
+		// 2. Procesamos las entradas
         ProcesarEntrada(instante);
 		
-	    // 2. Procesamos las salidas
+	    // 3. Procesamos las salidas
         ProcesarSalida(instante);
 	}
+
+	protected abstract void ProcesarTimers(int instante);
 
 	/**
 	 * Procesa los mensajes de la cola de salida (envios)
@@ -237,6 +242,7 @@ public abstract class ModuloIGMP extends Nivel {
 	        }
 	    }
 	}
+	
 	protected abstract void procesarMensajeEntrante(Dato dato,int instante);
 	
 	/**
