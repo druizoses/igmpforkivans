@@ -285,14 +285,14 @@ public abstract class ModuloIGMP extends Nivel {
 	public static int QUERY_RESPONSE_INTERVAL = 10;
 	
 	/*
-	 * Group Membership Interval - time elapsed where if a router doesn�t receive an IGMP Report,
-	 * the router assumes there�s no more members in that multicast group on the segment (seconds).
+	 * Group Membership Interval - time elapsed where if a router doesn't receive an IGMP Report,
+	 * the router assumes there's no more members in that multicast group on the segment (seconds).
 	 * This value MUST be ((the Robustness Variable) times (the Query Interval)) plus (one Query Response Interval)
 	 */
 	public static int GROUP_MEMBERSHIP_INTERVAL = 260;
 	
 	/*
-	 * Other Querier Present Interval - time where non-querier routers don�t hear from the querier router,
+	 * Other Querier Present Interval - time where non-querier routers don't hear from the querier router,
 	 * and then assume the querier router is dead (seconds).
 	 * This value MUST be ((the Robustness Variable) times (the Query Interval)) plus (one half of one Query Response Interval)
 	 */
@@ -331,7 +331,7 @@ public abstract class ModuloIGMP extends Nivel {
 	public static int UNSOLICITED_REPORT_INTERVAL = 10;
 	
 	/*
-	 * Version 1 Router Present Timeout - if an IGMPv2 host doesn�t hear an IGMPv1 Query for this time
+	 * Version 1 Router Present Timeout - if an IGMPv2 host doesn't hear an IGMPv1 Query for this time
 	 * period, the host assumes he can resume sending IGMPv2 messages (seconds).
 	 */
 	public static int VERSION_1_ROUTER_PRESENT_TIMEOUT = 400;
