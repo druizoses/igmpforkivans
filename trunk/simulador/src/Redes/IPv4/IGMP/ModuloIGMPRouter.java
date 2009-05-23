@@ -1,9 +1,7 @@
 package Redes.IPv4.IGMP;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import Equipos.Equipo;
@@ -20,7 +18,7 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 		interfacesMap = new HashMap<Interfaz, DatosInterfaz>();
 		for (int i = 0; i < equipo.NumInterfaces(); i++) {
 			Interfaz interfaz = equipo.getInterfaz(i);
-			interfacesMap.put(interfaz, new DatosInterfaz());
+			interfacesMap.put(interfaz, new DatosInterfaz(interfaz,this));
 		}
 	}
 
@@ -37,6 +35,12 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 					}
 				}
 			}
+			case MensajeIGMP.MEMBERSHIP_REPORT_V2:{
+				interfacesMap.get(interfaz).activarGrupo(mensajeIGMP.getDirGrupo());
+			}
+			case MensajeIGMP.MEMBERSHIP_LEAVE_GROUP:{
+				interfacesMap.get(interfaz).desactivarGrupo(mensajeIGMP.getDirGrupo());
+			}
 			default:{
 				/* Llego otra cosa que no le tengo que dar bola. */
 				break;
@@ -51,19 +55,33 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 	 */
 	@Override
 	public boolean esParaMi(DireccionIPv4 direccion,Interfaz interfaz) {
-		return false;// ver que direcciones aceptar. Nestor dijo, entre otras boludeces, que con las clase C alcanzaría.
+		return ModuloIGMP.ALL_SYSTEMS_MULTICAST_GROUP.equals(direccion) || ModuloIGMP.ALL_ROUTERS_MULTICAST_GROUP.equals(direccion);
 	}
 
 	
 	private class DatosInterfaz {
 		
-		public DatosInterfaz() {
-			grupos = new HashMap<DireccionIPv4,Integer>();
+		Interfaz interfaz;
+		
+		ModuloIGMPRouter moduloIGMPRouter;
+		
+		public DatosInterfaz(Interfaz interfaz,ModuloIGMPRouter moduloIGMPRouter) {
+			gruposActivos = new HashMap<DireccionIPv4,GroupTimers>();
 			querier = true;
 			timerToMembershipQuery = 0;
 			countMembershipQuerySent = 0;
+			this.interfaz=interfaz;
+			this.moduloIGMPRouter=moduloIGMPRouter;
 		}
-		
+
+		public void desactivarGrupo(DireccionIPv4 dirGrupo) {
+			if (this.isQuerier()) {
+				GroupTimers groupTimers = gruposActivos.get(dirGrupo);
+				if (groupTimers.getCountSpecificQueryToSend()==0)
+					groupTimers.setCountSpecificQueryToSend(ModuloIGMP.LAST_MEMBER_QUERY_COUNT);
+			}
+		}
+
 		public void resetTimerToMembershipQuery(){
 			countMembershipQuerySent++;
 			
@@ -77,17 +95,18 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 		
 		public void eliminarGruposSinRespuesta(){
 			
-			Integer zero = new Integer(0);
-			for (Iterator iterator = grupos.keySet().iterator(); iterator.hasNext();) {
+			for (Iterator iterator = gruposActivos.keySet().iterator(); iterator.hasNext();) {
 				DireccionIPv4 direccionIPv4 = (DireccionIPv4) iterator.next();
-				Integer timerToDeleteGroup = grupos.get(direccionIPv4);
 				
-				if (timerToDeleteGroup.equals(zero)) {
-					grupos.remove(direccionIPv4);
+				GroupTimers groupTimers = (GroupTimers)gruposActivos.get(direccionIPv4);
+				
+				int timerToDeleteGroup = groupTimers.getTimerToDeleteGroup();
+				
+				if (timerToDeleteGroup == 0) {
+					gruposActivos.remove(direccionIPv4);
 				}
 				else {
-					//grupos.put(direccionIPv4, timerToDeleteGroup--);
-					timerToDeleteGroup--;// ver si actualiza la referencia
+					groupTimers.decrementarTimerToDeleteGroup();
 				}
 			}
 			
@@ -98,7 +117,7 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 		 * cuanto tiempo debe esperarse para dar de baja el grupo si no se recibe
 		 * un membership report
 		 */
-		Map<DireccionIPv4,Integer> grupos;
+		Map<DireccionIPv4,GroupTimers> gruposActivos;
 		
 		boolean querier;
 		
@@ -140,12 +159,12 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 			this.countMembershipQuerySent = countMembershipQuerySent;
 		}
 
-		public Map<DireccionIPv4, Integer> getGrupos() {
-			return grupos;
+		public Map<DireccionIPv4, GroupTimers> getGruposActivos() {
+			return gruposActivos;
 		}
 
-		public void setGrupos(Map<DireccionIPv4, Integer> grupos) {
-			this.grupos = grupos;
+		public void setGruposActivos(Map<DireccionIPv4, GroupTimers> gruposActivos) {
+			this.gruposActivos = gruposActivos;
 		}
 
 		public int getTimerToQuerier() {
@@ -156,8 +175,45 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 			this.timerToQuerier = timerToQuerier;
 		}
 		
+		public void activarGrupo(DireccionIPv4 dirGrupo) {
+			gruposActivos.put(dirGrupo, new GroupTimers());
+		}
+
+		public void enviarSpecificQueries(int instante) {
+			for (Iterator iterator = gruposActivos.keySet().iterator(); iterator.hasNext();) {
+				DireccionIPv4 direccionIPv4 = (DireccionIPv4) iterator.next();
+				GroupTimers groupTimers = (GroupTimers)gruposActivos.get(direccionIPv4);
+				
+				int countSpecificQueryToSend = groupTimers.getCountSpecificQueryToSend();
+				
+				if (countSpecificQueryToSend != 0) {
+					int timerToNextSpecificQuery = groupTimers.getTimerToNextSpecificQuery();
+
+					if (timerToNextSpecificQuery == 0) {
+						enviarSpecificMembershipQueryMessage(instante, interfaz,direccionIPv4);
+						groupTimers.setTimerToNextSpecificQuery(ModuloIGMP.LAST_MEMBER_QUERY_INTERVAL);
+					}
+					else {
+						groupTimers.decrementarTimerToNextSpecificQuery();
+					}
+					
+					gruposActivos.remove(direccionIPv4);
+				}
+			}
+			
+		}
+		private void enviarSpecificMembershipQueryMessage(int instante,Interfaz interfaz,DireccionIPv4 direccionIPv4) {
+			MensajeIGMP mensaje = MensajeIGMP.createMembershipQueryMessage(direccionIPv4);
+			Dato datoAux=new Dato(instante,mensaje,1);
+	        datoAux.direccion=ModuloIGMP.ALL_SYSTEMS_MULTICAST_GROUP;
+	        datoAux.interfaz=interfaz;
+			this.moduloIGMPRouter.ProgramarSalida(datoAux);
+		}
+		
 	}
 
+	
+	
 	protected void ProcesarTimers(int instante) {
 		for (Iterator<Interfaz> iterator = interfacesMap.keySet().iterator(); iterator.hasNext();) {
 			Interfaz interfaz = iterator.next();
@@ -175,6 +231,8 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 			} else {
 				if (datosInterfaz.getTimerToQuerier() == 0) {
 					datosInterfaz.setQuerier(true);
+					enviarGeneralMembershipQueryMessage(instante, interfaz);
+					datosInterfaz.setCountMembershipQuerySent(ModuloIGMP.STARTUP_QUERY_COUNT);
 					datosInterfaz.resetTimerToMembershipQuery();
 				}
 				else {
@@ -184,7 +242,60 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 			
 			// 2- Eliminar grupos si es necesario.
 			datosInterfaz.eliminarGruposSinRespuesta();
+			
+			// 3- 
+			datosInterfaz.enviarSpecificQueries(instante);
+			
+			
 		}
+	}
+	
+	private class GroupTimers {
+		
+		int timerToDeleteGroup;
+		
+		int timerToNextSpecificQuery;
+		
+		int countSpecificQueryToSend;
+
+		public GroupTimers() {
+			timerToDeleteGroup=ModuloIGMP.GROUP_MEMBERSHIP_INTERVAL;
+			timerToNextSpecificQuery=0;
+			countSpecificQueryToSend=0;
+		}
+		
+		public void decrementarTimerToNextSpecificQuery() {
+			this.timerToNextSpecificQuery--;
+		}
+		
+		public void decrementarTimerToDeleteGroup() {
+			this.timerToDeleteGroup--;
+		}
+		
+		public int getTimerToDeleteGroup() {
+			return timerToDeleteGroup;
+		}
+
+		public void setTimerToDeleteGroup(int timerToDeleteGroup) {
+			this.timerToDeleteGroup = timerToDeleteGroup;
+		}
+
+		public int getTimerToNextSpecificQuery() {
+			return timerToNextSpecificQuery;
+		}
+
+		public void setTimerToNextSpecificQuery(int timerToNextSpecificQuery) {
+			this.timerToNextSpecificQuery = timerToNextSpecificQuery;
+		}
+
+		public int getCountSpecificQueryToSend() {
+			return countSpecificQueryToSend;
+		}
+
+		public void setCountSpecificQueryToSend(int countSpecificQueryToSend) {
+			this.countSpecificQueryToSend = countSpecificQueryToSend;
+		}
+		
 	}
 	
 	private void enviarGeneralMembershipQueryMessage(int instante,Interfaz interfaz) {
