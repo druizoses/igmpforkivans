@@ -1232,7 +1232,7 @@ public class Ejemplos
 	       dato.direccion=new DireccionIPv4("10.0.2.1");
 	       dato.protocolo=0;
 	    
-	       pc1.ProgramarSalida(dato);  
+	       pc1.ProgramarSalida(dato);
 	       
 	       // Evitamos el 'Protocol Unreachable' al no haberse implementado el nivel
 	       // de transporte 
