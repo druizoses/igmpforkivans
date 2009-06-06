@@ -55,7 +55,7 @@ public abstract class Equipo extends Objeto
 	 */
 	public TablaDeRutas tablaDeRutas;
 	
-
+    protected boolean encendido = true;
 	
 	/**
      * Constructor
@@ -64,9 +64,19 @@ public abstract class Equipo extends Objeto
     {
         super();
         tablaDeRutas=null; // se inicializa con la del nivel IP!!!
+        iniciar();
     } 
 
+    public void encender(){
+    	encendido = true;
+    	iniciar();
+    }
     
+    protected abstract void iniciar();
+
+	public void apagar(){
+    	encendido = false;
+    }    
     
 	/**
 	 * A�ade una interfaz al equipo

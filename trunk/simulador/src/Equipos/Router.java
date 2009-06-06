@@ -62,8 +62,6 @@ public class Router extends Equipo
      */
     /* definidos en los interfaces */
     
-    
-    
 	/**
 	 * Inicializador de la clase
 	 */
@@ -83,6 +81,17 @@ public class Router extends Equipo
      */
     public Router()
     {
+    	super();
+        // Enlazamos la tabla de rutas
+        tablaDeRutas=nivelIPv4.tablaDeRutas;
+    }
+
+    public void encender(){
+    	super.encender();
+    	nivelIPv4.tablaDeRutas=tablaDeRutas;
+    }
+    
+    protected void iniciar(){
         // 1. Definimos los niveles de la pila
         moduloARP=new ModuloARP(this);
         moduloICMP=new ModuloICMP(this);
@@ -93,14 +102,9 @@ public class Router extends Equipo
         nivelIPv4.setNivelInferior(moduloARP);
         nivelIPv4.setNivelSuperior(moduloICMP);
         
-        // 3. Enlazamos la tabla de rutas
-        tablaDeRutas=nivelIPv4.tablaDeRutas;
-
-        // 4. Activamos el IP Forwarding
+        // 3. Activamos el IP Forwarding
         nivelIPv4.IPForwarding(true);
     }
-    
-    
     
     /**
      * Registra una nueva interfaz para el router y enlaza los niveles
@@ -125,18 +129,20 @@ public class Router extends Equipo
      */
     public void Procesar(int instante)
     {  
-        // 1. Comprobamos si hay algo que procesar en el modulo ICMP
-        moduloICMP.Procesar(instante);
-        
-        // 2. Comprobamos si hay algo en el nivel IPv4
-        nivelIPv4.Procesar(instante);
-        
-        // 3. Comprobamos si el modulo ARP tiene que enviar peticiones
-        moduloARP.Procesar(instante);
-        
-        // 4. Comprobamos si hay algo que procesar en los niveles de enlace
-        for(int i=0;i<NumInterfaces();i++)
-            getInterfaz(i).getNivelEnlace().Procesar(instante);
+    	if (encendido){
+	        // 1. Comprobamos si hay algo que procesar en el modulo ICMP
+	        moduloICMP.Procesar(instante);
+	        
+	        // 2. Comprobamos si hay algo en el nivel IPv4
+	        nivelIPv4.Procesar(instante);
+	        
+	        // 3. Comprobamos si el modulo ARP tiene que enviar peticiones
+	        moduloARP.Procesar(instante);
+	        
+	        // 4. Comprobamos si hay algo que procesar en los niveles de enlace
+	        for(int i=0;i<NumInterfaces();i++)
+	            getInterfaz(i).getNivelEnlace().Procesar(instante);
+    	}
     }
     
 
@@ -149,12 +155,14 @@ public class Router extends Equipo
     {
         int pendientes=0;
         
-        // 1. Comprobamos si hay algo que procesar en los niveles de enlace
-        for(int i=0;i<NumInterfaces();i++)
-            pendientes+=getInterfaz(i).getNivelEnlace().Pendientes();
-        
-        // 2. Devolvemos el numero de paquetes que nos han quedado por procesar;
-        pendientes+=moduloARP.Pendientes()+moduloICMP.Pendientes()+nivelIPv4.Pendientes();
+        if (encendido){
+	        // 1. Comprobamos si hay algo que procesar en los niveles de enlace
+	        for(int i=0;i<NumInterfaces();i++)
+	            pendientes+=getInterfaz(i).getNivelEnlace().Pendientes();
+	        
+	        // 2. Devolvemos el numero de paquetes que nos han quedado por procesar;
+	        pendientes+=moduloARP.Pendientes()+moduloICMP.Pendientes()+nivelIPv4.Pendientes();
+        }
         return(pendientes);
     }
     

@@ -53,7 +53,7 @@ public class Ordenador extends Equipo
 	/**
 	 * Modulo IGMP
 	 */
-	ModuloIGMP moduloIGMP;
+	ModuloIGMPOrdenador moduloIGMP;
    
 	/**
 	 * Niveles de enlace
@@ -85,6 +85,12 @@ public class Ordenador extends Equipo
      */
     public Ordenador()
     {
+    	super();
+        // 3. Enlazamos la tabla de rutas
+        tablaDeRutas=nivelIPv4.tablaDeRutas;
+    }
+    
+	protected void iniciar(){
     	// 1. Definimos los niveles de la pila
     	moduloARP=new ModuloARP(this);
     	moduloICMP=new ModuloICMP(this);
@@ -100,16 +106,14 @@ public class Ordenador extends Equipo
     	nivelIPv4.setNivelSuperior(moduloIGMP);
     	nivelIPv4.setNivelSuperior(moduloICMP);
         nivelIPv4.IPForwarding(false);
-        
-        // Los niveles de enlace son gestionados por la tabla de rutas del nivel IP
-        // y por los interfaces.
+        		
+	}
     
-        // 3. Enlazamos la tabla de rutas
-        tablaDeRutas=nivelIPv4.tablaDeRutas;
+	public void encender(){
+    	super.encender();
+    	nivelIPv4.tablaDeRutas=tablaDeRutas;
     }
-    
 	
-    
     /**
      * Registra una nueva interfaz para el ordenador y enlaza los niveles
      * @param interfaz Nueva Interfaz del equipo
@@ -132,21 +136,23 @@ public class Ordenador extends Equipo
 	 */
 	public void Procesar(int instante)
 	{  
-		// 1. Comprobamos si hay algo que procesar en el modulo ICMP
-		moduloICMP.Procesar(instante);
-		
-		// 2. Comprobamos si hay algo que procesar en el modulo IGMP
-		moduloIGMP.Procesar(instante);
-		
-		// 3. Comprobamos si hay algo en el nivel IPv4
-		nivelIPv4.Procesar(instante);
-		
-		// 4. Comprobamos si el modulo ARP tiene que enviar peticiones
-	    moduloARP.Procesar(instante);
-		
-		// 5. Comprobamos si hay algo que procesar en los niveles de enlace
-		for(int i=0;i<NumInterfaces();i++)
-			getInterfaz(i).getNivelEnlace().Procesar(instante);
+    	if (encendido){
+			// 1. Comprobamos si hay algo que procesar en el modulo ICMP
+			moduloICMP.Procesar(instante);
+			
+			// 2. Comprobamos si hay algo que procesar en el modulo IGMP
+			moduloIGMP.Procesar(instante);
+			
+			// 3. Comprobamos si hay algo en el nivel IPv4
+			nivelIPv4.Procesar(instante);
+			
+			// 4. Comprobamos si el modulo ARP tiene que enviar peticiones
+		    moduloARP.Procesar(instante);
+			
+			// 5. Comprobamos si hay algo que procesar en los niveles de enlace
+			for(int i=0;i<NumInterfaces();i++)
+				getInterfaz(i).getNivelEnlace().Procesar(instante);
+    	}
 	}
 	
 
@@ -159,12 +165,15 @@ public class Ordenador extends Equipo
 	{
 	    int pendientes=0;
 	    
-	    // 1. Comprobamos si hay algo que procesar en los niveles de enlace
-	    for(int i=0;i<NumInterfaces();i++)
-	        pendientes+=getInterfaz(i).getNivelEnlace().Pendientes();
-	    
-	    // 2. Devolvemos el numero de paquetes que nos han quedado por procesar;
-	    pendientes+=moduloARP.Pendientes()+moduloICMP.Pendientes()+nivelIPv4.Pendientes()+moduloIGMP.Pendientes();
+    	if (encendido){
+		    // 1. Comprobamos si hay algo que procesar en los niveles de enlace
+		    for(int i=0;i<NumInterfaces();i++)
+		        pendientes+=getInterfaz(i).getNivelEnlace().Pendientes();
+		    
+		    // 2. Devolvemos el numero de paquetes que nos han quedado por procesar;
+		    pendientes+=moduloARP.Pendientes()+moduloICMP.Pendientes()+nivelIPv4.Pendientes()+moduloIGMP.Pendientes();
+    	}
+    	
 	    return(pendientes);
 	}
 	
@@ -333,4 +342,13 @@ public class Ordenador extends Equipo
 	{
     	return(caracteristicas);
     }
+    
+    public void joinGroup(Interfaz interfaz,DireccionIPv4 dirGroup,int instante){
+    	moduloIGMP.joinGroup(interfaz, dirGroup, instante);
+    }
+    
+    public void leaveGroup(Interfaz interfaz,DireccionIPv4 dirGroup,int instante){
+    	moduloIGMP.leaveGroup(interfaz, dirGroup, instante);
+    }
+    
 }

@@ -21,12 +21,15 @@ public class RouterMultiCast extends Router{
     public RouterMultiCast()
     {
         super();
+    }
+    
+    protected void iniciar() {
+    	super.iniciar();
         moduloIGMP=new ModuloIGMPRouter(this);
         moduloIGMP.setNivelInferior(nivelIPv4);
         nivelIPv4.setNivelSuperior(moduloIGMP);
         nivelIPv4.setModuloIGMP(moduloIGMP);
     }
-    
     
     /**
      * Procesa los paquetes programados para un determinado instante
@@ -34,17 +37,21 @@ public class RouterMultiCast extends Router{
      */
     public void Procesar(int instante)
     {  
-    	
-        // 2. Comprobamos si hay algo que procesar en el modulo IGMP
-        moduloIGMP.Procesar(instante);
-
-        // 1. Comprobamos si hay algo que procesar en el modulo ICMP
-        super.Procesar(instante);
+    	if (encendido){
+	        // 2. Comprobamos si hay algo que procesar en el modulo IGMP
+	        moduloIGMP.Procesar(instante);
+	
+	        // 1. Comprobamos si hay algo que procesar en el modulo ICMP
+	        super.Procesar(instante);
+    	}
      }
     
     @Override
     public int Pendientes() {
-    	return super.Pendientes()+moduloIGMP.Pendientes();
+    	if (encendido)
+    		return super.Pendientes()+moduloIGMP.Pendientes();
+    	else
+    		return 0;
     }
     
     @Override
