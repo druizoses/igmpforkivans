@@ -29,6 +29,7 @@ import Proyecto.*;
 import Redes.*;
 import Redes.IPv4.ARP.*;
 import Redes.IPv4.ICMP.*;
+import Redes.IPv4.IGMP.MensajeIGMP;
 import Redes.IPv4.IGMP.ModuloIGMP;
 import Equipos.Equipo;
 import java.util.Vector;
@@ -482,7 +483,8 @@ public class NivelIPv4 extends Nivel
 	 */
 	private void Enviar(Dato dato, boolean enEsperaARP)
 	{
-		if (((DatagramaIPv4) dato.paquete).getProtocol()!=2) {// Si no es un paquete IGMP
+		if (((DatagramaIPv4) dato.paquete).getProtocol() != 2) {// Si no es un paquete IGMP
+			
 		    int numEntrada;                //Numero de entrada en la tabla de rutas
 		    DireccionIPv4 destino;         //Direccion IP de destino del datagrama
 		    DireccionIPv4 destinoFisico;   //Direccion IP de destino o del gateway a usar

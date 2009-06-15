@@ -125,6 +125,7 @@ public class Ordenador extends Equipo
 		// 1. Enlazamos el nivel de enlace
 		interfaz.getNivelEnlace().setNivelSuperior(moduloARP);
         interfaz.getNivelEnlace().setNivelSuperior(nivelIPv4);
+        moduloIGMP.addInterfaz(interfaz);
     }
 	
   

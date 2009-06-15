@@ -1,6 +1,7 @@
 package Equipos;
 
 import Redes.Dato;
+import Redes.Interfaz;
 import Redes.IPv4.NivelIPv4;
 import Redes.IPv4.ARP.ModuloARP;
 import Redes.IPv4.ICMP.ModuloICMP;
@@ -31,6 +32,12 @@ public class RouterMultiCast extends Router{
         nivelIPv4.setModuloIGMP(moduloIGMP);
     }
     
+    
+    @Override
+    public void setInterfaz(Interfaz interfaz) {
+    	super.setInterfaz(interfaz);
+    	moduloIGMP.addInterfaz(interfaz);
+    }
     /**
      * Procesa los paquetes programados para un determinado instante
      * @param instante Instante

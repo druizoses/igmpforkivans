@@ -21,6 +21,11 @@
 
 package Proyecto;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import Equipos.Equipo;
 import Proyecto.Acciones.Accion;
 import Redes.Red;
@@ -30,16 +35,38 @@ import Redes.Red;
  */
 public class SimuladorExtendido extends Simulador
 {
-    /**
+	private class EquipoAccion {
+		
+		private Equipo equipo;
+		private Accion accion;
+		
+		public EquipoAccion(Equipo equipo,Accion accion) {
+			this.equipo=equipo;
+			this.accion=accion;
+		}
+
+		public void ejecutar(int instante) {
+			accion.ejecutar(equipo, instante);
+		}
+	}
+    
+	private Map<Integer, List<EquipoAccion>> map = null; 
+	
+	/**
      * Constructor.
      */
     public SimuladorExtendido()
     {
     	super();
+    	map = new HashMap<Integer, List<EquipoAccion>>(); 
     }
     
     public void agregarALaSimulacion(Equipo e,Accion accion, int instante){
-    	// armar una tabla de hash o algo asi y meter las acciones ahi
+    	Integer instanteI= Integer.valueOf(instante);
+    	if (!map.containsKey(instanteI)) {
+    		map.put(instanteI, new ArrayList<EquipoAccion>());
+    	}
+    	map.get(instanteI).add(new EquipoAccion(e,accion));
     }
     
     /**
@@ -49,15 +76,19 @@ public class SimuladorExtendido extends Simulador
      */
     public boolean SimularUnPaso()
     {
-    	
-    	
-    	
-    	boolean se_puede_continuar=false;
-    	
     	Objeto.DEBUG("\n\n");
     	Objeto.DEBUG("Instante "+instante_actual);
+
+    	// 1. Comprobamos si una accion a simular en el instante de tiempo actual.
+    	Integer instante_actualI = Integer.valueOf(instante_actual);
+    	if (map.containsKey(instante_actualI))
+    	{
+    		for (EquipoAccion element : map.get(instante_actualI)) {
+				element.ejecutar(instante_actual);
+			}
+    	}
     	
-    	// 1. Comprobamos si algun equipo tiene algo que procesar en
+    	// 2. Comprobamos si algun equipo tiene algo que procesar en
     	//    el instante de tiempo actual
     	for(int i=0;i<ListaEquipos.size();i++)
     	{
@@ -65,36 +96,22 @@ public class SimuladorExtendido extends Simulador
     		e.Procesar(instante_actual);
     	}
     	
-    	// 2. Comprobamos si alguna red tiene que enviar alguna trama
+    	// 3. Comprobamos si alguna red tiene que enviar alguna trama
     	for(int i=0;i<ListaRedes.size();i++)
     	{
     		Red r=(Red)ListaRedes.get(i);
     		r.Procesar(instante_actual);
     	}
     	
-    	// 3. Comprobamos si queda algun paquete por procesar en los equipos o en las redes
-    	for(int i=0;!se_puede_continuar && i<ListaEquipos.size();i++)
-    	{    
-    	    Equipo e=(Equipo)ListaEquipos.get(i);
-    	    if(e.Pendientes()>0)
-    	        se_puede_continuar=true;
-    	}
-    	for(int i=0;!se_puede_continuar && i<ListaRedes.size();i++)
-    	{
-    	    Red r=(Red)ListaRedes.get(i);
-    	    if(r.Pendientes()>0)
-    	        se_puede_continuar=true;
-    	}
-    	
     	// 4. Pasamos al siguiente instante de tiempo
     	instante_actual++;
 
     	// 5. Devolvemos el estado del simulador
-        if(se_puede_continuar && instante_actual==numPasosMax)
+        if(instante_actual==numPasosMax)
         {
-            System.out.println("Salida forzada en "+numPasosMax+" iteraciones");
-            se_puede_continuar=false; //salida forzada
+        	Objeto.DEBUG("Fin de la simulación");
+        	return false;
         }
-        return(se_puede_continuar);
+        return true;
     }
 }

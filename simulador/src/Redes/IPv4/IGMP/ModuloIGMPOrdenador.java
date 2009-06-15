@@ -20,10 +20,6 @@ public class ModuloIGMPOrdenador extends ModuloIGMP{
 	public ModuloIGMPOrdenador(Equipo equipo) {
 		super(equipo);
 		grupos  = new HashMap<Interfaz, Map<DireccionIPv4,Boolean>>();
-		for (int i = 0; i < equipo.NumInterfaces(); i++) {
-			Interfaz interfaz = equipo.getInterfaz(i);
-			grupos.put(interfaz, new HashMap<DireccionIPv4,Boolean>());
-		}
 	}
 
 	protected void procesarMensajeEntrante(Dato dato,int instante) {
@@ -151,4 +147,9 @@ public class ModuloIGMPOrdenador extends ModuloIGMP{
 
 	@Override
 	protected void ProcesarTimers(int instante) {}
+
+	@Override
+	public void addInterfaz(Interfaz interfaz) {
+		grupos.put(interfaz, new HashMap<DireccionIPv4,Boolean>());
+	}
 }

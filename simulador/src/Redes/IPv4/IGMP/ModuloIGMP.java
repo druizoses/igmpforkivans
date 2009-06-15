@@ -228,7 +228,7 @@ public abstract class ModuloIGMP extends Nivel {
                        Dato datoAux=new Dato(instante,mensajeIGMP);
                        datoAux.direccion=dato.direccion;
                        datoAux.protocolo=getID(nivel.ID());
-                
+                       datoAux.interfaz=dato.interfaz;
                        // Registramos el evento
                        int tipo=mensajeIGMP.getTipo();	                       
                        equipo.NuevoEvento('E',datoAux.instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(tipo));
@@ -353,5 +353,7 @@ public abstract class ModuloIGMP extends Nivel {
 	 * @return
 	 */
 	public abstract boolean esParaMi(DireccionIPv4 direccion,Interfaz interfaz);
+	
+	public abstract void addInterfaz(Interfaz interfaz);
 
 }
