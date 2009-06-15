@@ -16,11 +16,12 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 	public ModuloIGMPRouter(Equipo equipo) {
 		super(equipo);
 		interfacesMap = new HashMap<Interfaz, DatosInterfaz>();
-		for (int i = 0; i < equipo.NumInterfaces(); i++) {
-			Interfaz interfaz = equipo.getInterfaz(i);
-			interfacesMap.put(interfaz, new DatosInterfaz(interfaz,this));
-		}
 	}
+	
+	public void addInterfaz(Interfaz interfaz) {
+		interfacesMap.put(interfaz, new DatosInterfaz(interfaz,this));
+	}
+
 
 	@Override
 	protected void procesarMensajeEntrante(Dato dato, int instante) {
