@@ -638,7 +638,7 @@ public class NivelIPv4 extends Nivel
 		        // 1.2 Si no es fragmento lo pasamos al nivel superior
 		        else
 		        {
-		            PasarAlNivelSuperior(datagrama);
+		            PasarAlNivelSuperior(datagrama,dato.interfaz);
 		        }
 		    }
 		    
@@ -797,7 +797,7 @@ public class NivelIPv4 extends Nivel
      * correspondiente
      * @param datagrama Datagrama con los datos que hay que pasar al nivel superior
      */
-	private void PasarAlNivelSuperior(DatagramaIPv4 datagrama)
+	private void PasarAlNivelSuperior(DatagramaIPv4 datagrama, Interfaz interfaz)
 	{
 		Nivel nivel;
 		int retardo=getRetardo();
@@ -815,6 +815,7 @@ public class NivelIPv4 extends Nivel
 		    	datos.setByte(j,datagrama.getByte(datagrama.getIHL()*4+j));
 		    datoAux.paquete=datos;
 		    datoAux.instante+=retardo;
+		    datoAux.interfaz=interfaz;
 		    
 		    // 1.2 Es posible que el nivel superior necesite la direccion IP del origen
 		    datoAux.direccion=datagrama.getOrigen();

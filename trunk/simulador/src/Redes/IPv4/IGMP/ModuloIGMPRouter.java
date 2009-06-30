@@ -35,12 +35,15 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 						interfacesMap.get(interfaz).setQuerier(false);
 					}
 				}
+				break;
 			}
 			case MensajeIGMP.MEMBERSHIP_REPORT_V2:{
 				interfacesMap.get(interfaz).activarGrupo(mensajeIGMP.getDirGrupo());
+				break;
 			}
 			case MensajeIGMP.MEMBERSHIP_LEAVE_GROUP:{
 				interfacesMap.get(interfaz).desactivarGrupo(mensajeIGMP.getDirGrupo());
+				break;
 			}
 			default:{
 				/* Llego otra cosa que no le tengo que dar bola. */
