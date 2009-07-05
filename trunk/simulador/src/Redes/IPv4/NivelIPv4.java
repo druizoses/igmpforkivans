@@ -947,7 +947,7 @@ public class NivelIPv4 extends Nivel
 		datoAux.interfaz=interfaz;
 		
 		// 3. Apuntamos el evento
-		equipo.NuevoEvento('E',datoAux.instante,datagrama,"Datagrama IPv4 (sin fragmentar)");
+		equipo.NuevoEvento('E',instanteActual,datagrama,"Datagrama IPv4 (sin fragmentar)");
 		//System.out.println("fragment ID: "+datagrama.getID()+"  offset: "+datagrama.getFragmentOffset()*8);
 		//System.out.println("  total length: "+datagrama.getTotalLength());
 		//datagrama.Contenido();

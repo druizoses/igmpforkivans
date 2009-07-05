@@ -5,14 +5,14 @@ import Redes.Buffer;
 import Redes.Dato;
 import Redes.IPv4.DireccionIPv4;
 
-public class EnviarPaqueteIP implements Accion {
+public class AccionEnviarPaqueteIP implements Accion {
 
 	DireccionIPv4 direccionDestino;
 	int tamanioPaquete;
 	boolean fragmentable;
 	int copias;
 	
-	public EnviarPaqueteIP(DireccionIPv4 direccionDestino, int tamanioPaquete,
+	public AccionEnviarPaqueteIP(DireccionIPv4 direccionDestino, int tamanioPaquete,
 			boolean fragmentable, int copias) {
 		super();
 		this.direccionDestino = direccionDestino;

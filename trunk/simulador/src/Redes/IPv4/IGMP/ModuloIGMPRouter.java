@@ -1,7 +1,9 @@
 package Redes.IPv4.IGMP;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import Equipos.Equipo;
@@ -29,19 +31,26 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 		Interfaz interfaz = dato.interfaz;
 		switch (mensajeIGMP.getTipo()){
 			case MensajeIGMP.MEMBERSHIP_QUERY:{
+				int tipo=mensajeIGMP.getTipo();
+				equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(tipo));
 				if (mensajeIGMP.getDirGrupo().equals(new DireccionIPv4("0.0.0.0"))){
 					//si la direccion ip del que envio el mensaje igmp es menor a la mia me pongo como non-querier
 					if (((DireccionIPv4)dato.direccion).compareTo(interfaz.getIP()) < 0) {
 						interfacesMap.get(interfaz).setQuerier(false);
+						interfacesMap.get(interfaz).setTimerToQuerier(ModuloIGMP.OTHER_QUERIER_PRESENT_INTERVAL);
 					}
 				}
 				break;
 			}
 			case MensajeIGMP.MEMBERSHIP_REPORT_V2:{
+				int tipo=mensajeIGMP.getTipo();
+				equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(tipo));
 				interfacesMap.get(interfaz).activarGrupo(mensajeIGMP.getDirGrupo());
 				break;
 			}
 			case MensajeIGMP.MEMBERSHIP_LEAVE_GROUP:{
+				int tipo=mensajeIGMP.getTipo();
+				equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(tipo));
 				interfacesMap.get(interfaz).desactivarGrupo(mensajeIGMP.getDirGrupo());
 				break;
 			}
@@ -98,7 +107,7 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 		}
 		
 		public void eliminarGruposSinRespuesta(){
-			
+			List<DireccionIPv4> datosARemover = new ArrayList<DireccionIPv4>();
 			for (Iterator iterator = gruposActivos.keySet().iterator(); iterator.hasNext();) {
 				DireccionIPv4 direccionIPv4 = (DireccionIPv4) iterator.next();
 				
@@ -107,12 +116,18 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 				int timerToDeleteGroup = groupTimers.getTimerToDeleteGroup();
 				
 				if (timerToDeleteGroup == 0) {
-					gruposActivos.remove(direccionIPv4);
+					//gruposActivos.remove(direccionIPv4);
+					datosARemover.add(direccionIPv4);
 				}
 				else {
 					groupTimers.decrementarTimerToDeleteGroup();
 				}
 			}
+			for (DireccionIPv4 direccionIPv4 : datosARemover) {
+				gruposActivos.remove(direccionIPv4);
+			}
+			
+			
 			
 		}
 
@@ -184,6 +199,7 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 		}
 
 		public void enviarSpecificQueries(int instante) {
+			List<DireccionIPv4> datosARemover = new ArrayList<DireccionIPv4>();
 			for (Iterator iterator = gruposActivos.keySet().iterator(); iterator.hasNext();) {
 				DireccionIPv4 direccionIPv4 = (DireccionIPv4) iterator.next();
 				GroupTimers groupTimers = (GroupTimers)gruposActivos.get(direccionIPv4);
@@ -201,10 +217,13 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 						groupTimers.decrementarTimerToNextSpecificQuery();
 					}
 					
-					gruposActivos.remove(direccionIPv4);
+					//gruposActivos.remove(direccionIPv4);
+					datosARemover.add(direccionIPv4);
 				}
 			}
-			
+			for (DireccionIPv4 direccionIPv4 : datosARemover) {
+				gruposActivos.remove(direccionIPv4);
+			}
 		}
 		private void enviarSpecificMembershipQueryMessage(int instante,Interfaz interfaz,DireccionIPv4 direccionIPv4) {
 			MensajeIGMP mensaje = MensajeIGMP.createMembershipQueryMessage(direccionIPv4);

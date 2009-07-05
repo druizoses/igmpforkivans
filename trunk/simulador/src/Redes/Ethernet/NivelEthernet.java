@@ -200,7 +200,7 @@ public class NivelEthernet extends Nivel
 				            for(int j=0;j<datos.Tam();j++)
 				            	datos.setByte(j,trama.getByte(22+j));
 				            dato.paquete=datos;
-				            	
+				            //dato.interfaz=this.red.
 				            // Pasamos el dato al nivel superior
 				            dato.instante+=getRetardo();
 				            nivel.ProgramarEntrada(dato);

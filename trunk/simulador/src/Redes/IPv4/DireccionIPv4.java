@@ -281,4 +281,14 @@ public class DireccionIPv4 extends Direccion implements Comparable
 	public int compareTo(Object o) {
  		return this.getIP().compareTo(((DireccionIPv4) o).getIP());
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		return this.getIP().equals(((DireccionIPv4) o).getIP());
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.getIP().hashCode();
+	}
 }

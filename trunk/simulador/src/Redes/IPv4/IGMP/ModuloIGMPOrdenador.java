@@ -1,7 +1,9 @@
 package Redes.IPv4.IGMP;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import Equipos.Equipo;
@@ -54,13 +56,16 @@ public class ModuloIGMPOrdenador extends ModuloIGMP{
 				int tipo=mensajeIGMP.getTipo();
 				DireccionIPv4 dirGrupo = mensajeIGMP.getDirGrupo();
 				equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(tipo));
+				List<Dato> datosARemover = new ArrayList<Dato>();
 				for (Iterator it = colaSalida.iterator();it.hasNext();){
 					Dato datoAux = (Dato) it.next();
 					MensajeIGMP mensaje = (MensajeIGMP) datoAux.paquete; 
 					if ((mensaje.getDirGrupo().equals(dirGrupo))){ //los mensajes puden ser MEMBERSHIP_REPORT_V2 ó MEMBERSHIP_LEAVE_GROUP
-						colaSalida.remove(datoAux);	
+						//colaSalida.remove(datoAux);
+						datosARemover.add(datoAux);
 					}
 				}
+				colaSalida.removeAll(datosARemover);
 				if (grupos.get(interfaz).containsKey(dirGrupo))
 					grupos.get(interfaz).put(dirGrupo, false);
 				break;
@@ -94,15 +99,15 @@ public class ModuloIGMPOrdenador extends ModuloIGMP{
 	public void leaveGroup(Interfaz interfaz,DireccionIPv4 dirGroup,int instante){
 		if (grupos.get(interfaz).containsKey(dirGroup)){
 			grupos.get(interfaz).remove(dirGroup);
-			
+			List<Dato> datosARemover = new ArrayList<Dato>();
 			for (Iterator it = colaSalida.iterator();it.hasNext();){
 				Dato datoAux = (Dato) it.next();
 				MensajeIGMP mensaje = (MensajeIGMP) datoAux.paquete; 
 				if ((mensaje.getDirGrupo().equals(dirGroup))){
-					colaSalida.remove(datoAux);
+					datosARemover.add(datoAux);
 				}
 			}
-			
+			colaSalida.removeAll(datosARemover);
 			enviarLeave(interfaz,dirGroup,instante);
 		}
 	}
@@ -117,7 +122,7 @@ public class ModuloIGMPOrdenador extends ModuloIGMP{
 		MensajeIGMP mensaje = MensajeIGMP.createMembershipReportV2Message(dirGroup);
 		int retardo = (int) Math.round((Math.random() * QUERY_RESPONSE_INTERVAL));
 		Dato datoAux=new Dato(instante+1+retardo,mensaje,1);
-        datoAux.direccion=dirGroup;
+        datoAux.direccion=ModuloIGMP.ALL_SYSTEMS_MULTICAST_GROUP;
         datoAux.interfaz=interfaz;
 		super.ProgramarSalida(datoAux);
 	}
