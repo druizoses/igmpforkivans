@@ -1,5 +1,8 @@
 package Proyecto;
 
+import Proyecto.Acciones.AccionApagar;
+import Proyecto.Acciones.AccionDejarGrupo;
+import Proyecto.Acciones.AccionUnirseAGrupo;
 import Redes.*;
 import Redes.IPv4.*;
 import Equipos.*;
@@ -25,7 +28,19 @@ public class EjemplosExtendidos
 		//Simulacion1();
 		
 		// 2. Una red ethernet con 2 router multicast
-		Simulacion2();
+		//Simulacion2();
+		
+		// 3. Una red ethernet con 2 router multicast. El router 1 (QUERIER) es apagado en algun instante.
+		//Simulacion3();
+		
+		// 4. Una red ethernet con 1 router multicast y 1 Odenador. El ordenador se une a un grupo en algun instante.
+		//Simulacion4();
+		
+		// 5. Una red ethernet con 1 router multicast y 1 Odenador. El ordenador se une a un grupo en algun instante. Luego el ordenador es apagado.
+		//Simulacion5();
+		
+		// 5. Una red ethernet con 1 router multicast y 2 Odenadores. El ordenador 1 se une a 2 grupos. El ordenador 2 se une a 1 grupo. El ordenador 1 deja un grupo
+		Simulacion6();
 		
 		System.out.println();
 	}
@@ -127,8 +142,188 @@ public class EjemplosExtendidos
 	   }
     }
     
+    private static void Simulacion3()
+    {
+    	try
+		{
+    	   // redes
+           Red ethernet1=LocalizadorRedes.New("Ethernet.Ethernet","ethernet1");
+        
+           // Router MultiCast
+           Equipo router=LocalizadorEquipos.New("RouterMultiCast","routerMC 1");
+           Interfaz interfaz=LocalizadorRedes.NewInterfaz("con0","10.0.1.2","255.255.255.0","00:00:00:00:00:fe","Ethernet.Ethernet");
+           interfaz.Conectar(ethernet1);
+           router.setInterfaz(interfaz);
+           router.tablaDeRutas.Anadir("10.0.1.0","255.255.255.0","directa",new DireccionIPv4("10.0.1.2"));
+
+           Equipo router2=LocalizadorEquipos.New("RouterMultiCast","routerMC 2");
+           Interfaz interfaz2=LocalizadorRedes.NewInterfaz("con0","10.0.1.3","255.255.255.0","00:00:00:00:00:ff","Ethernet.Ethernet");
+           interfaz2.Conectar(ethernet1);
+           router2.setInterfaz(interfaz2);
+           router2.tablaDeRutas.Anadir("10.0.1.0","255.255.255.0","directa",new DireccionIPv4("10.0.1.3"));
+           
+	       // simulador
+   	       SimuladorExtendido simulador=new SimuladorExtendido();
+	       simulador.MaximoNumeroDePasos(600);
+	       simulador.NuevoEquipo(router);
+	       simulador.NuevoEquipo(router2);
+	       simulador.NuevaRed(ethernet1);
+	       
+	       simulador.agregarALaSimulacion(router, new AccionApagar(), 165);
+	       
+	       while(simulador.SimularUnPaso());
+	   }
+	   catch(Exception e)
+	   {
+		   e.printStackTrace(System.out);
+		   System.out.println("Error: "+e.getMessage()+"\n");
+	   }
+    }
+    
+    private static void Simulacion4()
+    {
+    	try
+		{
+    	   // redes
+           Red ethernet1=LocalizadorRedes.New("Ethernet.Ethernet","ethernet1");
+        
+           // Router MultiCast
+           Equipo router=LocalizadorEquipos.New("RouterMultiCast","routerMC 1");
+           Interfaz interfaz=LocalizadorRedes.NewInterfaz("con0","10.0.1.2","255.255.255.0","00:00:00:00:00:fe","Ethernet.Ethernet");
+           interfaz.Conectar(ethernet1);
+           router.setInterfaz(interfaz);
+           router.tablaDeRutas.Anadir("10.0.1.0","255.255.255.0","directa",new DireccionIPv4("10.0.1.2"));
+
+           // PC1
+           Equipo pc1=LocalizadorEquipos.New("Ordenador","PC1");
+           Interfaz interfazPC=LocalizadorRedes.NewInterfaz("eth0","10.0.1.1","255.255.255.0","00:00:00:00:00:01","Ethernet.Ethernet");
+           interfazPC.Conectar(ethernet1);
+           pc1.setInterfaz(interfazPC);
+           pc1.tablaDeRutas.Anadir("10.0.1.0","255.255.255.0","directa","eth0"); //ruta local
+           pc1.tablaDeRutas.Anadir("por defecto","por defecto","10.0.1.2","eth0");
+           
+	       // simulador
+   	       SimuladorExtendido simulador=new SimuladorExtendido();
+	       simulador.MaximoNumeroDePasos(600);
+	       simulador.NuevoEquipo(router);
+	       simulador.NuevoEquipo(pc1);
+	       simulador.NuevaRed(ethernet1);
+	       
+	       simulador.agregarALaSimulacion(pc1, new AccionUnirseAGrupo(new DireccionIPv4("224.0.0.104"),interfazPC), 50);
+	       
+	       while(simulador.SimularUnPaso());
+	   }
+	   catch(Exception e)
+	   {
+		   e.printStackTrace(System.out);
+		   System.out.println("Error: "+e.getMessage()+"\n");
+	   }
+    }
+    
+    private static void Simulacion5()
+    {
+    	try
+		{
+    	   // redes
+           Red ethernet1=LocalizadorRedes.New("Ethernet.Ethernet","ethernet1");
+        
+           // Router MultiCast
+           Equipo router=LocalizadorEquipos.New("RouterMultiCast","routerMC 1");
+           Interfaz interfaz=LocalizadorRedes.NewInterfaz("con0","10.0.1.2","255.255.255.0","00:00:00:00:00:fe","Ethernet.Ethernet");
+           interfaz.Conectar(ethernet1);
+           router.setInterfaz(interfaz);
+           router.tablaDeRutas.Anadir("10.0.1.0","255.255.255.0","directa",new DireccionIPv4("10.0.1.2"));
+
+           // PC1
+           Equipo pc1=LocalizadorEquipos.New("Ordenador","PC1");
+           Interfaz interfazPC=LocalizadorRedes.NewInterfaz("eth0","10.0.1.1","255.255.255.0","00:00:00:00:00:01","Ethernet.Ethernet");
+           interfazPC.Conectar(ethernet1);
+           pc1.setInterfaz(interfazPC);
+           pc1.tablaDeRutas.Anadir("10.0.1.0","255.255.255.0","directa","eth0"); //ruta local
+           pc1.tablaDeRutas.Anadir("por defecto","por defecto","10.0.1.2","eth0");
+           
+	       // simulador
+   	       SimuladorExtendido simulador=new SimuladorExtendido();
+	       simulador.MaximoNumeroDePasos(600);
+	       simulador.NuevoEquipo(router);
+	       simulador.NuevoEquipo(pc1);
+	       simulador.NuevaRed(ethernet1);
+	       
+	       simulador.agregarALaSimulacion(pc1, new AccionUnirseAGrupo(new DireccionIPv4("224.0.0.104"),interfazPC), 50);
+	       simulador.agregarALaSimulacion(pc1, new AccionApagar(), 200);
+	       
+	       while(simulador.SimularUnPaso());
+	   }
+	   catch(Exception e)
+	   {
+		   e.printStackTrace(System.out);
+		   System.out.println("Error: "+e.getMessage()+"\n");
+	   }
+    }
+    
+    private static void Simulacion6()
+    {
+    	try
+		{
+    	   // redes
+           Red ethernet1=LocalizadorRedes.New("Ethernet.Ethernet","ethernet1");
+        
+           // Router MultiCast
+           Equipo router=LocalizadorEquipos.New("RouterMultiCast","routerMC 1");
+           Interfaz interfaz=LocalizadorRedes.NewInterfaz("con0","10.0.1.1","255.255.255.0","00:00:00:00:00:fe","Ethernet.Ethernet");
+           interfaz.Conectar(ethernet1);
+           router.setInterfaz(interfaz);
+           router.tablaDeRutas.Anadir("10.0.1.0","255.255.255.0","directa",new DireccionIPv4("10.0.1.1"));
+
+           // PC1
+           Equipo pc1=LocalizadorEquipos.New("Ordenador","PC1");
+           Interfaz interfazPC=LocalizadorRedes.NewInterfaz("eth0","10.0.1.2","255.255.255.0","00:00:00:00:00:01","Ethernet.Ethernet");
+           interfazPC.Conectar(ethernet1);
+           pc1.setInterfaz(interfazPC);
+           pc1.tablaDeRutas.Anadir("10.0.1.0","255.255.255.0","directa","eth0"); //ruta local
+           pc1.tablaDeRutas.Anadir("por defecto","por defecto","10.0.1.1","eth0");
+           
+           // PC2
+           Equipo pc2=LocalizadorEquipos.New("Ordenador","PC2");
+           Interfaz interfazPC2=LocalizadorRedes.NewInterfaz("eth0","10.0.1.3","255.255.255.0","00:00:00:00:00:02","Ethernet.Ethernet");
+           interfazPC2.Conectar(ethernet1);
+           pc2.setInterfaz(interfazPC2);
+           pc2.tablaDeRutas.Anadir("10.0.1.0","255.255.255.0","directa","eth0"); //ruta local
+           pc2.tablaDeRutas.Anadir("por defecto","por defecto","10.0.1.1","eth0");
+           
+           
+	       // simulador
+   	       SimuladorExtendido simulador=new SimuladorExtendido();
+	       simulador.MaximoNumeroDePasos(600);
+	       simulador.NuevoEquipo(router);
+	       simulador.NuevoEquipo(pc1);
+	       simulador.NuevoEquipo(pc2);
+	       simulador.NuevaRed(ethernet1);
+	       
+	       simulador.agregarALaSimulacion(pc1, new AccionUnirseAGrupo(new DireccionIPv4("224.0.0.104"),interfazPC), 50);
+	       simulador.agregarALaSimulacion(pc1, new AccionUnirseAGrupo(new DireccionIPv4("224.0.0.105"),interfazPC), 60);
+	       simulador.agregarALaSimulacion(pc2, new AccionUnirseAGrupo(new DireccionIPv4("224.0.0.104"),interfazPC2), 100);
+	       
+	       simulador.agregarALaSimulacion(pc1, new AccionDejarGrupo(new DireccionIPv4("224.0.0.104"),interfazPC), 300);
+	       
+	       while(simulador.SimularUnPaso());
+	   }
+	   catch(Exception e)
+	   {
+		   e.printStackTrace(System.out);
+		   System.out.println("Error: "+e.getMessage()+"\n");
+	   }
+    }
     
     
+    
+    
+    
+    
+    
+    
+    
+    //////////////////////////////////---------------OLD
     private static void Simulacion1B()
     {
     	Interfaz interfaz=null;
@@ -404,7 +599,7 @@ public class EjemplosExtendidos
     }
     
     
-    private static void Simulacion3()
+    private static void Simulacion3OLD()
     {
     	Interfaz interfaz=null;
     	
@@ -463,7 +658,7 @@ public class EjemplosExtendidos
 
     
     
-    private static void Simulacion4()
+    private static void Simulacion4OLD()
     {
     	Interfaz interfaz=null;
     	
@@ -645,7 +840,7 @@ public class EjemplosExtendidos
 
     
 
-    private static void Simulacion5()
+    private static void Simulacion5OLD()
     {
     	Interfaz interfaz=null;
     	
@@ -708,7 +903,7 @@ public class EjemplosExtendidos
 
 
     
-    private static void Simulacion6()
+    private static void Simulacion6OLD()
     {
     	Interfaz interfaz=null;
     	

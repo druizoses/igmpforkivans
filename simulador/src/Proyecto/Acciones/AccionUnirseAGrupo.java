@@ -5,12 +5,12 @@ import Equipos.Ordenador;
 import Redes.Interfaz;
 import Redes.IPv4.DireccionIPv4;
 
-public class UnirseAGrupo implements Accion {
+public class AccionUnirseAGrupo implements Accion {
 
 	DireccionIPv4 direccionGrupo;
 	Interfaz interfaz;
 	
-	public UnirseAGrupo(DireccionIPv4 direccionGrupo, Interfaz interfaz) {
+	public AccionUnirseAGrupo(DireccionIPv4 direccionGrupo, Interfaz interfaz) {
 		super();
 		this.direccionGrupo = direccionGrupo;
 		this.interfaz = interfaz;
