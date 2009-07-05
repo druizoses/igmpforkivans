@@ -108,8 +108,8 @@ public class Ethernet extends Red
 			    i--;
 			    
 			    // 1.3 Evento
-			    NuevoEvento('T',dato.instante+kRETARDO,dato.paquete,"Datos circulando por la red");
-			    
+			    //NuevoEvento('T',dato.instante+kRETARDO,dato.paquete,"Datos circulando por la red");
+			    NuevoEvento('T',instante,dato.paquete,"Datos circulando por la red");
 			    // 1.4 Enviamos la trama a todos los equipos de la red
 			    if(dato.paquete instanceof TramaEthernet)
 			    {
@@ -125,8 +125,9 @@ public class Ethernet extends Red
                         datoAux1.interfaz=getInterfaz(numEquipo);
                         datoAux1.instante=datoAux1.instante+kRETARDO;
                    	    datoAux1.red=this;
-                        DEBUG(getNombre()+": enviando trama a "+equipo.getNombre());
-                    
+                        
+                   	    //DEBUG(getNombre()+": enviando trama a "+equipo.getNombre());
+                   	    NuevoEvento('T',instante,dato.paquete,getNombre()+": enviando trama a "+equipo.getNombre());
                         // no enviamos la trama al equipo que la generó
                         if(datoAux1.interfaz!=dato.interfaz)
                             equipo.ProgramarEntrada(datoAux1);
@@ -145,8 +146,9 @@ public class Ethernet extends Red
 			                datoAux2.interfaz=null; //no usan interfaces
 			                datoAux2.instante=datoAux2.instante+kRETARDO;
 			                datoAux2.red=this;
-			                DEBUG(getNombre()+": reenviando trama a "+dispositivo.getNombre());
-			          
+			                //DEBUG(getNombre()+": reenviando trama a "+dispositivo.getNombre());
+			                NuevoEvento('T',instante,dato.paquete,getNombre()+": reenviando trama a "+dispositivo.getNombre());
+			                
 			                dispositivo.Retransmitir(datoAux2);
 			            }
 			        }

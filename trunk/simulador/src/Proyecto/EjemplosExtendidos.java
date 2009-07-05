@@ -31,7 +31,7 @@ public class EjemplosExtendidos
 		//Simulacion2();
 		
 		// 3. Una red ethernet con 2 router multicast. El router 1 (QUERIER) es apagado en algun instante.
-		//Simulacion3();
+		Simulacion3();
 		
 		// 4. Una red ethernet con 1 router multicast y 1 Odenador. El ordenador se une a un grupo en algun instante.
 		//Simulacion4();
@@ -39,8 +39,8 @@ public class EjemplosExtendidos
 		// 5. Una red ethernet con 1 router multicast y 1 Odenador. El ordenador se une a un grupo en algun instante. Luego el ordenador es apagado.
 		//Simulacion5();
 		
-		// 5. Una red ethernet con 1 router multicast y 2 Odenadores. El ordenador 1 se une a 2 grupos. El ordenador 2 se une a 1 grupo. El ordenador 1 deja un grupo
-		Simulacion6();
+		// 6. Una red ethernet con 1 router multicast y 2 Odenadores. El ordenador 1 se une a 2 grupos. El ordenador 2 se une a 1 grupo. El ordenador 1 deja un grupo
+		//Simulacion6();
 		
 		System.out.println();
 	}
@@ -127,7 +127,7 @@ public class EjemplosExtendidos
            
 	       // simulador
    	       SimuladorExtendido simulador=new SimuladorExtendido();
-	       simulador.MaximoNumeroDePasos(500);
+	       simulador.MaximoNumeroDePasos(2000);
 	       simulador.NuevoEquipo(router);
 	       simulador.NuevoEquipo(router2);
 	       simulador.NuevaRed(ethernet1);	
@@ -164,7 +164,7 @@ public class EjemplosExtendidos
            
 	       // simulador
    	       SimuladorExtendido simulador=new SimuladorExtendido();
-	       simulador.MaximoNumeroDePasos(600);
+	       simulador.MaximoNumeroDePasos(3000);
 	       simulador.NuevoEquipo(router);
 	       simulador.NuevoEquipo(router2);
 	       simulador.NuevaRed(ethernet1);
@@ -294,17 +294,18 @@ public class EjemplosExtendidos
            
 	       // simulador
    	       SimuladorExtendido simulador=new SimuladorExtendido();
-	       simulador.MaximoNumeroDePasos(600);
+	       simulador.MaximoNumeroDePasos(2000*10);
 	       simulador.NuevoEquipo(router);
 	       simulador.NuevoEquipo(pc1);
 	       simulador.NuevoEquipo(pc2);
 	       simulador.NuevaRed(ethernet1);
 	       
 	       simulador.agregarALaSimulacion(pc1, new AccionUnirseAGrupo(new DireccionIPv4("224.0.0.104"),interfazPC), 50);
-	       simulador.agregarALaSimulacion(pc1, new AccionUnirseAGrupo(new DireccionIPv4("224.0.0.105"),interfazPC), 60);
+	       //simulador.agregarALaSimulacion(pc1, new AccionUnirseAGrupo(new DireccionIPv4("224.0.0.105"),interfazPC), 60);
 	       simulador.agregarALaSimulacion(pc2, new AccionUnirseAGrupo(new DireccionIPv4("224.0.0.104"),interfazPC2), 100);
 	       
-	       simulador.agregarALaSimulacion(pc1, new AccionDejarGrupo(new DireccionIPv4("224.0.0.104"),interfazPC), 300);
+	       simulador.agregarALaSimulacion(pc1, new AccionDejarGrupo(new DireccionIPv4("224.0.0.104"),interfazPC), 800);
+	       simulador.agregarALaSimulacion(pc2, new AccionDejarGrupo(new DireccionIPv4("224.0.0.104"),interfazPC2), 1000);
 	       
 	       while(simulador.SimularUnPaso());
 	   }

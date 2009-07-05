@@ -21,16 +21,18 @@
 
 package Redes;
 
+import java.io.ObjectOutputStream;
 import java.util.Vector;
 
 import Equipos.Equipo;
 import Proyecto.ListaParametros;
+import Proyecto.Objeto;
 import Proyecto.Parametro;
 
 /**
  * Clase base para los módulos de la pila de comunicaciones
  */
-public abstract class Nivel
+public abstract class Nivel extends Objeto
 {
     /**
 	 * Cola de paquetes que deben ser enviados
@@ -419,4 +421,11 @@ public abstract class Nivel
      * @return Identificador del nivel
      */
     public abstract String ID();
+
+
+	public ListaParametros Caracteristicas() {
+		return null;
+	}
+    
+    
 }

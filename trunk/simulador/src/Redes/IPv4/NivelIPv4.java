@@ -25,14 +25,25 @@
  
 package Redes.IPv4;
 
-import Proyecto.*;
-import Redes.*;
-import Redes.IPv4.ARP.*;
-import Redes.IPv4.ICMP.*;
-import Redes.IPv4.IGMP.MensajeIGMP;
-import Redes.IPv4.IGMP.ModuloIGMP;
-import Equipos.Equipo;
 import java.util.Vector;
+
+import Equipos.Equipo;
+import Proyecto.ListaParametros;
+import Proyecto.Objeto;
+import Proyecto.Parametro;
+import Redes.Buffer;
+import Redes.Dato;
+import Redes.Direccion;
+import Redes.Interfaz;
+import Redes.LocalizadorRedes;
+import Redes.Nivel;
+import Redes.Red;
+import Redes.IPv4.ARP.ModuloARP;
+import Redes.IPv4.ARP.PeticionARP;
+import Redes.IPv4.ICMP.ErroresICMP;
+import Redes.IPv4.ICMP.MensajeICMP;
+import Redes.IPv4.ICMP.ModuloICMP;
+import Redes.IPv4.IGMP.ModuloIGMP;
 
 
 /**
@@ -288,7 +299,19 @@ public class NivelIPv4 extends Nivel
                         // En enviarconfragmentacion o sin fragmentacion ya se controla
                         // que dato.paquete sea un DatagramaIPv4 o un Buffer y se actua
                         // en consecuencia
-					    Enviar(dato,false);
+					    if(!(dato.paquete instanceof DatagramaIPv4))
+                        {    
+                            DireccionIPv4 origen=dato.interfaz.getIP();
+                            DireccionIPv4 destino=(DireccionIPv4)dato.direccion;
+                            DatagramaIPv4 datagrama=new DatagramaIPv4(origen,destino,dato.paquete);
+                            datagrama.setProtocol(dato.protocolo);
+                            dato.paquete=datagrama;
+                            if(dato.fragmentable==true)
+                            	datagrama.setDF(0);
+                            else
+                            	datagrama.setDF(1);
+                        }
+                        Enviar(dato,false);					    
                     }
                 }
 				catch(Exception e) {}
@@ -319,10 +342,10 @@ public class NivelIPv4 extends Nivel
 		{		    
 		    try
 		    {
-		    	Objeto.DEBUG(equipo.getNombre()+": Procesando datagrama en espera de ARP ->");
-		    	
 		    	Dato dato=(Dato)enEspera.get(i);
-			    
+		    	//Objeto.DEBUG(equipo.getNombre()+": Procesando datagrama en espera de ARP ->");
+		    	NuevoEvento('E',instanteActual,dato.paquete,equipo.getNombre()+": Procesando datagrama en espera de ARP ->");		    	
+		    			    
 				// 1. Comprobamos si se ha cumplido el 'time out'
 		    	if(instanteActual-dato.instante>=arp_timeout)
 				{
