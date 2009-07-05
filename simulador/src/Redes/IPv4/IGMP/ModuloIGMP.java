@@ -231,7 +231,7 @@ public abstract class ModuloIGMP extends Nivel {
                        datoAux.interfaz=dato.interfaz;
                        // Registramos el evento
                        int tipo=mensajeIGMP.getTipo();	                       
-                       equipo.NuevoEvento('E',datoAux.instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(tipo));
+                       equipo.NuevoEvento('E',datoAux.instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP));
                        datoAux.instante+=getRetardo();
                     
                        // Pasamos el dato al nivel inferior
@@ -277,32 +277,32 @@ public abstract class ModuloIGMP extends Nivel {
 	 * Query Interval - The Query Interval is the interval between General Queries sent  by
 	 * the Querier (seconds).
 	 */
-	public static int QUERY_INTERVAL = 125;
+	public static int QUERY_INTERVAL = 125*10;
 
 	/*
 	 * Query Response Interval - The Max Response Time inserted into the periodic General Queries
 	 */
-	public static int QUERY_RESPONSE_INTERVAL = 10;
+	public static int QUERY_RESPONSE_INTERVAL = 10*10;
 	
 	/*
 	 * Group Membership Interval - time elapsed where if a router doesn't receive an IGMP Report,
 	 * the router assumes there's no more members in that multicast group on the segment (seconds).
 	 * This value MUST be ((the Robustness Variable) times (the Query Interval)) plus (one Query Response Interval)
 	 */
-	public static int GROUP_MEMBERSHIP_INTERVAL = 260;
+	public static int GROUP_MEMBERSHIP_INTERVAL = 260*10;
 	
 	/*
 	 * Other Querier Present Interval - time where non-querier routers don't hear from the querier router,
 	 * and then assume the querier router is dead (seconds).
 	 * This value MUST be ((the Robustness Variable) times (the Query Interval)) plus (one half of one Query Response Interval)
 	 */
-	public static int OTHER_QUERIER_PRESENT_INTERVAL = 255;
+	public static int OTHER_QUERIER_PRESENT_INTERVAL = 255*10;
 	
 	/*
 	 * The Startup Query Interval is the interval between General Queries
 	 * sent by a Querier on startup.  Default: 1/4 the Query Interval.
 	 */
-	public static int STARTUP_QUERY_INTERVAL = 31;
+	public static int STARTUP_QUERY_INTERVAL = 31*10;
 	
 	/*
 	 * The Startup Query Count is the number of Queries sent out on startup,
@@ -315,12 +315,12 @@ public abstract class ModuloIGMP extends Nivel {
 	 * Group-Specific Queries sent in response to Leave Group messages, and
 	 * is also the amount of time between Group-Specific Query messages. (seconds).
 	 */
-	public static int LAST_MEMBER_QUERY_INTERVAL = 1;
+	public static int LAST_MEMBER_QUERY_INTERVAL = 1*10;
 	
 	/*
 	 * The Last Member Query Count is the number of Group-Specific Queries
 	 * sent before the router assumes there are no local members.  Default:
-	 * the Robustness Variable. (seconds).
+	 * the Robustness Variable.
 	 */
 	public static int LAST_MEMBER_QUERY_COUNT = 2;
 	
@@ -328,13 +328,13 @@ public abstract class ModuloIGMP extends Nivel {
 	 * The Unsolicited Report Interval is the time between repetitions of a
 	 * host's initial report of membership in a group. (seconds).
 	 */
-	public static int UNSOLICITED_REPORT_INTERVAL = 10;
+	public static int UNSOLICITED_REPORT_INTERVAL = 10*10;
 	
 	/*
 	 * Version 1 Router Present Timeout - if an IGMPv2 host doesn't hear an IGMPv1 Query for this time
 	 * period, the host assumes he can resume sending IGMPv2 messages (seconds).
 	 */
-	public static int VERSION_1_ROUTER_PRESENT_TIMEOUT = 400;
+	public static int VERSION_1_ROUTER_PRESENT_TIMEOUT = 400*10;
 	
 	/*
 	 * All systems general query

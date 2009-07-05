@@ -191,28 +191,35 @@ public class MensajeIGMP extends Buffer {
      * @param codigo Codigo del mensaje
      * @return Cadena de texto explicativa del proposito del mensaje ICMP
      */
-    public static String Descripcion(int tipo)
+    public static String Descripcion(MensajeIGMP mensajeIGMP)
     {
-    	switch(tipo)
+    	String mensaje=null;
+    	switch(mensajeIGMP.getTipo())
 		{
     	    case MEMBERSHIP_QUERY:
     	    {
-    	    	return("Membership Query");
+    	    	mensaje = "Membership Query";
+    	    	break;
     	    }
     	    case MEMBERSHIP_REPORT_V1:
     	    {
-    	    	return("Version 1 Membership Report");
+    	    	mensaje = "Version 1 Membership Report";
+    	    	break;
     	    }
     	    case MEMBERSHIP_REPORT_V2:
     	    {
-    	    	return("Version 2 Membership Report");
+    	    	mensaje = "Version 2 Membership Report";
+    	    	break;
     	    }
     	    case MEMBERSHIP_LEAVE_GROUP:
     	    {
-    	    	return("Leave Group");
+    	    	mensaje = "Leave Group";
+    	    	break;
     	    }
 		}
     	
+    	if (mensaje != null)
+    		return mensaje + " Grupo: " +mensajeIGMP.getDirGrupo().getIP();
     	return("Tipo de mensaje IGMP y codigo desconocido");
     }
 }

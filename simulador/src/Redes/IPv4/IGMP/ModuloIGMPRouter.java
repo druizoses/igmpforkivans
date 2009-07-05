@@ -32,10 +32,13 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 		switch (mensajeIGMP.getTipo()){
 			case MensajeIGMP.MEMBERSHIP_QUERY:{
 				int tipo=mensajeIGMP.getTipo();
-				equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(tipo));
+				equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP));
 				if (mensajeIGMP.getDirGrupo().equals(new DireccionIPv4("0.0.0.0"))){
 					//si la direccion ip del que envio el mensaje igmp es menor a la mia me pongo como non-querier
 					if (((DireccionIPv4)dato.direccion).compareTo(interfaz.getIP()) < 0) {
+						if (interfacesMap.get(interfaz).isQuerier())
+							equipo.NuevoEvento('I',instante,null,equipo.getNombre()+" deja de ser Querier en la interfaz "+interfaz.getNombre());
+						
 						interfacesMap.get(interfaz).setQuerier(false);
 						interfacesMap.get(interfaz).setTimerToQuerier(ModuloIGMP.OTHER_QUERIER_PRESENT_INTERVAL);
 					}
@@ -44,13 +47,13 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 			}
 			case MensajeIGMP.MEMBERSHIP_REPORT_V2:{
 				int tipo=mensajeIGMP.getTipo();
-				equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(tipo));
+				equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP));
 				interfacesMap.get(interfaz).activarGrupo(mensajeIGMP.getDirGrupo());
 				break;
 			}
 			case MensajeIGMP.MEMBERSHIP_LEAVE_GROUP:{
 				int tipo=mensajeIGMP.getTipo();
-				equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(tipo));
+				equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP));
 				interfacesMap.get(interfaz).desactivarGrupo(mensajeIGMP.getDirGrupo());
 				break;
 			}
@@ -106,7 +109,7 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 			}
 		}
 		
-		public void eliminarGruposSinRespuesta(){
+		public void eliminarGruposSinRespuesta(int instante){
 			List<DireccionIPv4> datosARemover = new ArrayList<DireccionIPv4>();
 			for (Iterator iterator = gruposActivos.keySet().iterator(); iterator.hasNext();) {
 				DireccionIPv4 direccionIPv4 = (DireccionIPv4) iterator.next();
@@ -118,6 +121,7 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 				if (timerToDeleteGroup == 0) {
 					//gruposActivos.remove(direccionIPv4);
 					datosARemover.add(direccionIPv4);
+					equipo.NuevoEvento('I',instante,null,equipo.getNombre()+" elimina el grupo " +direccionIPv4.getIP()+ " de la interfaz "+this.interfaz.getNombre());
 				}
 				else {
 					groupTimers.decrementarTimerToDeleteGroup();
@@ -212,13 +216,17 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 					if (timerToNextSpecificQuery == 0) {
 						enviarSpecificMembershipQueryMessage(instante, interfaz,direccionIPv4);
 						groupTimers.setTimerToNextSpecificQuery(ModuloIGMP.LAST_MEMBER_QUERY_INTERVAL);
+						countSpecificQueryToSend--;
+						
+						if (countSpecificQueryToSend == 0)
+							datosARemover.add(direccionIPv4);
+						else
+							groupTimers.setCountSpecificQueryToSend(countSpecificQueryToSend);
 					}
 					else {
 						groupTimers.decrementarTimerToNextSpecificQuery();
 					}
 					
-					//gruposActivos.remove(direccionIPv4);
-					datosARemover.add(direccionIPv4);
 				}
 			}
 			for (DireccionIPv4 direccionIPv4 : datosARemover) {
@@ -254,6 +262,7 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 			} else {
 				if (datosInterfaz.getTimerToQuerier() == 0) {
 					datosInterfaz.setQuerier(true);
+					equipo.NuevoEvento('I',instante,null,equipo.getNombre()+" pasa a ser Querier en la interfaz "+interfaz.getNombre());
 					enviarGeneralMembershipQueryMessage(instante, interfaz);
 					datosInterfaz.setCountMembershipQuerySent(ModuloIGMP.STARTUP_QUERY_COUNT);
 					datosInterfaz.resetTimerToMembershipQuery();
@@ -264,7 +273,7 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 			}
 			
 			// 2- Eliminar grupos si es necesario.
-			datosInterfaz.eliminarGruposSinRespuesta();
+			datosInterfaz.eliminarGruposSinRespuesta(instante);
 			
 			// 3- 
 			datosInterfaz.enviarSpecificQueries(instante);

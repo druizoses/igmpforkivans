@@ -125,7 +125,7 @@ public class NivelEthernet extends Nivel
                     datoAux.instante+=getRetardo();
                 
                     // 4. Apuntamos el evento
-                    equipo.NuevoEvento('E',datoAux.instante,datoAux.paquete,"Trama con destino a "+dirDestino.toString());
+                    equipo.NuevoEvento('E',instante,datoAux.paquete,"Trama con destino a "+dirDestino.toString());
                 
                     // 5. Le pasamos los datos a la red (si es necesario)
 				    if(datoAux.direccion.equals(direccion))

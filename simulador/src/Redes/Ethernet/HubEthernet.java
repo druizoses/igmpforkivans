@@ -140,10 +140,10 @@ public class HubEthernet extends Ethernet
                         datoAux2.interfaz=getInterfaz(numEquipo);
                         datoAux2.instante=datoAux2.instante+kRETARDO;
                         
-                        NuevoEvento('T',datoAux2.instante,datoAux2.paquete,"Enviando trama a "+equipo.getNombre());
+                        //NuevoEvento('T',datoAux2.instante,datoAux2.paquete,"Enviando trama a "+equipo.getNombre());
 
-                        DEBUG(getNombre()+": enviando trama a "+equipo.getNombre());
-       
+                        //DEBUG(getNombre()+": enviando trama a "+equipo.getNombre());
+                        NuevoEvento('T',instante,datoAux2.paquete,getNombre()+": enviando trama a "+equipo.getNombre());
                         // no enviamos la trama al equipo que la generó
                         if(datoAux2.interfaz!=dato.interfaz)
                             equipo.ProgramarEntrada(datoAux2);
