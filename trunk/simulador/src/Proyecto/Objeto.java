@@ -159,7 +159,7 @@ public abstract class Objeto
 	 */
 	public static void DEBUG(String mensaje)
 	{
-		System.out.println("[Debug] "+mensaje);
+		//System.out.println("[Debug] "+mensaje);
 		//System.out.flush();
 	}
 	
