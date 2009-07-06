@@ -31,7 +31,7 @@ public class EjemplosExtendidos
 		//Simulacion2();
 		
 		// 3. Una red ethernet con 2 router multicast. El router 1 (QUERIER) es apagado en algun instante.
-		Simulacion3();
+		//Simulacion3();
 		
 		// 4. Una red ethernet con 1 router multicast y 1 Odenador. El ordenador se une a un grupo en algun instante.
 		//Simulacion4();
@@ -41,7 +41,10 @@ public class EjemplosExtendidos
 		
 		// 6. Una red ethernet con 1 router multicast y 2 Odenadores. El ordenador 1 se une a 2 grupos. El ordenador 2 se une a 1 grupo. El ordenador 1 deja un grupo
 		//Simulacion6();
-		
+
+		// 7. Una red ethernet con 1 router multicast, 2 Odenadores conectados a 2 redes. El ordenador 1 se une a 2 grupos. El ordenador 2 se une a 1 grupo. El ordenador 1 deja un grupo
+		Simulacion7();
+
 		System.out.println();
 	}
 
@@ -317,7 +320,65 @@ public class EjemplosExtendidos
     }
     
     
-    
+    private static void Simulacion7()
+    {
+    	try
+		{
+    	   // redes
+            Red ethernet1=LocalizadorRedes.New("Ethernet.Ethernet","ethernet1");
+            Red ethernet2=LocalizadorRedes.New("Ethernet.Ethernet","ethernet2");
+        
+           // Router MultiCast
+           Equipo router=LocalizadorEquipos.New("RouterMultiCast","routerMC 1");
+           Interfaz interfaz1=LocalizadorRedes.NewInterfaz("con0","10.0.1.1","255.255.255.0","00:00:00:00:00:fe","Ethernet.Ethernet");
+           interfaz1.Conectar(ethernet1);
+           router.setInterfaz(interfaz1);
+           Interfaz interfaz2=LocalizadorRedes.NewInterfaz("con1","10.0.2.1","255.255.255.0","00:00:00:00:00:ff","Ethernet.Ethernet");
+           interfaz2.Conectar(ethernet2);
+           router.setInterfaz(interfaz2);
+           router.tablaDeRutas.Anadir("10.0.1.0","255.255.255.0","directa",new DireccionIPv4("10.0.1.1"));
+           router.tablaDeRutas.Anadir("10.0.2.0","255.255.255.0","directa",new DireccionIPv4("10.0.2.1"));
+
+           // PC1
+           Equipo pc1=LocalizadorEquipos.New("Ordenador","PC1");
+           Interfaz interfazPC=LocalizadorRedes.NewInterfaz("eth0","10.0.1.2","255.255.255.0","00:00:00:00:00:01","Ethernet.Ethernet");
+           interfazPC.Conectar(ethernet1);
+           pc1.setInterfaz(interfazPC);
+           pc1.tablaDeRutas.Anadir("10.0.1.0","255.255.255.0","directa","eth0"); //ruta local
+           pc1.tablaDeRutas.Anadir("por defecto","por defecto","10.0.1.1","eth0");
+           
+           // PC2
+           Equipo pc2=LocalizadorEquipos.New("Ordenador","PC2");
+           Interfaz interfazPC2=LocalizadorRedes.NewInterfaz("eth0","10.0.2.3","255.255.255.0","00:00:00:00:00:02","Ethernet.Ethernet");
+           interfazPC2.Conectar(ethernet2);
+           pc2.setInterfaz(interfazPC2);
+           pc2.tablaDeRutas.Anadir("10.0.2.0","255.255.255.0","directa","eth0"); //ruta local
+           pc2.tablaDeRutas.Anadir("por defecto","por defecto","10.0.1.1","eth0");
+           
+           
+	       // simulador
+   	       SimuladorExtendido simulador=new SimuladorExtendido();
+	       simulador.MaximoNumeroDePasos(2000*10);
+	       simulador.NuevoEquipo(router);
+	       simulador.NuevoEquipo(pc1);
+	       simulador.NuevoEquipo(pc2);
+	       simulador.NuevaRed(ethernet1);
+	       simulador.NuevaRed(ethernet2);
+	       
+	       simulador.agregarALaSimulacion(pc1, new AccionUnirseAGrupo(new DireccionIPv4("224.0.0.104"),interfazPC), 50);
+	       simulador.agregarALaSimulacion(pc2, new AccionUnirseAGrupo(new DireccionIPv4("224.0.0.104"),interfazPC2), 100);
+	       
+	       simulador.agregarALaSimulacion(pc1, new AccionDejarGrupo(new DireccionIPv4("224.0.0.104"),interfazPC), 800);
+	       simulador.agregarALaSimulacion(pc2, new AccionDejarGrupo(new DireccionIPv4("224.0.0.104"),interfazPC2), 1000);
+	       
+	       while(simulador.SimularUnPaso());
+	   }
+	   catch(Exception e)
+	   {
+		   e.printStackTrace(System.out);
+		   System.out.println("Error: "+e.getMessage()+"\n");
+	   }
+    }
     
     
     
@@ -1040,7 +1101,7 @@ public class EjemplosExtendidos
     
     
     
-    private static void Simulacion7()
+    private static void Simulacion7OLD()
     {
     	Interfaz interfaz=null;
     	
