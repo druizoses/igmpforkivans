@@ -174,4 +174,15 @@ public class DireccionEthernet extends Direccion
     		
     	return(retorno);
     }
+
+
+	/**
+	 * Si la direccion MAC comienza con 01-00-5E es una dirección multicast
+	 * @return
+	 */
+	public boolean EsMulticast() {
+		if (getByte(0) == 0x01 && getByte(1) == 0x00 && getByte(2) == 0x5E)
+			return true;
+		return false;
+	}
 }

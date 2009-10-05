@@ -24,6 +24,7 @@ package Redes;
 import java.util.Vector;
 import Equipos.Equipo;
 import Proyecto.Objeto;
+import Redes.IPv4.DireccionIPv4;
 
 /**
  * Clase base para las redes
@@ -195,4 +196,12 @@ public abstract class Red extends Objeto
 	{
 		return(true);
 	}
+	
+	/**
+	 * Convierte una direccion IP a una direccion multicast para el tipo de red
+	 * @param dirMulticast
+	 * @return
+	 */
+	public abstract Direccion getDireccionMulticast(DireccionIPv4 dirMulticast);
+	
 }

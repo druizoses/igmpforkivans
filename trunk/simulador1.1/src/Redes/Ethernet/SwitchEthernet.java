@@ -107,7 +107,7 @@ public class SwitchEthernet extends Ethernet
                 
                 // 1.3 Evento
                 //NuevoEvento('T',dato.instante+kRETARDO,dato.paquete,"Datos circulando por la red");
-                
+                NuevoEvento('T',instante,dato.paquete,"Datos circulando por la red");
                 // 1.4 Enviamos la trama al equipo que tenga la direccion indicada
                 if(dato.paquete instanceof TramaEthernet && dato.direccion instanceof DireccionEthernet)
                 {
@@ -128,9 +128,10 @@ public class SwitchEthernet extends Ethernet
                             d.paquete=t;
                             d.interfaz=getInterfaz(numEquipo);
                             d.instante=d.instante+kRETARDO;
-                            DEBUG(getNombre()+": enviando trama a "+equipo.getNombre());
+                            //DEBUG(getNombre()+": enviando trama a "+equipo.getNombre());
+                            NuevoEvento('T',instante,dato.paquete,getNombre()+": enviando trama a "+equipo.getNombre());
                         
-                            NuevoEvento('T',d.instante,d.paquete,"Enviando trama a "+equipo.getNombre());
+                            //NuevoEvento('T',d.instante,d.paquete,"Enviando trama a "+equipo.getNombre());
 
                             // no enviamos la trama al equipo que la generó
                             /*for(int numInterface=0;numInterface<equipo.NumInterfaces();numInterface++)
@@ -151,10 +152,10 @@ public class SwitchEthernet extends Ethernet
                                d.paquete=t;
                                d.interfaz=null; //getInterfaz(numRed);
                                d.instante=d.instante+kRETARDO;
-                               DEBUG(getNombre()+": enviando trama a "+red.getNombre()); 
+                               //DEBUG(getNombre()+": enviando trama a "+red.getNombre()); 
                                
-                               NuevoEvento('T',d.instante,d.paquete,"Reenviando trama a "+red.getNombre());
-                               
+                               //NuevoEvento('T',d.instante,d.paquete,"Reenviando trama a "+red.getNombre());
+                               NuevoEvento('T',instante,d.paquete,getNombre()+": reenviando trama a "+red.getNombre());
                                red.Retransmitir(d);
                             }
                         }
@@ -170,10 +171,11 @@ public class SwitchEthernet extends Ethernet
                             TramaEthernet t=new TramaEthernet(trama);
                             d.paquete=t;
                             d.instante=d.instante+kRETARDO;
-                            DEBUG(getNombre()+": enviando trama a "+dispositivo.getNombre());
+                            //DEBUG(getNombre()+": enviando trama a "+dispositivo.getNombre());
                             d.interfaz=getInterfaz(ListaEquipos.indexOf(equipo));
                             
-                            NuevoEvento('T',d.instante,d.paquete,"Enviando trama a "+equipo.getNombre());
+                            //NuevoEvento('T',d.instante,d.paquete,"Enviando trama a "+equipo.getNombre());
+                            NuevoEvento('T',instante,d.paquete,getNombre()+": enviando trama a "+equipo.getNombre());
                             
                             equipo.ProgramarEntrada(d);
                         }
@@ -187,9 +189,10 @@ public class SwitchEthernet extends Ethernet
                                 d.paquete=t;
                                 d.instante=d.instante+kRETARDO;
                                 dato.interfaz=null;
-                                DEBUG(getNombre()+": enviando trama a "+dispositivo.getNombre());
+                                //DEBUG(getNombre()+": enviando trama a "+dispositivo.getNombre());
                                 
-                                NuevoEvento('T',d.instante,d.paquete,"Reenviando trama a "+red.getNombre());
+                                //NuevoEvento('T',d.instante,d.paquete,"Reenviando trama a "+red.getNombre());
+                                NuevoEvento('T',instante,d.paquete,getNombre()+": reenviando trama a "+red.getNombre());
                                 
                                 red.Retransmitir(d);
                             }
