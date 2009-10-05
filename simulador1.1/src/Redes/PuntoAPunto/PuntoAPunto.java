@@ -26,6 +26,7 @@
 package Redes.PuntoAPunto;
 
 import Redes.*;
+import Redes.IPv4.DireccionIPv4;
 import Proyecto.*;
 import Equipos.Equipo;
 
@@ -96,8 +97,8 @@ public class PuntoAPunto extends Red
     			if(dato.paquete instanceof TramaPuntoAPunto)
     			{
         			// 2.0 Evento
-        			NuevoEvento('T',dato.instante+kRETARDO,dato.paquete,"Datos circulando por la red");
-
+        			//NuevoEvento('T',dato.instante+kRETARDO,dato.paquete,"Datos circulando por la red");
+        			NuevoEvento('T',instante,dato.paquete,"Datos circulando por la red");
     				// 2.1 Comprobamos el destinatario de la trama
     				TramaPuntoAPunto trama=(TramaPuntoAPunto)dato.paquete;
     				DireccionPuntoAPunto dir=trama.getDestino();
@@ -187,5 +188,10 @@ public class PuntoAPunto extends Red
     {
     	return(false);
     }
+
+	@Override
+	public Direccion getDireccionMulticast(DireccionIPv4 dirMulticast) {
+		return new DireccionPuntoAPunto(255);
+	}
 }
 

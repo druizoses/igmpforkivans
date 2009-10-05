@@ -59,6 +59,17 @@ public class Switch extends Equipo {
         	temp = defaultTemp;*/
         tabla = new TablaDeDirecciones(this, temp);
     }
+    public void encender(){
+    	super.encender();
+    	int temp = 0;
+        MemoriaIntermedia = new Vector();
+    	tabla = new TablaDeDirecciones(this, temp);
+    }
+    
+    @Override
+	protected void iniciar() {
+		//
+	}
     
     public void setInterfaz(Interfaz interfaz){
     	super.setInterfaz(interfaz);
@@ -220,5 +231,7 @@ public class Switch extends Equipo {
         trama = (TramaEthernet) dato.paquete;
         tabla.actualizarTabla((DireccionEthernet)trama.getOrigen(), puerto, dato.instante);
 	}
+
+	
 
 }

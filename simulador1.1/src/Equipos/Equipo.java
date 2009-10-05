@@ -45,12 +45,17 @@ public abstract class Equipo extends Objeto
      */
     public static final int kICMP  = 3;
     
+    /**
+     * Constante asociada a la simulacion de errores en IGMP
+     */
+    public static final int kIGMP  = 4;
+    
 	/**
 	 * Tabla de rutas
 	 */
 	public TablaDeRutas tablaDeRutas;
 	
-
+    protected boolean encendido = true;
 	
 	/**
      * Constructor
@@ -59,9 +64,19 @@ public abstract class Equipo extends Objeto
     {
         super();
         tablaDeRutas=null; // se inicializa con la del nivel IP!!!
+        iniciar();
     } 
 
+    public void encender(){
+    	encendido = true;
+    	iniciar();
+    }
     
+    protected abstract void iniciar();
+
+	public void apagar(){
+    	encendido = false;
+    }    
     
 	/**
 	 * Añade una interfaz al equipo

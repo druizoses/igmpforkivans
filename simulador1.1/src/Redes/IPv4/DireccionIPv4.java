@@ -27,7 +27,7 @@ import Redes.Direccion;
 /**
  * Direccion IP
  */
-public class DireccionIPv4 extends Direccion
+public class DireccionIPv4 extends Direccion implements Comparable
 {
 	/**
 	 * Constructor a partir de una cadena
@@ -166,7 +166,23 @@ public class DireccionIPv4 extends Direccion
 		return(mascara);
 	}
 	
-	
+	/**
+	 * Permite conocer la clase a la cual pertenece la direccion
+	 * @return "A" si pertenece a la clase A, "B" si pertenece a la clase B, etc
+	 */
+	public String getClaseDireccion()
+	{
+		int b0=getByte(0);
+		if(b0>=1 && b0<=127)                            // clase A
+			return "A";    
+		else if(b0>=128 && b0<=191)                     // clase B
+			return "B";
+		else if(b0>=192 && b0<=223)                     // clase C
+			return "C";
+		else if(b0>=224 && b0<=239)                     // multidifusion, clase D
+			return "D";
+		else return "E";                    			// reservado para uso futuro, clase E
+	}
 	
 	/**
 	 * Aplica una mascara a la direccion ip y devuelve el resultado
@@ -258,5 +274,21 @@ public class DireccionIPv4 extends Direccion
 	    if(getByte(0)==127) // && getByte(1)==0 && getByte(2)==0 && getByte(3)==1)
 	        return(true);
 	    return(false);
+	}
+
+
+
+	public int compareTo(Object o) {
+ 		return this.getIP().compareTo(((DireccionIPv4) o).getIP());
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		return this.getIP().equals(((DireccionIPv4) o).getIP());
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.getIP().hashCode();
 	}
 }

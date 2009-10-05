@@ -96,8 +96,8 @@ public class PuenteEthernet extends Ethernet
 			    i--;
 			    
 			    // 1.2 Evento
-			    NuevoEvento('T',dato.instante+kRETARDO,dato.paquete,"Datos circulando por la red");
-			    
+			    //NuevoEvento('T',dato.instante+kRETARDO,dato.paquete,"Datos circulando por la red");
+			    NuevoEvento('T',instante,dato.paquete,"Datos circulando por la red");
 			    // 1.3 Enviamos la trama a las demas redes
 			    if(dato.paquete instanceof TramaEthernet)
 			    {
@@ -115,7 +115,8 @@ public class PuenteEthernet extends Ethernet
 			                datoAux2.interfaz=null; //no usan interfaces
 			                datoAux2.instante=datoAux2.instante+kRETARDO;
 			                datoAux2.red=this;
-			                DEBUG(getNombre()+": reenviando trama a "+dispositivo.getNombre());
+			                //DEBUG(getNombre()+": reenviando trama a "+dispositivo.getNombre());
+			                NuevoEvento('T',instante,datoAux2.paquete,getNombre()+": reenviando trama a "+dispositivo.getNombre());
 			          
 			                dispositivo.Retransmitir(datoAux2);
 			            }

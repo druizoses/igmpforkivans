@@ -28,7 +28,7 @@ import java.util.Hashtable;
  * Estructura de datos, sobre la comunicacion, que fluye entre los equipos 
  * y las redes.
  */
-public class Dato
+public class Dato implements Comparable
 {
 	/**
 	 * Instante de tiempo en el que hay que procesar el paquete
@@ -183,4 +183,72 @@ public class Dato
 	    	ctrlSwitch = new Hashtable(d.ctrlSwitch);
 	    	
 	}
+
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((direccion == null) ? 0 : direccion.hashCode());
+		result = prime * result + (fragmentable ? 1231 : 1237);
+		result = prime * result + instante;
+		result = prime * result
+				+ ((interfaz == null) ? 0 : interfaz.hashCode());
+		result = prime * result + ((paquete == null) ? 0 : paquete.hashCode());
+		result = prime * result + protocolo;
+		result = prime * result + ((red == null) ? 0 : red.hashCode());
+		return result;
+	}
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Dato other = (Dato) obj;
+		if (direccion == null) {
+			if (other.direccion != null)
+				return false;
+		} else if (!direccion.equals(other.direccion))
+			return false;
+		if (fragmentable != other.fragmentable)
+			return false;
+		if (instante != other.instante)
+			return false;
+		if (interfaz == null) {
+			if (other.interfaz != null)
+				return false;
+		} else if (!interfaz.equals(other.interfaz))
+			return false;
+		if (paquete == null) {
+			if (other.paquete != null)
+				return false;
+		} else if (!paquete.equals(other.paquete))
+			return false;
+		if (protocolo != other.protocolo)
+			return false;
+		if (red == null) {
+			if (other.red != null)
+				return false;
+		} else if (!red.equals(other.red))
+			return false;
+		return true;
+	}
+
+
+
+	public int compareTo(Object o) {
+		Dato other = (Dato) o;
+		return new Integer(this.hashCode()).compareTo(o.hashCode());
+	}
+	
+	
+	
 }
