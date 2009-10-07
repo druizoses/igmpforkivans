@@ -42,7 +42,7 @@ public class MensajeIGMP extends Buffer {
 	 * @return mensaje creado
 	 */
 	public static MensajeIGMP createMembershipQueryMessage(DireccionIPv4 dirGrupo){
-		MensajeIGMP msg = new MensajeIGMP(MensajeIGMP.MEMBERSHIP_QUERY,100,0,dirGrupo);
+		MensajeIGMP msg = new MensajeIGMP(MensajeIGMP.MEMBERSHIP_QUERY,0,0,dirGrupo);
 		msg.setChecksum(msg.getChecksum());
 		return msg;
 	}
@@ -64,7 +64,7 @@ public class MensajeIGMP extends Buffer {
 	 * @return mensaje creado
 	 */
 	public static MensajeIGMP createMembershipReportV2Message(DireccionIPv4 dirGrupo){
-		MensajeIGMP msg = new MensajeIGMP(MensajeIGMP.MEMBERSHIP_REPORT_V2,10,0,dirGrupo);
+		MensajeIGMP msg = new MensajeIGMP(MensajeIGMP.MEMBERSHIP_REPORT_V2,1,0,dirGrupo);
 		msg.setChecksum(msg.getChecksum());
 		return msg;
 	}

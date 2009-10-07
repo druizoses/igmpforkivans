@@ -666,7 +666,7 @@ public class NivelIPv4 extends Nivel
 		    	{
 		    		PasarAlNivelSuperior(datagrama,dato.interfaz);
 		    	}
-		    }else if(ipForwarding){
+		    }else if(ipForwarding && !EsParaMi(datagrama.getDestino(),dato.interfaz)){
 		    	datagrama.setTTL(datagrama.getTTL()-1);
 		        if(datagrama.getTTL()==0)
 		        {
