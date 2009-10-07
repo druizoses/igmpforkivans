@@ -40,10 +40,10 @@ public class EjemplosExtendidos
 		//Simulacion5();
 		
 		// 6. Una red ethernet con 1 router multicast y 2 Odenadores. El ordenador 1 se une a 2 grupos. El ordenador 2 se une a 1 grupo. El ordenador 1 deja un grupo
-		//Simulacion6();
+		Simulacion6();
 
 		// 7. Una red ethernet con 1 router multicast, 2 Odenadores conectados a 2 redes. El ordenador 1 se une a 2 grupos. El ordenador 2 se une a 1 grupo. El ordenador 1 deja un grupo
-		Simulacion7();
+		//Simulacion7();
 
 		System.out.println();
 	}
