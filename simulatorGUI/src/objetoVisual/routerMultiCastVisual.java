@@ -7,12 +7,12 @@ import util.nomiconos;
 import visSim.panelErrores;
 
 /** Clase que implementa un router visual */
-public class routerVisual extends objetoVisual
+public class routerMultiCastVisual extends objetoVisual
 {
 	/** Constructor de la clase.
 	 * Inicializa el Vector conectables para conexiones con otros equipos
 	 */
-	public routerVisual()
+	public routerMultiCastVisual()
 	{
 		conectables = new Vector();
 		errores = new Vector();
@@ -37,7 +37,7 @@ public class routerVisual extends objetoVisual
 	/** Metodo que implementa el metodo clone de la clase */
 	public Object clone()
 	{
-		routerVisual temp = new routerVisual();
+		routerMultiCastVisual temp = new routerMultiCastVisual();
 
 		temp.conexiones = new listaConexiones();
 		

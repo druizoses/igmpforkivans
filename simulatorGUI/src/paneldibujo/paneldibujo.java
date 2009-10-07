@@ -27,6 +27,7 @@ import objetoVisual.objetoVisual;
 import objetoVisual.pcVisual;
 import objetoVisual.propiedadesTopologia;
 import objetoVisual.puenteVisual;
+import objetoVisual.routerMultiCastVisual;
 import objetoVisual.routerVisual;
 import objetoVisual.switchVisual;
 import objetoVisual.wanVisual;
@@ -213,16 +214,17 @@ public class paneldibujo extends paneldibujoVisual
 
 		/* Codigo para crear el objeto segun el icono recibido */
 		/*   Como se podria hacer con reflection o alguna otra cosa?? */		
-		if (icono.compareTo(nomiconos.nomPC)==0)					temp = new pcVisual();
-		else if (icono.compareTo(nomiconos.nomEthernet)==0)	temp = new ethernetVisual();
+		if (icono.compareTo(nomiconos.nomPC)==0)				temp = new pcVisual();
+		else if (icono.compareTo(nomiconos.nomEthernet)==0)		temp = new ethernetVisual();
 		else if (icono.compareTo(nomiconos.nomSwitch)==0)		temp = new switchVisual();
 		else if (icono.compareTo(nomiconos.nomHub)==0)			temp = new hubVisual();
 		else if (icono.compareTo(nomiconos.nomPuente)==0)		temp = new puenteVisual();
 		else if (icono.compareTo(nomiconos.nomAnillo)==0)		temp = new anilloVisual();
 		else if (icono.compareTo(nomiconos.nomModem)==0)		temp = new modemVisual();
-		else if (icono.compareTo(nomiconos.nomEtiqueta)==0)	temp = new etiquetaVisual();
+		else if (icono.compareTo(nomiconos.nomEtiqueta)==0)		temp = new etiquetaVisual();
 		else if (icono.compareTo(nomiconos.nomWan)==0)			temp = new wanVisual();
-		else																	temp = new routerVisual();
+		else if (icono.compareTo(nomiconos.nomRouter)==0)		temp = new routerVisual();
+		else													temp = new routerMultiCastVisual();
 		
 		temp.set(nombre, x, y, tamx, tamy);
 		temp.setInterfaces(interfaces);

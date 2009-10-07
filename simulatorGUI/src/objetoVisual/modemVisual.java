@@ -27,6 +27,7 @@ public class modemVisual extends objetoVisual
 		conectables.add("pc");	// pc
 		conectables.add("pu");	// puente
 		conectables.add("ro");	// router
+		conectables.add("mc");	// router multicast
 		conectables.add("sw");	// switch
 		conectables.add("wa");  // wan
 	}

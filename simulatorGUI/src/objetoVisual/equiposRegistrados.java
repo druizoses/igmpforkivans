@@ -19,6 +19,7 @@ public class equiposRegistrados
 		dev.add(nomiconos.nomLinea);
 		dev.add(nomiconos.nomPC);
 		dev.add(nomiconos.nomRouter);
+		dev.add(nomiconos.nomRouterMC);
 		dev.add(nomiconos.nomSwitch);
 		dev.add(nomiconos.nomHub);
 		dev.add(nomiconos.nomModem);

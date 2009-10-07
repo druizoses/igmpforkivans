@@ -30,6 +30,7 @@ public class anilloVisual extends objetoVisual
 		conectables.add("pc");	// pc
 		conectables.add("pu");	// puente
 		conectables.add("ro");	// router
+		conectables.add("mc");	// router multicast
 		conectables.add("wa");  // wan
 	}
 
