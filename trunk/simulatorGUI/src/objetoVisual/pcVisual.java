@@ -27,6 +27,7 @@ public class pcVisual extends objetoVisual
 		conectables.add("mo");	// modem
 		conectables.add("pu");	// puente
 		conectables.add("ro");	// router
+		conectables.add("mc");	// router multicast
 		conectables.add("sw");	// switch
 		conectables.add("an");	// tokenring
 		conectables.add("wa");  // wan

@@ -106,6 +106,9 @@ public class nomiconos
 	/** Constante para el icono del Router */
 	public static final String nomRouter = carpeta + "router.gif";
 
+	/** Constante para el icono del Router MultiCast*/
+	public static final String nomRouterMC = carpeta + "mcRouter.gif";
+	
 	/** Constante para el icono del switch */
 	public static final String nomSwitch = carpeta + "switch.gif";
 
