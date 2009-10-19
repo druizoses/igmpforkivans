@@ -139,10 +139,10 @@ public class ModuloARP extends Nivel
 				}
 				catch(Exception e)
 				{
-				    // posibles errores si el paquete recibido no era correcto,
+					// posibles errores si el paquete recibido no era correcto,
 				    // por tanto lo ignoramos y continuamos
-					
-				    //Objeto.DEBUG(equipo.getNombre()+": mala conversion ARP");
+
+					equipo.NuevoEvento('X',instante,dato.paquete,equipo.getNombre()+": mala conversion ARP" + e.getMessage());
 				}
 			}
 		}

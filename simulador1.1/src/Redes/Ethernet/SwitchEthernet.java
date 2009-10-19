@@ -244,12 +244,11 @@ public class SwitchEthernet extends Ethernet
 			}
 		    catch(Exception e)
 			{
-		    	System.out.println("Error al hacer la gestion de MACs/puertos en el switch ethernet");
-		    	e.printStackTrace();
+				this.NuevoEvento('X',dato.instante,dato.paquete,"Error al hacer la gestion de MACs/puertos en el switch ethernet" + e.getMessage());
 			}
 	    }
 	    else
-	    	System.out.println("Error, interfaz no especificada o dato nulo");
+	    	this.NuevoEvento('X',dato.instante,dato.paquete,"Error, interfaz no especificada o dato nulo");
 	}
     
 	

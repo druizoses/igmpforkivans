@@ -142,7 +142,7 @@ public class Dato implements Comparable
 		    }
 		    catch(Exception e)
 		    {
-		        System.out.println("Paquete no duplicado!!!");
+		    	System.out.println("Paquete no duplicado!!!");
 		        e.printStackTrace();
 		    }
 		}

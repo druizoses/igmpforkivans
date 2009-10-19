@@ -235,7 +235,7 @@ public class NivelEthernet extends Nivel
 				}
 				catch(Exception e) 
 				{
-					Objeto.DEBUG("Error de conversion en el nivel Ethernet"); 
+					equipo.NuevoEvento('X',instante,dato.paquete,"Error de conversion en el nivel Ethernet:" + e.getMessage());
 				}
 			}
 		}
