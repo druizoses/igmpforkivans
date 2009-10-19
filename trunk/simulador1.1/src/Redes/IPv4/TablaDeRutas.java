@@ -243,7 +243,10 @@ public class TablaDeRutas
     	    interfaces.setElementAt(i1,posicion2);
     	    interfaces.setElementAt(i2,posicion1);
 		}
-    	catch(Exception e) { }
+    	catch(Exception e) {
+			equipo.NuevoEvento('X',-1,null,"Error al intercambiar las entradas en la tabla de rutas:" + e.getMessage());
+
+    	}
     }
 
     

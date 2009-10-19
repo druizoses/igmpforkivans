@@ -22,10 +22,10 @@ public class Ejemplos
 		// 0. Registramos los componentes
 		RegistrarComponentes();
 		
-		prueba();
-		/*
-		Simulacion();
+		//prueba();
 		
+		Simulacion();
+		/*
 		// 1. Una red ethernet con solo un ordenador, que se envia a si mismo un
 		//    datagrama sin fragmentacion
 		Simulacion1();
@@ -483,8 +483,8 @@ public class Ejemplos
            pc1.setInterfaz(interfaz);
                 
 	       // simulador
-   	       Simulador simulador=new Simulador();
-	       simulador.MaximoNumeroDePasos(4000);
+   	       Simulador simulador=new SimuladorExtendido();
+	       simulador.MaximoNumeroDePasos(40000);
 	       simulador.NuevoEquipo(pc1);
 	       simulador.NuevaRed(ethernet1);	
 	    
@@ -495,12 +495,12 @@ public class Ejemplos
 	       Dato dato=new Dato(0,buffer);
 	       dato.direccion=new DireccionIPv4("10.0.1.1");
 	       dato.protocolo=0;
-	    
+	       
 	       pc1.ProgramarSalida(dato);
 	       
 	       // Evitamos el 'Protocol Unreachable' al no haberse implementado el nivel
 	       // de transporte 
-	       pc1.SimularError(Equipo.kICMP,"IGNORAR_ICMP_3_2",true);
+	       //pc1.SimularError(Equipo.kICMP,"IGNORAR_ICMP_3_2",true);
 	       
 	       while(simulador.SimularUnPaso());
 	   }

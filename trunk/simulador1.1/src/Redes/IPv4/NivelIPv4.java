@@ -224,7 +224,9 @@ public class NivelIPv4 extends Nivel
 					    ProcesarDatagrama(dato);
 					}
 				}
-				catch(Exception e) {}
+				catch(Exception e) {
+					equipo.NuevoEvento('X',instanteActual,dato.paquete,"Error al procesar entrada en NivelIPv4:" + e.getMessage());
+				}
 			}
 		}
 		
@@ -289,7 +291,7 @@ public class NivelIPv4 extends Nivel
                         // que dato.paquete sea un DatagramaIPv4 o un Buffer y se actua
                         // en consecuencia
 					    if(!(dato.paquete instanceof DatagramaIPv4))
-                        {    
+                        {   
                             DireccionIPv4 origen=dato.interfaz.getIP();
                             DireccionIPv4 destino=(DireccionIPv4)dato.direccion;
                             DatagramaIPv4 datagrama=new DatagramaIPv4(origen,destino,dato.paquete);
@@ -303,7 +305,9 @@ public class NivelIPv4 extends Nivel
                         Enviar(dato,false);					    
                     }
                 }
-				catch(Exception e) {}
+				catch(Exception e) {
+					equipo.NuevoEvento('X',instanteActual,dato.paquete,"Error procesando la salida:" + e.getMessage());
+				}
 			}
 		}
 		
@@ -358,6 +362,7 @@ public class NivelIPv4 extends Nivel
 		   }
 		   catch(Exception e)
 		   {
+			   equipo.NuevoEvento('X',instanteActual,null,"Error al procesar los datagramas de la cola de espera de respuestas ARP:" + e.getMessage());
 		   }
 		}
 	}
@@ -631,7 +636,7 @@ public class NivelIPv4 extends Nivel
 			}
 			catch(Exception e)
 			{
-			
+				equipo.NuevoEvento('X',instanteActual,dato.paquete,"Error al enviar en nivelIPv4:" + e.getMessage());
 			}
 		} else { //Hay que enviar un paquete IGMP
 			Interfaz interfaz=dato.interfaz;
@@ -722,7 +727,7 @@ public class NivelIPv4 extends Nivel
 		}
 		catch(Exception e) 
 		{
-			// se ignora el datagrama si se produce algun error
+			equipo.NuevoEvento('X',instanteActual,dato.paquete,"Error al procesar datagrama en nivelIPv4:" + e.getMessage());
 		}
 	}
 	
@@ -934,6 +939,7 @@ public class NivelIPv4 extends Nivel
 	    catch(Exception e)
 	    {
 	        // Por si algun componente es 'null'
+			equipo.NuevoEvento('X',instanteActual,null,"Error al determinar el destino del paquete en nivelIPv4:" + e.getMessage());
 	    }
 	    
 	    // 2. Devolucion del resultado
@@ -970,7 +976,7 @@ public class NivelIPv4 extends Nivel
 	    }
 	    catch(Exception e)
 	    {
-	        // Por si algun componente es 'null'
+			equipo.NuevoEvento('X',instanteActual,null,"Error al determinar la direccion en nivelIPv4:" + e.getMessage());
 	    }
 	    
 	    // 2. Devolucion del resultado

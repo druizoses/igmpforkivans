@@ -228,7 +228,7 @@ public class NivelPuntoAPunto extends Nivel
 				}
 				catch(Exception e) 
 				{
-					Objeto.DEBUG("Error de conversion en el nivel PuntoAPunto"); 
+					equipo.NuevoEvento('X',instante,null,"Error de conversion en el nivel PuntoAPunto:" + e.getMessage());
 				}
 			}
 		}
