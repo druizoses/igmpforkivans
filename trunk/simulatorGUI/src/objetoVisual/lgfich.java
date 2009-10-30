@@ -35,7 +35,7 @@ public class lgfich
 			enc.writeObject(lista.getPropiedades().getComentario());
 			
 			// Escribimos la configuracion de envios
-			enc.writeObject(lista.getlistaEnvios());
+			enc.writeObject(lista.getlistaAcciones());
 			
 			for (int i=0; i<lista.tam(); i++)
 			{
@@ -108,7 +108,7 @@ public class lgfich
 			XMLDecoder d = new XMLDecoder(new BufferedInputStream(new FileInputStream(nomfich)));
 
 			lista.setPropiedades(new propiedadesTopologia((String)d.readObject(), (String)d.readObject(), (String)d.readObject()));
-			lista.setlistaEnvios(new Vector((Vector)d.readObject()));
+			lista.setlistaAcciones(new Vector((Vector)d.readObject()));
 			
 			while(sigueLeyendo)
 			{

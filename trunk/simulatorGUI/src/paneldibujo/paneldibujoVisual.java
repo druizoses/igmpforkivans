@@ -46,7 +46,7 @@ public class paneldibujoVisual extends JPanel implements Printable
 	public boolean quitaSelecciones;
 
 	/** Contiene todos los eventos tras la simulacion */
-	public Vector salidaEnvios;
+	public Vector salidaEventos;
 	
 	/** Objeto utilizado para la simulacion de envios de datos */
 	public simuladorVisual simulacion;
@@ -60,6 +60,8 @@ public class paneldibujoVisual extends JPanel implements Printable
 	
 	private Frame padreFrame;
 	
+	private int maxNumeroPasos;
+	
 	/** Constructor de la clase
 	 * Inicializa las variables necesarias para poder trabajar con un objeto paneldibujo
 	 */
@@ -70,8 +72,8 @@ public class paneldibujoVisual extends JPanel implements Printable
 		simulado=false;
 		lista = new listaObjetos();
 		copias = new listaObjetos();
-		salidaEnvios = new Vector();
-
+		salidaEventos = new Vector();
+		maxNumeroPasos=1000;
 		ficheroTopo = "";
 		cambios = false;
 		quitaSelecciones = false;
@@ -132,9 +134,9 @@ public class paneldibujoVisual extends JPanel implements Printable
 	{
 		String ultimoEnvio = "";
 
-		if (salidaEnvios.size()>0)
+		if (salidaEventos.size()>0)
 		{
-			ultimoEnvio = (String)salidaEnvios.elementAt(salidaEnvios.size()-1);
+			ultimoEnvio = (String)salidaEventos.elementAt(salidaEventos.size()-1);
 			ultimoEnvio = ultimoEnvio.substring(0, ultimoEnvio.indexOf("\t"));
 		}
 		
@@ -148,7 +150,7 @@ public class paneldibujoVisual extends JPanel implements Printable
 			if (((String)compruebaSimu.elementAt(i)).indexOf("No se ha implementado la simulacion")!=-1)
 				tamValido--;
 		*/
-		estadoAct = new cambiaMenuClase(simulado,cambios, lista.getNumSeleccionados(), lista.tam(), copias.tam(), lista.posibleSimular(), tamValido, lista.getlistaEnvios().size(), simulacion==null).getEstado() + "->" + ultimoEnvio;
+		estadoAct = new cambiaMenuClase(simulado,cambios, lista.getNumSeleccionados(), lista.tam(), copias.tam(), lista.posibleSimular(), tamValido, lista.getlistaAcciones().size(), simulacion==null).getEstado() + "->" + ultimoEnvio;
 		return estadoAct;
 	}
 
@@ -290,16 +292,16 @@ public class paneldibujoVisual extends JPanel implements Printable
 	/** Muestra el dialogo de eventos con la salida de la simulacion */
 	public void muestraEventos()
 	{
-		dialogoEventos dialogo = new dialogoEventos(padreFrame, xCentral, yCentral, salidaEnvios, simulacion);
+		dialogoEventos dialogo = new dialogoEventos(padreFrame, xCentral, yCentral, salidaEventos, simulacion);
 		
 		// Si se ha finalizado la ejecucion desde la ventana entonces desactivamos botones
 		if (dialogo.getBoton().compareTo("completa")==0)
 		{
-			salidaEnvios = simulacion.getEventos();
+			salidaEventos = simulacion.getEventos();
 			detenerSimulacion();
 		}
 		else if (simulacion!=null)
-			salidaEnvios = simulacion.getEventos();
+			salidaEventos = simulacion.getEventos();
 
 		dialogo.destruye();
 		ponMensaje(constantesMensajes.cMenu+cambiaMenu());
@@ -366,9 +368,9 @@ public class paneldibujoVisual extends JPanel implements Printable
 	public void simulaPaso()
 	{
 		if (simulacion==null)
-			simulacion = new simuladorVisual(lista);
+			simulacion = new simuladorVisual(lista,maxNumeroPasos);
 		
-		salidaEnvios = new Vector(simulacion.getEventos());
+		salidaEventos = new Vector(simulacion.getEventos());
 
 		// Si termina la simulacion entonces eliminamos red
 		if (!simulacion.darUnPaso())
@@ -377,16 +379,39 @@ public class paneldibujoVisual extends JPanel implements Printable
 		simulado=true;
 		ponMensaje(constantesMensajes.cMenu+cambiaMenu());
 	}
+	
+	/** Realiza la simulacion de un evento en el envio de datos de la topologia */
+	public void simulaEvento()
+	{
+		if (simulacion==null)
+			simulacion = new simuladorVisual(lista,maxNumeroPasos);
+		
+		salidaEventos = new Vector(simulacion.getEventos());
+		int cantidadEventos = salidaEventos.size();
+		
+		boolean masPasos=true;
+		while (salidaEventos.size() == cantidadEventos && masPasos){
+			masPasos = simulacion.darUnPaso();
+			salidaEventos = new Vector(simulacion.getEventos());
+		}
+
+		// Si termina la simulacion entonces eliminamos red
+		if (!masPasos)
+			simulacion = null;
+		
+		simulado=true;
+		ponMensaje(constantesMensajes.cMenu+cambiaMenu());
+	}
 
 	/** Realiza la simulacion completa en el envio de datos de la topologia */
 	public void simulaTodo()
 	{
 		if (simulacion==null)
-			simulacion = new simuladorVisual(lista);
+			simulacion = new simuladorVisual(lista,maxNumeroPasos);
 		
 		simulacion.simulacionCompleta();
 		
-		salidaEnvios = new Vector(simulacion.getEventos());
+		salidaEventos = new Vector(simulacion.getEventos());
 		
 		// Aqui siempre eliminamos red puesto que la simulacion ha finalizado
 		simulacion = null;
@@ -397,4 +422,12 @@ public class paneldibujoVisual extends JPanel implements Printable
 	
 	/** Metodo de refresco de la pantalla */
 	public void update(Graphics g) {}
+
+	public int getMaxNumeroPasos() {
+		return maxNumeroPasos;
+	}
+
+	public void setMaxNumeroPasos(int maxNumeroPasos) {
+		this.maxNumeroPasos = maxNumeroPasos;
+	}
 }

@@ -8,7 +8,7 @@ public class cambiaMenuClase
 {
 	private String estado;
 	
-	public cambiaMenuClase(boolean simulado,boolean cambios, int numSeleccionados, int tamLista, int tamCopias, boolean posibleSimular, int tamCompruebaSimulacion, int tamListaEnvios, boolean simulacionNulo)
+	public cambiaMenuClase(boolean simulado,boolean cambios, int numSeleccionados, int tamLista, int tamCopias, boolean posibleSimular, int tamCompruebaSimulacion, int tamListaAcciones, boolean simulacionNulo)
 	{
 		estado = "0-";
 
@@ -45,7 +45,7 @@ public class cambiaMenuClase
 		if (estado.indexOf("13")!=-1 && tamCompruebaSimulacion==0)  //no errores simulacion
 			estado += "14-";
 		
-		if (estado.indexOf("14")!=-1 && tamListaEnvios>0) //haya tramas que mandar
+		if (estado.indexOf("14")!=-1 && tamListaAcciones>0) //haya tramas que mandar
 			estado += "15-";
 		
 		if (!simulacionNulo)

@@ -130,10 +130,10 @@ public class listaFramesInternos extends Vector
 	 * @param xCentral Coordenada x central de la pantalla
 	 * @param yCentral Coordenada y central de la pantalla
 	 */
-	public void configuraEnvios(int xCentral, int yCentral)
+	public void configuraAcciones(int xCentral, int yCentral)
 	{
 		if (getActivo()!=-1)
-			getFrameInterno(getActivo()).configuraEnvios(xCentral, yCentral);
+			getFrameInterno(getActivo()).configuraAcciones(xCentral, yCentral);
 	}
 
 	/** Metodo de configuracion del formato de pagina para impresion
@@ -507,5 +507,10 @@ public class listaFramesInternos extends Vector
 	public void traeAlFrente(int pos)
 	{
 		((JInternalFrame)getFrameInterno(pos)).moveToFront();
+	}
+
+	public void simulaEvento() {
+		if (getActivo()!=-1)
+			getFrameInterno(getActivo()).simulaEvento();		
 	}
 }

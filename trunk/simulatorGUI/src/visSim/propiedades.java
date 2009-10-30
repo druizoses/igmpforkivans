@@ -46,7 +46,7 @@ public class propiedades extends JDialog implements MouseListener
 	private listaObjetos lista;
 	
 	/** Configuracion de los envios de las maquinas */
-	private Vector listaEnvios;
+	private Vector listaAcciones;
 	
 	/** Nombre del equipo y boton pulsado para indicarselo a panelDibujo */
 	private String nomEquipo, textoBoton;
@@ -92,7 +92,7 @@ public class propiedades extends JDialog implements MouseListener
 		this.lista = new listaObjetos();
 		this.lista.copialistaObjetos(lista);
 		this.posicion = posicion;
-		this.listaEnvios = new Vector(lista.getlistaEnvios());
+		this.listaAcciones = new Vector(lista.getlistaAcciones());
 		
 		// Preparamos las cosas de la ventana
 		JPanel panelSuperior = new JPanel();
@@ -199,9 +199,9 @@ public class propiedades extends JDialog implements MouseListener
 	}
 	
 	/** Devuelve la configuracion de envios */
-	public Vector getEnvios()
+	public Vector getAcciones()
 	{
-		return new Vector(listaEnvios);
+		return new Vector(listaAcciones);
 	}
 	
 	/** Devuelve las interfaces modificadas del equipo */
@@ -286,15 +286,15 @@ public class propiedades extends JDialog implements MouseListener
 					// Cambiamos la IP correspondiente en la lista de envios
 					String temp;
 					int j;
-					for (int i=0; i<listaEnvios.size(); i+=5)
+					for (int i=0; i<listaAcciones.size(); i+=5)
 						for (j=i; j<i+2; j++)
 						{
-							temp = (String)listaEnvios.elementAt(j); 
+							temp = (String)listaAcciones.elementAt(j); 
 							if (temp.indexOf(interfaces.getIP(indice))!=-1)
 							{
 								temp = temp.substring(0, temp.indexOf(" "));
 								temp = temp + "(" + dialogo.getIP() + ")";
-								listaEnvios.setElementAt(temp, j);
+								listaAcciones.setElementAt(temp, j);
 							}
 						}
 					
@@ -319,14 +319,14 @@ public class propiedades extends JDialog implements MouseListener
 				interfaces.borra(interfaces.getNombre(indice), interfaces.getIP(indice), interfaces.getMascara(indice), interfaces.getDirEnlace(indice), interfaces.getconecta(indice));
 				
 				// Borramos el envio configurado a traves de esta IP
-				for (int i=0; i<listaEnvios.size();)
-					if (((String)listaEnvios.elementAt(i)).indexOf(ip)!=-1 || ((String)listaEnvios.elementAt(i+1)).indexOf(ip)!=-1)
+				for (int i=0; i<listaAcciones.size();)
+					if (((String)listaAcciones.elementAt(i)).indexOf(ip)!=-1 || ((String)listaAcciones.elementAt(i+1)).indexOf(ip)!=-1)
 					{
-						listaEnvios.removeElementAt(i);
-						listaEnvios.removeElementAt(i);
-						listaEnvios.removeElementAt(i);
-						listaEnvios.removeElementAt(i);
-						listaEnvios.removeElementAt(i);
+						listaAcciones.removeElementAt(i);
+						listaAcciones.removeElementAt(i);
+						listaAcciones.removeElementAt(i);
+						listaAcciones.removeElementAt(i);
+						listaAcciones.removeElementAt(i);
 					}
 					else
 						i+=5;
@@ -435,15 +435,15 @@ public class propiedades extends JDialog implements MouseListener
 					{
 						String temp;
 						int j;
-						for (int i=0; i<listaEnvios.size(); i+=5)
+						for (int i=0; i<listaAcciones.size(); i+=5)
 							for (j=i; j<i+2; j++)
 							{
-								temp = (String)listaEnvios.elementAt(j); 
+								temp = (String)listaAcciones.elementAt(j); 
 								if (temp.indexOf(lista.getNombre(posicion))!=-1)
 								{
 									temp = temp.substring(temp.indexOf(" "));
 									temp = getnomEquipo() + temp;
-									listaEnvios.setElementAt(temp, j);
+									listaAcciones.setElementAt(temp, j);
 								}
 							}
 					}
@@ -466,15 +466,15 @@ public class propiedades extends JDialog implements MouseListener
 				{
 					String temp;
 					int j;
-					for (int i=0; i<listaEnvios.size(); i+=5)
+					for (int i=0; i<listaAcciones.size(); i+=5)
 						for (j=i; j<i+2; j++)
 						{
-							temp = (String)listaEnvios.elementAt(j); 
+							temp = (String)listaAcciones.elementAt(j); 
 							if (temp.indexOf(lista.getNombre(posicion))!=-1)
 							{
 								temp = temp.substring(temp.indexOf(" "));
 								temp = getnomEquipo() + temp;
-								listaEnvios.setElementAt(temp, j);
+								listaAcciones.setElementAt(temp, j);
 							}
 						}
 				}

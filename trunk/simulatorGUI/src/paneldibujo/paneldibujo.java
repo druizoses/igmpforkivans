@@ -34,6 +34,7 @@ import objetoVisual.wanVisual;
 import util.nomiconos;
 import util.simuGrafico;
 import util.utilLinea;
+import visSim.dialogoAcciones;
 import visSim.dialogoEnvios;
 import visSim.listaInterfaces;
 import visSim.listaRutas;
@@ -128,33 +129,33 @@ public class paneldibujo extends paneldibujoVisual
 		setBackground(new java.awt.Color(0,0,0));
 	}
 	
-	/** Configuracion de envios de las maquinas de la topologia
+	/** Configuracion de acciones de las maquinas de la topologia
 	 * @param xCentral Coordenada x central de la pantalla
 	 * @param yCentral Coordenada y central de la pantalla
 	 */
-	public void configuraEnvios(int xCentral, int yCentral)
+	public void configuraAcciones(int xCentral, int yCentral)
 	{
-		dialogoEnvios dialogo = new dialogoEnvios(padreFrame, xCentral, yCentral);
-		dialogo.setTabla(lista.getNombresOrdenadores(), new Vector(lista.getlistaEnvios()));
+		dialogoAcciones dialogo = new dialogoAcciones(padreFrame, xCentral, yCentral);
+		dialogo.setTabla(lista.getNombresOrdenadores(), new Vector(lista.getlistaAcciones()));
 		dialogo.muestra();
 		
 		if (dialogo.getBoton().compareTo("Aceptar")==0)
 		{
 			// Comprobamos si han cambiado con respecto a las que habian
-			Vector envios = new Vector(dialogo.getDatosTabla());
+			Vector acciones = new Vector(dialogo.getListaAcciones());
 			
 			// Primero en cuanto a tamanyo
-			if (envios.size() != lista.getlistaEnvios().size())
+			if (acciones.size() != lista.getlistaAcciones().size())
 				cambios = true;
 			
 			// Luego en cuanto a contenido
-			if (!envios.equals(lista.getlistaEnvios()))
+			if (!acciones.equals(lista.getlistaAcciones()))
 				cambios = true;
 
 			if (cambios)
 				ponMensaje(constantesMensajes.cTopo + ficheroTopo + "," + cambios);
 
-			lista.setlistaEnvios(new Vector(dialogo.getDatosTabla()));
+			lista.setlistaAcciones(new Vector(dialogo.getListaAcciones()));
 			ponMensaje(constantesMensajes.cMenu+cambiaMenu());
 		}
 		
@@ -575,7 +576,7 @@ public class paneldibujo extends paneldibujoVisual
 			lista.eliminaSeleccionados();
 			listaObjetos listatemp = lista.copiaLista();
 			propiedadesTopologia nuevaPropi = new propiedadesTopologia(lista.getPropiedades());
-			Vector envios = new Vector(lista.getlistaEnvios());
+			Vector acciones = new Vector(lista.getlistaAcciones());
 			
 			lista.clear();
 
@@ -585,7 +586,7 @@ public class paneldibujo extends paneldibujoVisual
 			creaMaquinas(listatemp);
 			
 			lista.setPropiedades(nuevaPropi);
-			lista.setlistaEnvios(envios);
+			lista.setlistaAcciones(acciones);
 
 			cambios = true;
 			actualizaPantalla();
@@ -645,7 +646,7 @@ public class paneldibujo extends paneldibujoVisual
 		
 		creaMaquinas(listatemp);
 		lista.setPropiedades(new propiedadesTopologia(listatemp.getPropiedades()));
-		lista.setlistaEnvios(new Vector(listatemp.getlistaEnvios()));
+		lista.setlistaAcciones(new Vector(listatemp.getlistaAcciones()));
 		ponMensaje(constantesMensajes.cMenu+cambiaMenu());
 		
 		return dev;
@@ -665,10 +666,10 @@ public class paneldibujo extends paneldibujoVisual
 			Vector eventos = new Vector();
 
 			// Si se ha ejecutado la simulacion filtramos los datos para pasarlos a las propiedades
-			if (salidaEnvios != null)
-				for (int i=0; i<salidaEnvios.size(); i++)
-					if ( ((String)salidaEnvios.elementAt(i)).indexOf(lista.getNombre(pos))!=-1)
-						eventos.add(salidaEnvios.elementAt(i));
+			if (salidaEventos != null)
+				for (int i=0; i<salidaEventos.size(); i++)
+					if ( ((String)salidaEventos.elementAt(i)).indexOf(lista.getNombre(pos))!=-1)
+						eventos.add(salidaEventos.elementAt(i));
 			
 			propiedades propi = new propiedades(padreFrame, xCentral, yCentral, pos, lista, eventos);
 			propi.muestra();
@@ -699,7 +700,7 @@ public class paneldibujo extends paneldibujoVisual
 					if (!nuevasInterfaces.getInterfaz(i).igual(viejasInterfaces.getInterfaz(i)))
 						cambios = true;
 				
-				lista.setlistaEnvios(new Vector(propi.getEnvios()));
+				lista.setlistaAcciones(new Vector(propi.getAcciones()));
 					
 				nuevasInterfaces.clear();
 				lista.setInterfaces(pos, propi.getInterfaces());

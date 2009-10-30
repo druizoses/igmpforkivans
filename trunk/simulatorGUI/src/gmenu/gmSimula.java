@@ -18,7 +18,9 @@ class gmSimula extends JMenu
 	private gmOpcionMenu gmsimula;
 	/** opcion simular paso a paso */
 	private gmOpcionMenu gmsimulapaso;
-	/** opcion configurar envios del menu */
+	/** opcion simular evento a evento */
+	private gmOpcionMenu gmsimulaevento;
+	/** opcion configurar acciones del menu */
 	private gmOpcionMenu gmenvios;
 	/** opcion comprobar simulacion del menu */
 	private gmOpcionMenu gmcomprueba;
@@ -47,23 +49,27 @@ class gmSimula extends JMenu
 		add(gmcomprueba);
 
 		gmenvios = new gmOpcionMenu();
-		gmenvios.estableceValores("Configurar Envios", null, oyente,oyenteRaton,  ",14,", cadena,'E');
+		gmenvios.estableceValores("Configurar Acciones", null, oyente,oyenteRaton,  ",14,", cadena,'E');
 		add(gmenvios);
 
 		gmsimula = new gmOpcionMenu();
-		gmsimula.estableceValores("Simular Envios", KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK), oyente,oyenteRaton,  ",15,", cadena,'S');
+		gmsimula.estableceValores("Simular Acciones", KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK), oyente,oyenteRaton,  ",15,", cadena,'S');
 		add(gmsimula);
 
 		gmsimulapaso = new gmOpcionMenu();
 		gmsimulapaso.estableceValores("Simular paso a paso", KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_MASK), oyente,oyenteRaton,  ",15,", cadena,'p');
 		add(gmsimulapaso);
 
+		gmsimulaevento = new gmOpcionMenu();
+		gmsimulaevento.estableceValores("Simular evento a evento", KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_MASK), oyente,oyenteRaton,  ",16,", cadena,'e');
+		add(gmsimulaevento);
+
 		gmdetener = new gmOpcionMenu();
-		gmdetener.estableceValores("Detener simulacion", KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_MASK), oyente,oyenteRaton,  ",16,", cadena,'D');
+		gmdetener.estableceValores("Detener simulacion", KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_MASK), oyente,oyenteRaton,  ",17,", cadena,'D');
 		add(gmdetener);
 
 		gmEventosSimulacion = new gmOpcionMenu();
-		gmEventosSimulacion.estableceValores("Mostrar Sucesos de la Simulacion", KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.CTRL_MASK), oyente,oyenteRaton,  ",17,", cadena,'v');
+		gmEventosSimulacion.estableceValores("Mostrar Sucesos de la Simulacion", KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.CTRL_MASK), oyente,oyenteRaton,  ",18,", cadena,'v');
 		add(gmEventosSimulacion);
 	}
 

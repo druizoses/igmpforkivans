@@ -210,11 +210,12 @@ public class visual extends JFrame implements MouseListener, ActionListener
 		else if (opcion.compareTo("Mosaico Horizontal")==0)			ventanas.distribuirHorizontal(panelDerecho.getWidth(), panelDerecho.getHeight());
 		else if (opcion.compareTo("Mosaico Vertical")==0)			ventanas.distribuirVertical(panelDerecho.getWidth(), panelDerecho.getHeight());
 		else if (opcion.compareTo("Minimizar todas")==0)			ventanas.minimizaTodas();
-		else if (opcion.compareTo("Simular Envios")==0)				ventanas.simulaTodo();
+		else if (opcion.compareTo("Simular Acciones")==0)				ventanas.simulaTodo();
 		else if (opcion.compareTo("Simular paso a paso")==0)		ventanas.simulaPaso();
+		else if (opcion.compareTo("Simular evento a evento")==0)		ventanas.simulaEvento();
 		else if (opcion.compareTo("Detener simulacion")==0)			ventanas.detenerSimulacion();
 		else if (opcion.compareTo("Mostrar Sucesos de la Simulacion")==0) ventanas.muestraEventos();
-		else if (opcion.compareTo("Configurar Envios")==0)			ventanas.configuraEnvios(puntoCentralW.x, puntoCentralW.y);
+		else if (opcion.compareTo("Configurar Acciones")==0)			ventanas.configuraAcciones(puntoCentralW.x, puntoCentralW.y);
 		else if (opcion.compareTo("Comprobar Simulacion")==0)		ventanas.compruebaSimulacion();
 		else if (opcion.compareTo("Contenido")==0)					new frameAyuda(puntoCentralW.x, puntoCentralW.y);
 		else if (opcion.compareTo("Cerrar todas")==0)				mnuOpcCerrarTodas();				
@@ -738,7 +739,7 @@ public class visual extends JFrame implements MouseListener, ActionListener
 			else if (nombre.compareTo("btnSip")==0)	ventanas.simulaPaso();
 
 			// Opcion envia datos
-			else if (nombre.compareTo("btnSE")==0)	ventanas.configuraEnvios(puntoCentralW.x, puntoCentralW.y);
+			else if (nombre.compareTo("btnSE")==0)	ventanas.configuraAcciones(puntoCentralW.x, puntoCentralW.y);
 
 			// Opcion detiene simulacion
 			else if (nombre.compareTo("btnDS")==0)	ventanas.detenerSimulacion();
@@ -796,11 +797,12 @@ public class visual extends JFrame implements MouseListener, ActionListener
 			else if (opcion.compareTo("Mosaico Horizontal")==0)	ponTextoBarra("Pone en mosaico horizontal todas las ventanas");
 			else if (opcion.compareTo("Mosaico Vertical")==0)		ponTextoBarra("Pone en mosaico vertical todas las ventanas");
 			else if (opcion.compareTo("Minimizar todas")==0)		ponTextoBarra("Minimiza todas las ventanas");
-			else if (opcion.compareTo("Simular Envios")==0)			ponTextoBarra("Simulacion de envios a traves de la topologia");
+			else if (opcion.compareTo("Simular Acciones")==0)			ponTextoBarra("Simulacion de las acciones sobre el modelo");
 			else if (opcion.compareTo("Simular paso a paso")==0)	ponTextoBarra("Simulacion de un paso en la transmision de paquetes");
+			else if (opcion.compareTo("Simular evento a evento")==0)	ponTextoBarra("Simulacion de un evento a otro evento");
 			else if (opcion.compareTo("Detener simulacion")==0)	ponTextoBarra("Detiene la simulacion actual");
 			else if (opcion.compareTo("Mostrar Sucesos de la Simulacion")==0) ponTextoBarra("Muestra los eventos ocurridos durante la simulacion");
-			else if (opcion.compareTo("Configurar Envios")==0)		ponTextoBarra("Configuracion de envios de la topologia");
+			else if (opcion.compareTo("Configurar Acciones")==0)		ponTextoBarra("Configuracion de las acciones de la simulacion");
 			else if (opcion.compareTo("Comprobar Simulacion")==0)	ponTextoBarra("Comprobacion de errores en la topologia");
 			else if (opcion.compareTo("Contenido")==0)				ponTextoBarra("Muestra la ayuda de la aplicacion");
 			else if (opcion.compareTo("Cerrar todas")==0)			ponTextoBarra("Cierra todas las ventanas");				
