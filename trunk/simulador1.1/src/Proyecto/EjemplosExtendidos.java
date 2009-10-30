@@ -330,7 +330,7 @@ public class EjemplosExtendidos
             Red ethernet2=LocalizadorRedes.New("Ethernet.Ethernet","ethernet2");
         
            // Router MultiCast
-           Equipo router=LocalizadorEquipos.New("Router","routerMC 1");
+           Equipo router=LocalizadorEquipos.New("RouterMultiCast","routerMC 1");
            Interfaz interfaz1=LocalizadorRedes.NewInterfaz("con0","10.0.1.1","255.255.255.0","00:00:00:00:00:fe","Ethernet.Ethernet");
            interfaz1.Conectar(ethernet1);
            router.setInterfaz(interfaz1);
