@@ -89,9 +89,9 @@ public class frameInternoDibujo extends JInternalFrame
 	}
 	
 	/** Muestra el panel de configuracion de envios de tramas */
-	public void configuraEnvios(int xCentral, int yCentral)
+	public void configuraAcciones(int xCentral, int yCentral)
 	{
-		panelDibujo.configuraEnvios(xCentral, yCentral);
+		panelDibujo.configuraAcciones(xCentral, yCentral);
 	}
 
 	/** Metodo para configuracion de la impresora
@@ -288,6 +288,10 @@ public class frameInternoDibujo extends JInternalFrame
 	public void simulaTodo()
 	{
 		panelDibujo.simulaTodo();
+	}
+
+	public void simulaEvento() {
+		panelDibujo.simulaEvento();		
 	}
 
 }

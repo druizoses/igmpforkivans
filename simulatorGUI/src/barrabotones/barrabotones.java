@@ -32,14 +32,15 @@ public class barrabotones extends JToolBar
 	
 	/** boton comprobar simulacion */
 	private bboton btnCompS;
-	/** boton configurar envios */
+	/** boton configurar acciones */
 	private bboton btnSE;
 	
 	/** boton simular envios */
 	private bboton btnSi;
 	/** boton simular paso a paso */
 	private bboton btnSip;
-
+	/** boton simular evento a evento */
+	private bboton btnEvt;
 	/** boton detener simulacion */
 	private bboton btnDS;
 	/** boton mostrar sucesos de la simulacion */
@@ -113,23 +114,27 @@ public class barrabotones extends JToolBar
 		add(btnCompS);
 
 		btnSE= new bboton();
-		btnSE.setPBoton("btnSE", nomiconos.nombotonSimuEnvio, oyente, ",14,", estado,"Configurar Envios");
+		btnSE.setPBoton("btnSE", nomiconos.nombotonSimuEnvio, oyente, ",14,", estado,"Configurar Acciones");
 		add(btnSE);
 
 		btnSi= new bboton();
-		btnSi.setPBoton("btnSi", nomiconos.nombotonSimulaTodo, oyente, ",15,", estado,"Simular Envios");
+		btnSi.setPBoton("btnSi", nomiconos.nombotonSimulaTodo, oyente, ",15,", estado,"Simular Acciones");
 		add(btnSi);
 
 		btnSip= new bboton();
 		btnSip.setPBoton("btnSip", nomiconos.nombotonSimulaPaso, oyente, ",15,", estado,"Simular paso a paso");
 		add(btnSip);
 
+		btnEvt= new bboton();
+		btnEvt.setPBoton("btnEvt", nomiconos.nombotonSimulaEvento, oyente, ",16,", estado,"Simular evento a evento");
+		add(btnEvt);
+
 		btnDS= new bboton();
-		btnDS.setPBoton("btnDS", nomiconos.nombotonDetieneSimu, oyente, ",16,", estado,"Detener Simulacion");
+		btnDS.setPBoton("btnDS", nomiconos.nombotonDetieneSimu, oyente, ",17,", estado,"Detener Simulacion");
 		add(btnDS);
 
 		btnEvS= new bboton();
-		btnEvS.setPBoton("btnEvS", nomiconos.nombotonEventosSimu, oyente, ",17,", estado,"Mostrar Sucesos de la Simulacion");
+		btnEvS.setPBoton("btnEvS", nomiconos.nombotonEventosSimu, oyente, ",18,", estado,"Mostrar Sucesos de la Simulacion");
 		add(btnEvS);
 		
 		btnInfoEv= new bboton();

@@ -50,11 +50,11 @@ public class routerMultiCastVisual extends objetoVisual
 
 	public String getCadenaSimulador()
 	{
-		return "Router";
+		return "McRouter";
 	}
 
 	public String getNomIcono()
 	{
-		return nomiconos.nomRouter;
+		return nomiconos.nomRouterMC;
 	}
 }

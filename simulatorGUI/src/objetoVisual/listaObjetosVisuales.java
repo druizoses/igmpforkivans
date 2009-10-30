@@ -15,7 +15,7 @@ public class listaObjetosVisuales extends Vector
 	public int incDistanx;
 	public int incDistany;
 	
-	public Vector listaEnvios;
+	public Vector listaAcciones;
 	
 	public propiedadesTopologia propiedades;
 	
@@ -24,7 +24,7 @@ public class listaObjetosVisuales extends Vector
 		incDistanx=0;
 		incDistany=0;
 		
-		listaEnvios = new Vector();
+		listaAcciones = new Vector();
 		propiedades = new propiedadesTopologia();
 	}
 
@@ -96,9 +96,9 @@ public class listaObjetosVisuales extends Vector
 		return getObjeto(pos).getInterfaces();
 	}
 
-	public Vector getlistaEnvios()
+	public Vector getlistaAcciones()
 	{
-		return new Vector(listaEnvios);
+		return new Vector(listaAcciones);
 	}
 	
 	/** Devuelve el nombre del equipo que se encuentra en pos */
@@ -249,9 +249,9 @@ public class listaObjetosVisuales extends Vector
 		getObjeto(pos).setInterfaces(lista);
 	}
 	
-	public void setlistaEnvios(Vector envios)
+	public void setlistaAcciones(Vector envios)
 	{
-		listaEnvios = new Vector(envios);
+		listaAcciones = new Vector(envios);
 	}
 
 	/** Establece el nombre del equipo que se encuentra en pos */

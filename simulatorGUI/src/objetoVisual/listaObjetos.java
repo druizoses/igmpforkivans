@@ -9,6 +9,8 @@ import java.util.Vector;
 
 import javax.swing.JLabel;
 
+import objetoVisual.accionVisual.accionVisual;
+
 import util.nomiconos;
 import util.simuGrafico;
 import util.utilLinea;
@@ -601,7 +603,6 @@ public class listaObjetos extends listaObjetosVisuales
 	public void eliminaSeleccionados()
 	{
 		int j;
-		Vector envios;
 		String nombre;
 		
 		for (int i=0; i<size(); )
@@ -613,15 +614,11 @@ public class listaObjetos extends listaObjetosVisuales
 				removeElementAt(i);
 				
 				// Eliminamos las correspondientes entradas en la lista de envios
-				envios = new Vector(listaEnvios);
-				for (j=0; j<envios.size();)
-					if (((String)envios.elementAt(j)).startsWith(nombre) || ((String)envios.elementAt(j+1)).startsWith(nombre))
-						for (int k=0; k<5; k++)
-							envios.removeElementAt(j);
+				for (j=0; j<listaAcciones.size();)
+					if (((accionVisual)listaAcciones.elementAt(j)).getEquipo().startsWith(nombre))
+						listaAcciones.removeElementAt(j);
 					else
-						j+=5;
-					
-				listaEnvios = new Vector(envios);
+						j+=1;
 			}
 			else i++;
 	}
@@ -783,7 +780,7 @@ public class listaObjetos extends listaObjetosVisuales
 		listaInterfaces interfaces;
 		
 		for (int i=0; i<tam(); i++)
-			if (getID(i).compareTo("pc")==0)
+			//if (getID(i).compareTo("pc")==0)
 			{
 				interfaces = getInterfaces(i);
 				

@@ -5,24 +5,25 @@ import java.util.Vector;
 
 import javax.swing.table.AbstractTableModel;
 
+import objetoVisual.accionVisual.accionVisual;
+
 
 /** Clase creada como modelo para la tabla de envios*/
-public class modeloTablaEnvios extends AbstractTableModel
+public class modeloTablaAcciones extends AbstractTableModel
 {
-	final String columnNames[] = {"Origen", "Destino", "Tamanyo", "Copias", " Fragmentable?"};
+	final String columnNames[] = {"Instante","Accion", "Descripcion"};
 	final Object[][] data;
 
-	public modeloTablaEnvios(Vector listaEnvios)
+	public modeloTablaAcciones(Vector listaAcciones)
 	{
-		data = new Object[listaEnvios.size()/5][5];
+		data = new Object[listaAcciones.size()][3];
 		
-		for (int i=0; i<listaEnvios.size(); i+=5)
+		for (int i=0; i<listaAcciones.size(); i+=1)
 		{
-			data[i/5][0] = (String)listaEnvios.elementAt(i);
-			data[i/5][1] = (String)listaEnvios.elementAt(i+1);
-			data[i/5][2] = (String)listaEnvios.elementAt(i+2);
-			data[i/5][3] = (String)listaEnvios.elementAt(i+3);
-			data[i/5][4] = new Boolean(listaEnvios.elementAt(i+4).toString());
+			accionVisual accion = (accionVisual)listaAcciones.elementAt(i);
+			data[i][0] = accion.getInstante();
+			data[i][1] = accion.getTipo();
+			data[i][2] = accion.getDescripcion();
 		}
 	}
 
@@ -54,7 +55,7 @@ public class modeloTablaEnvios extends AbstractTableModel
 	/** Las celdas de la tabla se pueden modificar */
 	public boolean isCellEditable(int row, int col)
 	{
-		return true;
+		return false;
 	}
 	
 	public void setValueAt(Object valor, int row, int col)

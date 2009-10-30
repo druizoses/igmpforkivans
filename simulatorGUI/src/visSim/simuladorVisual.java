@@ -7,26 +7,23 @@ package visSim;
 import java.util.Vector;
 
 import objetoVisual.listaObjetos;
-import objetoVisual.switchVisual;
+import objetoVisual.accionVisual.accionVisual;
 import util.ordenaVector;
 import Equipos.Equipo;
 import Equipos.LocalizadorEquipos;
 import Proyecto.Evento;
 import Proyecto.Objeto;
-import Proyecto.Simulador;
-import Redes.Buffer;
-import Redes.Dato;
+import Proyecto.SimuladorExtendido;
 import Redes.Interfaz;
 import Redes.LocalizadorRedes;
 import Redes.Red;
-import Redes.IPv4.DireccionIPv4;
 
 public class simuladorVisual
 {
-	private Vector redes, equipos, listaEnvios;
-	Simulador simulador;
+	private Vector redes, equipos, listaAcciones;
+	SimuladorExtendido simulador;
 	
-	public simuladorVisual(listaObjetos lista)
+	public simuladorVisual(listaObjetos lista,int maxNumeroPasos)
 	{
 		try
 		{
@@ -36,7 +33,7 @@ public class simuladorVisual
 			redes = new Vector();
 			equipos = new Vector();
 			Vector indices = new Vector();
-			listaEnvios = new Vector(lista.getlistaEnvios());
+			listaAcciones = new Vector(lista.getlistaAcciones());
 			
 			// registramos los tipos de redes
 			LocalizadorRedes.Registrar("Ethernet.Ethernet");
@@ -161,9 +158,9 @@ public class simuladorVisual
 			}
 			
 			// Preparamos el simulador
-			simulador=new Simulador();
+			simulador=new SimuladorExtendido();
 			
-			simulador.MaximoNumeroDePasos(400);
+			simulador.MaximoNumeroDePasos(maxNumeroPasos);
 			
 			// Metemos todos los equipos para la simulacion
 			for (i=0; i<equipos.size(); i++)
@@ -177,41 +174,15 @@ public class simuladorVisual
 			String nombrePC1, IP2;
 			int indiceSim, tamano, envios;
 			
-			for (i=0; i<listaEnvios.size(); i+=5)
+			for (i=0; i<listaAcciones.size(); i++)
 			{
-				nombrePC1 = (String)listaEnvios.elementAt(i);
-				nombrePC1 = nombrePC1.substring(0, nombrePC1.indexOf(" "));
-				
-				IP2 = (String)listaEnvios.elementAt(i+1);
-				if(IP2.indexOf('(') != -1)
-					IP2 = IP2.substring(IP2.indexOf("(")+1, IP2.lastIndexOf(")"));
-				
-				
-				//System.out.println(nombrePC1 + " enviando a " + IP2);
+				accionVisual acc = (accionVisual)listaAcciones.elementAt(i);
+				nombrePC1 = acc.getEquipo();
 				
 				indiceSim = ((Integer)indices.elementAt(lista.buscaEquipo(nombrePC1))).intValue();
+				Equipo eq = ((Equipo)equipos.elementAt(indiceSim));
 				
-				tamano = (new Integer((String)listaEnvios.elementAt(i+2))).intValue();
-				envios = (new Integer((String)listaEnvios.elementAt(i+3))).intValue();
-
-				// Preparamos un buffer para enviar
-				Buffer buffer=new Buffer(tamano);
-				
-				for(j=0; j<tamano; j++)
-					buffer.setByte(j, i%255);
-				
-				Dato dato=new Dato(0, buffer);
-				dato.protocolo=0;
-				
-				// Programamos la salida para el envio
-				dato.direccion = new DireccionIPv4(IP2);
-				
-				// Ponemos la fragmentacion del dato
-				dato.fragmentable = ((listaEnvios.elementAt(i+4)).toString().compareTo("true")==0);
-				
-				// Preparamos todos los envios entre este par de maquinas
-				for (j=0; j<envios; j++)
-					((Equipo)equipos.elementAt(indiceSim)).ProgramarSalida(dato);
+				simulador.agregarALaSimulacion(eq,acc.createAccion(eq), acc.getInstante());
 			}
 		}
 		catch(Exception e)

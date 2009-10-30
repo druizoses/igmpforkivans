@@ -66,6 +66,9 @@ public class nomiconos
 
 	/** Constante para el boton Simular paso a paso */
 	public static final String nombotonSimulaPaso = carpeta + "botonSimulaP.gif";
+	
+	/** Constante para el boton Simular evento a evento */
+	public static final String nombotonSimulaEvento = carpeta + "botonSimulaE.gif";	
 
 	/** Constante para el boton Simular todo */
 	public static final String nombotonSimulaTodo = carpeta + "botonSimulaT.gif";

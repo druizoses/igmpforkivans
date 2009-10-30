@@ -17,6 +17,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import objetoVisual.accionVisual.accionApagarVisual;
+import objetoVisual.accionVisual.accionVisual;
+
 import util.muestraAviso;
 import visSim.modelosTablas.modeloTablaAcciones;
 
@@ -25,10 +28,10 @@ import visSim.modelosTablas.modeloTablaAcciones;
  * En dicha configuracion se situan las maquinas origen y destino, el tamanyo
  * de la trama de datos y el numero de copias que se envian. 
  */
-public class dialogoEnvios extends JDialog
+public class dialogoAcciones extends JDialog
 {
 	/** Vector que contiene la configuracion del envio de tramas */
-	private Vector listaEnvios;
+	private Vector listaAcciones;
 
 	/** Nombres de las maquinas junto con sus IPs de la topologia */	
 	private Vector nombresOrdenadores;
@@ -36,11 +39,7 @@ public class dialogoEnvios extends JDialog
 	/** Tabla donde se mostraran los envios */
 	private JTable tabla;
 	
-	/** Numero maximo de envio de tramas entre equipos, por defecto 10 */
-	private int tamEnvios;
-	
-	/** Tamanyo maximo de la trama de datos, por defecto 5000 */
-	private int tamMax;
+	private JComboBox accionesDisponibles;
 	
 	/** Nombre del boton pulsado al finalizar la configuracion. Utilizado en paneldibujo
 	 * @see paneldibujo
@@ -54,18 +53,17 @@ public class dialogoEnvios extends JDialog
 	 * @param xCentral Coordenada x central
 	 * @param yCentral Coordenada y central
 	 */
-	public dialogoEnvios(Frame parent, int xCentral, int yCentral)
+	public dialogoAcciones(Frame parent, int xCentral, int yCentral)
 	{
 		super(parent, true);
 		padreFrame = parent;
 		
-		tamMax = 5000;
-		tamEnvios = 100;
-
-		setTitle("Configuracion de envio de datos");
+		accionesDisponibles = new JComboBox(new Object[]{accionVisual.ENCENDER,accionVisual.APAGAR,accionVisual.ENVIAR_PAQUETE_IP,accionVisual.UNIRSE_A_GRUPO,accionVisual.DEJAR_GRUPO});
+		
+		setTitle("Configuracion de acciones");
 		
 		nombresOrdenadores = new Vector();
-		this.listaEnvios = new Vector();
+		this.listaAcciones = new Vector();
 		
 		// Preparamos las cosas de la ventana
 		getContentPane().setLayout(null);
@@ -115,7 +113,7 @@ public class dialogoEnvios extends JDialog
 			}
 		});
 
-		tabla = new JTable(new modeloTablaAcciones(listaEnvios));
+		tabla = new JTable(new modeloTablaAcciones(listaAcciones));
 
 		ponColumnas();
 		tabla.setPreferredScrollableViewportSize(new Dimension(300, 70));
@@ -127,6 +125,7 @@ public class dialogoEnvios extends JDialog
 		getContentPane().add(jspanel);
 		jspanel.setBounds(5,5, 450, 150);
 		
+		getContentPane().add(accionesDisponibles);
 		getContentPane().add(btn1);
 		btn1.setBounds(4, 170, 81, 26);
 		getContentPane().add(btn4);
@@ -149,85 +148,76 @@ public class dialogoEnvios extends JDialog
 	{
 		if (nombre.compareTo("Anyadir")==0)
 		{
-			if (!compruebaEnvios())
-				muestraAviso.mensaje(padreFrame, "Alguna configuracion no es correcta");	
-			else
-			{
-				listaEnvios = new Vector(getDatosTabla());
-
-				// Preparamos los datos
-				listaEnvios.add("");
-				listaEnvios.add("");
-				listaEnvios.add("1000");
-				listaEnvios.add("1");
-				listaEnvios.add("false");
-
-				tabla.setModel(new modeloTablaAcciones(listaEnvios));
-				ponColumnas();
+			if (accionesDisponibles.getSelectedItem().equals(accionVisual.ENCENDER)){
+				
 			}
+			else if (accionesDisponibles.getSelectedItem().equals(accionVisual.APAGAR)){
+			}
+			else if (accionesDisponibles.getSelectedItem().equals(accionVisual.ENVIAR_PAQUETE_IP)){
+			}
+			else if (accionesDisponibles.getSelectedItem().equals(accionVisual.UNIRSE_A_GRUPO)){
+			}
+			else if (accionesDisponibles.getSelectedItem().equals(accionVisual.DEJAR_GRUPO)){
+			}
+			
+			//agregar la nueva accion a la lista
+			
+				tabla.setModel(new modeloTablaAcciones(listaAcciones));
+				ponColumnas();
+			
 		}
 		else if (nombre.compareTo("Borrar")==0)
 		{
 			int indice = tabla.getSelectedRow();
 			
-			if (indice==-1)
-				muestraAviso.mensaje(padreFrame, "Seleccione un envio");
-			else
+			if (indice>=0)
 			{
-				listaEnvios = new Vector(getDatosTabla());
-				
-				for (int i=0; i<tabla.getColumnCount(); i++)
-					listaEnvios.removeElementAt(indice*4);
-
-				tabla.setModel(new modeloTablaAcciones(listaEnvios));
+				listaAcciones.remove(indice);	
+				tabla.setModel(new modeloTablaAcciones(listaAcciones));
 				ponColumnas();
 			}
 		}
 		else if (nombre.compareTo("Borrar todos")==0)
 		{
-			listaEnvios = new Vector();
+			listaAcciones = new Vector();
 
-			tabla.setModel(new modeloTablaAcciones(listaEnvios));
+			tabla.setModel(new modeloTablaAcciones(listaAcciones));
 			ponColumnas();
 		}
 		else if (nombre.compareTo("Aceptar")==0)
 		{
-			if (!compruebaEnvios())
-				muestraAviso.mensaje(padreFrame, "Alguna configuracion no es correcta");	
-			else
-			{
-				textoBoton = "Aceptar";
-				setVisible(false);
-			}
+			textoBoton = "Aceptar";
+			setVisible(false);
+			
 		}
 	}
 	
-	/** Comprobacion de los envios configurados. No se permite nombres en blanco
-	 * ni superar o no llegar a tamMax o tamEnvios
-	 * @return boolean indicando si la configuracion es correcta
-	 * @see tamMax
-	 * @see tamEnvios
-	 */
-	private boolean compruebaEnvios()
-	{
-		int numero;
-		Vector temp = new Vector(getDatosTabla());
-		int tam = temp.size();
-		
-		for (int i=0; i<tam; i+=tabla.getColumnCount())
-		{
-			// No existe alguna de las direcciones
-			if ( ((String)temp.elementAt(i)).length()==0 || ((String)temp.elementAt(i+1)).length()==0)
-				return false;
-			
-			numero = (new Integer((String)temp.elementAt(i+2))).intValue();
-			if (numero<1 || numero>tamMax) return false;
-
-			numero = (new Integer((String)temp.elementAt(i+3))).intValue();
-			if (numero<1 || numero>tamEnvios) return false;
-		}
-		return true;
-	}
+//	/** Comprobacion de los envios configurados. No se permite nombres en blanco
+//	 * ni superar o no llegar a tamMax o tamEnvios
+//	 * @return boolean indicando si la configuracion es correcta
+//	 * @see tamMax
+//	 * @see tamEnvios
+//	 */
+//	private boolean compruebaEnvios()
+//	{
+//		int numero;
+//		Vector temp = new Vector(getDatosTabla());
+//		int tam = temp.size();
+//		
+//		for (int i=0; i<tam; i+=tabla.getColumnCount())
+//		{
+//			// No existe alguna de las direcciones
+//			if ( ((String)temp.elementAt(i)).length()==0 || ((String)temp.elementAt(i+1)).length()==0)
+//				return false;
+//			
+//			numero = (new Integer((String)temp.elementAt(i+2))).intValue();
+//			if (numero<1 || numero>tamMax) return false;
+//
+//			numero = (new Integer((String)temp.elementAt(i+3))).intValue();
+//			if (numero<1 || numero>tamEnvios) return false;
+//		}
+//		return true;
+//	}
 
 	/** Libera la memoria ocupada por el cuadro de dialogo */
 	public void destruye()
@@ -243,30 +233,30 @@ public class dialogoEnvios extends JDialog
 		return textoBoton;
 	}
 	
-	/** Devuelve los datos de la tabla
-	 * @return Vector
-	 */
-	public Vector getDatosTabla()
-	{
-		Vector dev = new Vector();
-		
-		for (int i=0; i<tabla.getRowCount(); i++)
-			for (int j=0; j<tabla.getColumnCount(); j++)
-				dev.add(tabla.getValueAt(i, j));
-		
-		return dev;
-	}
+//	/** Devuelve los datos de la tabla
+//	 * @return Vector
+//	 */
+//	public Vector getDatosTabla()
+//	{
+//		Vector dev = new Vector();
+//		
+//		for (int i=0; i<tabla.getRowCount(); i++)
+//			for (int j=0; j<tabla.getColumnCount(); j++)
+//				dev.add(tabla.getValueAt(i, j));
+//		
+//		return dev;
+//	}
 
-	/** Devuelve un vector de valores booleanos indicando la simulacion de cada uno de los errores */
-	public Vector getSeleccionesFragmentar()
-	{
-		Vector dev = new Vector();
-		
-		for (int i=0; i<tabla.getRowCount(); i++)
-			dev.add(tabla.getValueAt(i, 4).toString());
-		
-		return dev;
-	}
+//	/** Devuelve un vector de valores booleanos indicando la simulacion de cada uno de los errores */
+//	public Vector getSeleccionesFragmentar()
+//	{
+//		Vector dev = new Vector();
+//		
+//		for (int i=0; i<tabla.getRowCount(); i++)
+//			dev.add(tabla.getValueAt(i, 4).toString());
+//		
+//		return dev;
+//	}
 	
 	/** Hace visible el cuadro de dialogo */
 	public void muestra()
@@ -277,30 +267,34 @@ public class dialogoEnvios extends JDialog
 	/** Metodo para poner objetos JComboBox para los nombres de las maquinas */
 	private void ponColumnas()
 	{
-		tabla.getColumnModel().getColumn(2).setPreferredWidth(50);
-		tabla.getColumnModel().getColumn(3).setPreferredWidth(50);
+		tabla.getColumnModel().getColumn(1).setPreferredWidth(5);
+		tabla.getColumnModel().getColumn(2).setPreferredWidth(25);
 
-		if (nombresOrdenadores != null)
-			for (int i=0; i<1; i++)
-			{
-				tabla.getColumnModel().getColumn(i).setCellEditor(new DefaultCellEditor(new JComboBox(nombresOrdenadores)));
-				tabla.getColumnModel().getColumn(i).setPreferredWidth(100);
-			
-				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-				
-				tabla.getColumnModel().getColumn(i).setCellRenderer(renderer);		
-			}
+//		if (nombresOrdenadores != null)
+//			for (int i=0; i<1; i++)
+//			{
+//				tabla.getColumnModel().getColumn(i).setCellEditor(new DefaultCellEditor(new JComboBox(nombresOrdenadores)));
+//				tabla.getColumnModel().getColumn(i).setPreferredWidth(100);
+//			
+//				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+//				
+//				tabla.getColumnModel().getColumn(i).setCellRenderer(renderer);		
+//			}
+	}
+	
+	public Vector getListaAcciones(){
+		return listaAcciones;
 	}
 	
 	/** Establece los datos de la tabla
 	 * @param nombresOrdenadores Lista con los nombres de los ordenadores
-	 * @param listaEnvios Configuracion de la lista de envios
+	 * @param listaAcciones Configuracion de la lista de envios
 	 */
-	public void setTabla(Vector nombresOrdenadores, Vector listaEnvios)
+	public void setTabla(Vector nombresOrdenadores, Vector listaAcciones)
 	{
-		this.listaEnvios = new Vector(listaEnvios);
+		this.listaAcciones = new Vector(listaAcciones);
 		this.nombresOrdenadores = new Vector(nombresOrdenadores);
-		tabla.setModel(new modeloTablaAcciones(listaEnvios));
+		tabla.setModel(new modeloTablaAcciones(listaAcciones));
 
 		ponColumnas();
 	}
