@@ -748,7 +748,7 @@ public class listaObjetos extends listaObjetosVisuales
 		listaInterfaces interfaces = new listaInterfaces();
 		
 		for (i=0; i<tam; i++)
-			if (getID(i).compareTo("pc")==0 || getID(i).compareTo("ro")==0)
+			if (getID(i).compareTo("pc")==0 || getID(i).compareTo("ro")==0 || getID(i).compareTo("mc")==0)
 			{
 				interfaces = getInterfaces(i).copia();
 
@@ -760,6 +760,24 @@ public class listaObjetos extends listaObjetosVisuales
 		return dev;
 	}
 
+	/** Devuelve un vector conteniendo los nombres de todos los equipos de la topologia */
+	public Vector getNombresEquipos()
+	{
+		Vector dev = new Vector();
+		
+		for (int i=0; i<tam(); i++)
+			if (getID(i).compareTo("pc")==0
+					|| getID(i).compareTo("ro")==0
+					|| getID(i).compareTo("mc")==0
+					|| getID(i).compareTo("hu")==0
+					|| getID(i).compareTo("mo")==0
+					|| getID(i).compareTo("pu")==0
+					|| getID(i).compareTo("sw")==0
+					)
+				dev.add(getNombre(i));
+		return dev;
+	}
+	
 	/** Devuelve un vector conteniendo los nombres de todos los equipos de la topologia */
 	public Vector getNombres()
 	{
