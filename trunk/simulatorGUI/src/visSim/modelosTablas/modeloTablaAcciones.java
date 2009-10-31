@@ -16,15 +16,18 @@ public class modeloTablaAcciones extends AbstractTableModel
 
 	public modeloTablaAcciones(Vector listaAcciones)
 	{
-		data = new Object[listaAcciones.size()][3];
-		
-		for (int i=0; i<listaAcciones.size(); i+=1)
-		{
-			accionVisual accion = (accionVisual)listaAcciones.elementAt(i);
-			data[i][0] = accion.getInstante();
-			data[i][1] = accion.getTipo();
-			data[i][2] = accion.getDescripcion();
-		}
+		if (listaAcciones != null) {
+			data = new Object[listaAcciones.size()][3];
+			
+			for (int i=0; i<listaAcciones.size(); i+=1)
+			{
+				accionVisual accion = (accionVisual)listaAcciones.elementAt(i);
+				data[i][0] = accion.getInstante();
+				data[i][1] = accion.getTipo();
+				data[i][2] = accion.getDescripcion();
+			}
+		} else
+			data = new Object[0][3];
 	}
 
 	public Class getColumnClass(int c)

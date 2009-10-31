@@ -1,7 +1,9 @@
 /** @author: tlfs & afzs */
 package visSim;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -13,14 +15,17 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import objetoVisual.listaObjetos;
 import objetoVisual.accionVisual.accionApagarVisual;
 import objetoVisual.accionVisual.accionVisual;
 
 import util.muestraAviso;
+import visSim.dialogosAcciones.dialogoAccionApagar;
 import visSim.modelosTablas.modeloTablaAcciones;
 
 
@@ -31,10 +36,7 @@ import visSim.modelosTablas.modeloTablaAcciones;
 public class dialogoAcciones extends JDialog
 {
 	/** Vector que contiene la configuracion del envio de tramas */
-	private Vector listaAcciones;
-
-	/** Nombres de las maquinas junto con sus IPs de la topologia */	
-	private Vector nombresOrdenadores;
+	private listaObjetos lista;
 
 	/** Tabla donde se mostraran los envios */
 	private JTable tabla;
@@ -47,6 +49,8 @@ public class dialogoAcciones extends JDialog
 	private String textoBoton;
 	
 	private Frame padreFrame;
+	
+	int xCentral, yCentral;
 	
 	/** Constructor de la clase
 	 * @param parent Frame sobre el que se muestra el cuadro
@@ -62,11 +66,8 @@ public class dialogoAcciones extends JDialog
 		
 		setTitle("Configuracion de acciones");
 		
-		nombresOrdenadores = new Vector();
-		this.listaAcciones = new Vector();
-		
 		// Preparamos las cosas de la ventana
-		getContentPane().setLayout(null);
+		getContentPane().setLayout(new BorderLayout());
 
 		addWindowListener(new WindowAdapter()
 		{
@@ -113,7 +114,7 @@ public class dialogoAcciones extends JDialog
 			}
 		});
 
-		tabla = new JTable(new modeloTablaAcciones(listaAcciones));
+		tabla = new JTable(new modeloTablaAcciones(null));
 
 		ponColumnas();
 		tabla.setPreferredScrollableViewportSize(new Dimension(300, 70));
@@ -122,19 +123,21 @@ public class dialogoAcciones extends JDialog
 		jspanel.setViewportBorder(tabla.getBorder());
 		jspanel.setViewportView(tabla);
 
-		getContentPane().add(jspanel);
-		jspanel.setBounds(5,5, 450, 150);
+		getContentPane().add(BorderLayout.CENTER,jspanel);
 		
-		getContentPane().add(accionesDisponibles);
-		getContentPane().add(btn1);
-		btn1.setBounds(4, 170, 81, 26);
-		getContentPane().add(btn4);
-		btn4.setBounds(100, 170, 81, 26);
-		getContentPane().add(btn3);
-		btn3.setBounds(196, 170, 100, 26);
-		getContentPane().add(btn2);
-		btn2.setBounds(380, 190, 81, 26);
+		JPanel botones = new JPanel();
+		botones.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		botones.add(accionesDisponibles);
+		botones.add(btn1);
+		botones.add(btn4);
+		botones.add(btn3);
+		botones.add(btn2);
+		getContentPane().add(BorderLayout.SOUTH,botones);
 
+		this.xCentral = xCentral;
+		this.yCentral = yCentral;
+		
 		setResizable(false);
 		int ancho = 470;
 		int alto = 250;
@@ -152,6 +155,8 @@ public class dialogoAcciones extends JDialog
 				
 			}
 			else if (accionesDisponibles.getSelectedItem().equals(accionVisual.APAGAR)){
+				dialogoAccionApagar dlg = new dialogoAccionApagar(this,this.xCentral, this.yCentral, lista.getNombresEquipos());
+				dlg.setVisible(true);
 			}
 			else if (accionesDisponibles.getSelectedItem().equals(accionVisual.ENVIAR_PAQUETE_IP)){
 			}
@@ -162,7 +167,7 @@ public class dialogoAcciones extends JDialog
 			
 			//agregar la nueva accion a la lista
 			
-				tabla.setModel(new modeloTablaAcciones(listaAcciones));
+				tabla.setModel(new modeloTablaAcciones(lista.listaAcciones));
 				ponColumnas();
 			
 		}
@@ -172,16 +177,15 @@ public class dialogoAcciones extends JDialog
 			
 			if (indice>=0)
 			{
-				listaAcciones.remove(indice);	
-				tabla.setModel(new modeloTablaAcciones(listaAcciones));
+				lista.listaAcciones.remove(indice);	
+				tabla.setModel(new modeloTablaAcciones(lista));
 				ponColumnas();
 			}
 		}
 		else if (nombre.compareTo("Borrar todos")==0)
 		{
-			listaAcciones = new Vector();
-
-			tabla.setModel(new modeloTablaAcciones(listaAcciones));
+			lista.listaAcciones.removeAllElements();
+			tabla.setModel(new modeloTablaAcciones(lista));
 			ponColumnas();
 		}
 		else if (nombre.compareTo("Aceptar")==0)
@@ -282,19 +286,17 @@ public class dialogoAcciones extends JDialog
 //			}
 	}
 	
-	public Vector getListaAcciones(){
-		return listaAcciones;
+	public listaObjetos getLista(){
+		return lista;
 	}
 	
 	/** Establece los datos de la tabla
 	 * @param nombresOrdenadores Lista con los nombres de los ordenadores
-	 * @param listaAcciones Configuracion de la lista de envios
 	 */
-	public void setTabla(Vector nombresOrdenadores, Vector listaAcciones)
+	public void setTabla(listaObjetos lista)
 	{
-		this.listaAcciones = new Vector(listaAcciones);
-		this.nombresOrdenadores = new Vector(nombresOrdenadores);
-		tabla.setModel(new modeloTablaAcciones(listaAcciones));
+		this.lista = lista;
+		tabla.setModel(new modeloTablaAcciones(lista.listaAcciones));
 
 		ponColumnas();
 	}

@@ -136,13 +136,13 @@ public class paneldibujo extends paneldibujoVisual
 	public void configuraAcciones(int xCentral, int yCentral)
 	{
 		dialogoAcciones dialogo = new dialogoAcciones(padreFrame, xCentral, yCentral);
-		dialogo.setTabla(lista.getNombresOrdenadores(), new Vector(lista.getlistaAcciones()));
+		dialogo.setTabla(lista);
 		dialogo.muestra();
 		
 		if (dialogo.getBoton().compareTo("Aceptar")==0)
 		{
 			// Comprobamos si han cambiado con respecto a las que habian
-			Vector acciones = new Vector(dialogo.getListaAcciones());
+			Vector acciones = new Vector(dialogo.getLista().listaAcciones);
 			
 			// Primero en cuanto a tamanyo
 			if (acciones.size() != lista.getlistaAcciones().size())
@@ -155,7 +155,7 @@ public class paneldibujo extends paneldibujoVisual
 			if (cambios)
 				ponMensaje(constantesMensajes.cTopo + ficheroTopo + "," + cambios);
 
-			lista.setlistaAcciones(new Vector(dialogo.getListaAcciones()));
+			//lista.setlistaAcciones(new Vector(dialogo.getListaAcciones()));
 			ponMensaje(constantesMensajes.cMenu+cambiaMenu());
 		}
 		
