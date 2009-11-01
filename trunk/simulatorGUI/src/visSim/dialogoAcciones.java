@@ -15,9 +15,11 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import objetoVisual.listaObjetos;
@@ -134,6 +136,17 @@ public class dialogoAcciones extends JDialog
 		botones.add(btn3);
 		botones.add(btn2);
 		getContentPane().add(BorderLayout.SOUTH,botones);
+		
+		JPanel pnlPasos = new JPanel();
+		pnlPasos.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		
+		JLabel lblPasos = new JLabel("Cantidad de pasos:");
+		pnlPasos.add(lblPasos);
+		
+		JTextField txtPasos = new JTextField(5);
+		pnlPasos.add(txtPasos);
+		
+		getContentPane().add(BorderLayout.NORTH,pnlPasos);
 
 		this.xCentral = xCentral;
 		this.yCentral = yCentral;

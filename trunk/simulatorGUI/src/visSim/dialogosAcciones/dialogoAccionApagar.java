@@ -1,20 +1,16 @@
 package visSim.dialogosAcciones;
 
-import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.FlowLayout;
-import java.awt.Frame;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import objetoVisual.accionVisual.accionVisual;
 
 
 public class dialogoAccionApagar extends JDialog {
@@ -51,10 +47,22 @@ public class dialogoAccionApagar extends JDialog {
 		
 		getContentPane().add(pnlEquipo);
 
+		
+		JPanel pnlBotones = new JPanel();
+		pnlEquipo.setLayout(new FlowLayout());
+		
+		JButton btnAceptar = new JButton("Aceptar");
+		pnlBotones.add(btnAceptar);
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		pnlBotones.add(btnCancelar);
+				
+		getContentPane().add(pnlBotones);
+		
 		setResizable(false);
-		int ancho = 470;
-		int alto = 250;
-		setBounds(xCentral-ancho/2, yCentral-alto/2, ancho, alto);
+		pack();
+		doLayout();
+		this.setLocation(xCentral-this.getSize().width/2, yCentral-this.getSize().height/2);
 		
 	}
 	
