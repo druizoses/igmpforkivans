@@ -66,7 +66,7 @@ public abstract class dialogoAccionBase extends JDialog {
 	protected void addField(String label, JComponent componente)
 	{
 		JPanel pnl = new JPanel();
-		pnl.setLayout(new FlowLayout());
+		pnl.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
 
 		JLabel lbl = new JLabel(label);
 		pnl.add(lbl);
