@@ -12,6 +12,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import objetoVisual.listaObjetos;
+import objetoVisual.accionVisual.accionEncenderVisual;
+import objetoVisual.accionVisual.accionVisual;
+
 
 public class dialogoAccionEncender extends dialogoAccionBase {
 
@@ -33,8 +37,8 @@ public class dialogoAccionEncender extends dialogoAccionBase {
 
 	protected accionVisual crearAccionVisual(){
 		accionEncenderVisual accion = new accionEncenderVisual();
-		accion.setInstante(txtInstante.getText());
-		accion.setEquipo(equiposDisponibles.getSelectedItem());
+		accion.setInstante(new Integer(txtInstante.getText()));
+		accion.setEquipo(equiposDisponibles.getSelectedItem().toString());
 		return accion;
 	}
 
