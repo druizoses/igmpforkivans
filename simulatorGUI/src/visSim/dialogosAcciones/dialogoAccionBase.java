@@ -41,7 +41,7 @@ public abstract class dialogoAccionBase extends JDialog {
 		JButton btnAceptar = new JButton("Aceptar");
 		btnAceptar.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
-				aceptar();
+				resultadoAceptar();
 			}
 		});
 		pnlBotones.add(btnAceptar);
@@ -49,7 +49,7 @@ public abstract class dialogoAccionBase extends JDialog {
 		JButton btnCancelar = new JButton("Cancelar");
 		btnAceptar.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
-				cancelar();
+				resultadoCancelar();
 			}
 		});
 		pnlBotones.add(btnCancelar);
@@ -76,13 +76,13 @@ public abstract class dialogoAccionBase extends JDialog {
 		getContentPane().add(pnl);
 	}
 
-	public void cancelar(){
+	public void resultadoCancelar(){
 		boton = dialogoAccionBase.CANCELAR;
 		accion = null;
 		setVisible(false);
 	}
 	
-	public void aceptar(){
+	public void resultadoAceptar(){
 		boton = dialogoAccionBase.ACEPTAR;
 		accion = crearAccionVisual();
 		setVisible(false);
