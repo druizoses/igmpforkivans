@@ -52,7 +52,7 @@ public class dialogoAccionUnirseAGrupo extends dialogoAccionBase {
 
 	public void setListaInterfaces(listaObjetos lista)
 	{
-		int iEquipo = lista.buscaEquipo(e.getItem());
+		int iEquipo = lista.buscaEquipo(equiposDisponibles.getSelectedItem().toString());
 		listaInterfaces tempInter = lista.getInterfaces(iEquipo);
 		equiposDisponibles.setModel(new DefaultComboBoxModel(tempInter));
 	}
