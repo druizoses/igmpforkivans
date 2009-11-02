@@ -13,12 +13,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
-public class dialogoAccionApagar extends dialogoAccionBase {
+public class dialogoAccionEncender extends dialogoAccionBase {
 
 	private JTextField txtInstante;
 	private JComboBox equiposDisponibles;
 	
-	public dialogoAccionApagar(Dialog parent, int xCentral, int yCentral, listaObjetos lista)
+	public dialogoAccionEncender(Dialog parent, int xCentral, int yCentral, listaObjetos lista)
 	{
 		super(parent, xCentral, yCentral, lista);		
 	}
@@ -32,7 +32,7 @@ public class dialogoAccionApagar extends dialogoAccionBase {
 	}
 
 	protected accionVisual crearAccionVisual(){
-		accionApagarVisual accion = new accionApagarVisual();
+		accionEncenderVisual accion = new accionEncenderVisual();
 		accion.setInstante(txtInstante.getText());
 		accion.setEquipo(equiposDisponibles.getSelectedItem());
 		return accion;

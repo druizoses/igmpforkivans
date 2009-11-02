@@ -164,25 +164,33 @@ public class dialogoAcciones extends JDialog
 	{
 		if (nombre.compareTo("Anyadir")==0)
 		{
+			dialogoAccionApagar dlgAccion = null;
 			if (accionesDisponibles.getSelectedItem().equals(accionVisual.ENCENDER)){
-				
+				dlgAccion = new dialogoAccionEncender(this,this.xCentral, this.yCentral, lista);
 			}
 			else if (accionesDisponibles.getSelectedItem().equals(accionVisual.APAGAR)){
-				dialogoAccionApagar dlg = new dialogoAccionApagar(this,this.xCentral, this.yCentral, lista.getNombresEquipos());
-				dlg.setVisible(true);
+				dlgAccion = new dialogoAccionApagar(this,this.xCentral, this.yCentral, lista);
 			}
 			else if (accionesDisponibles.getSelectedItem().equals(accionVisual.ENVIAR_PAQUETE_IP)){
+				dlgAccion = new dialogoAccionEnviarPaqueteIP(this,this.xCentral, this.yCentral, lista);
 			}
 			else if (accionesDisponibles.getSelectedItem().equals(accionVisual.UNIRSE_A_GRUPO)){
+				dlgAccion = new dialogoAccionUnirseAGrupo(this,this.xCentral, this.yCentral, lista);
 			}
 			else if (accionesDisponibles.getSelectedItem().equals(accionVisual.DEJAR_GRUPO)){
+				dlgAccion = new dialogoAccionDejarGrupo(this,this.xCentral, this.yCentral, lista);
 			}
 			
+			dlgAccion.setVisible(true);
+
 			//agregar la nueva accion a la lista
-			
+			if (dlgAccion.getResultado().equals(dialogoAccionBase.ACEPTAR)){
+				accionVisual accion = dlgAccion.getAccionVisual();
+				lista.listaAcciones.add(accion);
 				tabla.setModel(new modeloTablaAcciones(lista.listaAcciones));
 				ponColumnas();
-			
+			}
+
 		}
 		else if (nombre.compareTo("Borrar")==0)
 		{
@@ -205,7 +213,6 @@ public class dialogoAcciones extends JDialog
 		{
 			textoBoton = "Aceptar";
 			setVisible(false);
-			
 		}
 	}
 	
