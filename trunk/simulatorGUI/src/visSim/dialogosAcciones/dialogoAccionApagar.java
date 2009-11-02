@@ -12,6 +12,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import objetoVisual.listaObjetos;
+import objetoVisual.accionVisual.accionApagarVisual;
+import objetoVisual.accionVisual.accionVisual;
+
 
 public class dialogoAccionApagar extends dialogoAccionBase {
 
@@ -33,8 +37,8 @@ public class dialogoAccionApagar extends dialogoAccionBase {
 
 	protected accionVisual crearAccionVisual(){
 		accionApagarVisual accion = new accionApagarVisual();
-		accion.setInstante(txtInstante.getText());
-		accion.setEquipo(equiposDisponibles.getSelectedItem());
+		accion.setInstante(new Integer(txtInstante.getText()));
+		accion.setEquipo(equiposDisponibles.getSelectedItem().toString());
 		return accion;
 	}
 

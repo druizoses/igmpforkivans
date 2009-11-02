@@ -2,18 +2,24 @@ package visSim.dialogosAcciones;
 
 import java.awt.Dialog;
 import java.awt.FlowLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import objetoVisual.listaObjetos;
+import objetoVisual.accionVisual.accionVisual;
 
-public class dialogoAccionBase extends JDialog {
+
+public abstract class dialogoAccionBase extends JDialog {
 
 	private String boton;
 	private accionVisual accion;
@@ -57,7 +63,7 @@ public class dialogoAccionBase extends JDialog {
 		
 	}
 	
-	protected void addField(String label, Jcomponent componente)
+	protected void addField(String label, JComponent componente)
 	{
 		JPanel pnl = new JPanel();
 		pnl.setLayout(new FlowLayout());

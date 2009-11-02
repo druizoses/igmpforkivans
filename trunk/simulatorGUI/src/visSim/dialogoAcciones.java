@@ -28,6 +28,11 @@ import objetoVisual.accionVisual.accionVisual;
 
 import util.muestraAviso;
 import visSim.dialogosAcciones.dialogoAccionApagar;
+import visSim.dialogosAcciones.dialogoAccionBase;
+import visSim.dialogosAcciones.dialogoAccionDejarGrupo;
+import visSim.dialogosAcciones.dialogoAccionEncender;
+import visSim.dialogosAcciones.dialogoAccionEnviarPaqueteIP;
+import visSim.dialogosAcciones.dialogoAccionUnirseAGrupo;
 import visSim.modelosTablas.modeloTablaAcciones;
 
 
@@ -164,7 +169,7 @@ public class dialogoAcciones extends JDialog
 	{
 		if (nombre.compareTo("Anyadir")==0)
 		{
-			dialogoAccionApagar dlgAccion = null;
+			dialogoAccionBase dlgAccion = null;
 			if (accionesDisponibles.getSelectedItem().equals(accionVisual.ENCENDER)){
 				dlgAccion = new dialogoAccionEncender(this,this.xCentral, this.yCentral, lista);
 			}

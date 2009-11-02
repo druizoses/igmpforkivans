@@ -2,15 +2,24 @@ package visSim.dialogosAcciones;
 
 import java.awt.Dialog;
 import java.awt.FlowLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import objetoVisual.listaObjetos;
+import objetoVisual.accionVisual.accionEnviarPaqueteIPVisual;
+import objetoVisual.accionVisual.accionVisual;
+import visSim.listaInterfaces;
 
 
 public class dialogoAccionEnviarPaqueteIP extends dialogoAccionBase {
@@ -34,13 +43,7 @@ public class dialogoAccionEnviarPaqueteIP extends dialogoAccionBase {
 		super.addField("Instante",txtInstante);
 
 		equiposDisponibles = new JComboBox(lista.getNombresEquipos());
-		equiposDisponibles.addItemListener(new ItemListener()
-		{
-			public void itemStateChanged(ItemEvent e)
-			{
-				setListaInterfaces(lista);
-			}
-		});
+		equiposDisponibles.addItemListener(new LocalItemListener(lista));
 		super.addField("Equipo",equiposDisponibles);
 
 		interfaces = new JComboBox();
@@ -72,14 +75,27 @@ public class dialogoAccionEnviarPaqueteIP extends dialogoAccionBase {
 	protected accionVisual crearAccionVisual()
 	{
 		accionEnviarPaqueteIPVisual accion = new accionEnviarPaqueteIPVisual();
-		accion.setInstante(txtInstante.getText());
-		accion.setEquipo(equiposDisponibles.getSelectedItem());
-		accion.setInterfaz(interfaces.getSelectedItem());
+		accion.setInstante(new Integer(txtInstante.getText()));
+		accion.setEquipo(equiposDisponibles.getSelectedItem().toString());
+		accion.setInterfaz(interfaces.getSelectedItem().toString());
 		accion.setDireccionDestino(txtDireccionDestino.getText());
-		accion.setTamanioPaquete(txtTamanio.getText());
-		accion.setCopias(txtCopias.getText());
+		accion.setTamanioPaquete(new Integer(txtTamanio.getText()));
+		accion.setCopias(new Integer(txtCopias.getText()));
 		accion.setFragmentable(chkFragmentable.isSelected());
 		return accion;
+	}
+	
+	private class LocalItemListener implements ItemListener {
+		
+		private listaObjetos lista;
+		
+		public LocalItemListener(listaObjetos lista) {
+			this.lista=lista;
+		}
+		
+		public void itemStateChanged(ItemEvent e){
+			setListaInterfaces(lista);
+		}
 	}
 
 }
