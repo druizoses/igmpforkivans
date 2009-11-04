@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -40,6 +41,16 @@ public class dialogoAccionApagar extends dialogoAccionBase {
 		accion.setInstante(new Integer(txtInstante.getText()));
 		accion.setEquipo(equiposDisponibles.getSelectedItem().toString());
 		return accion;
+	}
+	
+	protected boolean validarCampos(){
+		try {
+			Integer.valueOf(txtInstante.getText());
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "El instante debe ser un numero entero", "Error en la validacion", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
 	}
 
 }

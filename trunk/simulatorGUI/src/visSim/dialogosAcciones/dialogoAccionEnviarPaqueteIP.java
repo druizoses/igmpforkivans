@@ -13,6 +13,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -69,7 +70,7 @@ public class dialogoAccionEnviarPaqueteIP extends dialogoAccionBase {
 	{
 		int iEquipo = lista.buscaEquipo(equiposDisponibles.getSelectedItem().toString());
 		listaInterfaces tempInter = lista.getInterfaces(iEquipo);
-		equiposDisponibles.setModel(new DefaultComboBoxModel(tempInter));
+		interfaces.setModel(new DefaultComboBoxModel(tempInter));
 	}
 
 	protected accionVisual crearAccionVisual()
@@ -96,6 +97,16 @@ public class dialogoAccionEnviarPaqueteIP extends dialogoAccionBase {
 		public void itemStateChanged(ItemEvent e){
 			setListaInterfaces(lista);
 		}
+	}
+	
+	protected boolean validarCampos(){
+		try {
+			Integer.valueOf(txtInstante.getText());
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "El instante debe ser un numero entero", "Error en la validacion", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
 	}
 
 }
