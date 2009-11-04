@@ -47,7 +47,7 @@ public abstract class dialogoAccionBase extends JDialog {
 		pnlBotones.add(btnAceptar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
-		btnAceptar.addMouseListener(new MouseAdapter(){
+		btnCancelar.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 				resultadoCancelar();
 			}
@@ -83,9 +83,11 @@ public abstract class dialogoAccionBase extends JDialog {
 	}
 	
 	public void resultadoAceptar(){
-		boton = dialogoAccionBase.ACEPTAR;
-		accion = crearAccionVisual();
-		setVisible(false);
+		if (validarCampos()) {
+			boton = dialogoAccionBase.ACEPTAR;
+			accion = crearAccionVisual();
+			setVisible(false);
+		}
 	}
 
 	public String getResultado(){
@@ -99,5 +101,7 @@ public abstract class dialogoAccionBase extends JDialog {
 	protected abstract void init(listaObjetos lista);
 
 	protected abstract accionVisual crearAccionVisual();
+	
+	protected abstract boolean validarCampos();
 	
 }
