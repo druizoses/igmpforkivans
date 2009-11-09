@@ -135,12 +135,15 @@ public class paneldibujo extends paneldibujoVisual
 	 */
 	public void configuraAcciones(int xCentral, int yCentral)
 	{
-		dialogoAcciones dialogo = new dialogoAcciones(padreFrame, xCentral, yCentral);
+		dialogoAcciones dialogo = new dialogoAcciones(padreFrame, xCentral, yCentral,getMaxNumeroPasos());
 		dialogo.setTabla(lista);
 		dialogo.muestra();
 		
 		if (dialogo.getBoton().compareTo("Aceptar")==0)
 		{
+			
+			setMaxNumeroPasos(dialogo.getCantidadPasos());
+			
 			// Comprobamos si han cambiado con respecto a las que habian
 			Vector acciones = new Vector(dialogo.getLista().listaAcciones);
 			

@@ -959,4 +959,9 @@ public class listaObjetos extends listaObjetosVisuales
 		return dev;
 	}
 
+	public void setInterfaces(listaObjetos lista) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

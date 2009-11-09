@@ -50,6 +50,8 @@ public class dialogoAcciones extends JDialog
 	
 	private JComboBox accionesDisponibles;
 	
+	private JTextField txtPasos;
+	
 	/** Nombre del boton pulsado al finalizar la configuracion. Utilizado en paneldibujo
 	 * @see paneldibujo
 	 */
@@ -63,8 +65,9 @@ public class dialogoAcciones extends JDialog
 	 * @param parent Frame sobre el que se muestra el cuadro
 	 * @param xCentral Coordenada x central
 	 * @param yCentral Coordenada y central
+	 * @param maxNumeroPasos 
 	 */
-	public dialogoAcciones(Frame parent, int xCentral, int yCentral)
+	public dialogoAcciones(Frame parent, int xCentral, int yCentral, int maxNumeroPasos)
 	{
 		super(parent, true);
 		padreFrame = parent;
@@ -124,7 +127,7 @@ public class dialogoAcciones extends JDialog
 		tabla = new JTable(new modeloTablaAcciones(null));
 
 		ponColumnas();
-		tabla.setPreferredScrollableViewportSize(new Dimension(300, 70));
+		tabla.setPreferredScrollableViewportSize(new Dimension(700, 70));
 
 		JScrollPane jspanel = new JScrollPane();
 		jspanel.setViewportBorder(tabla.getBorder());
@@ -148,7 +151,8 @@ public class dialogoAcciones extends JDialog
 		JLabel lblPasos = new JLabel("Cantidad de pasos:");
 		pnlPasos.add(lblPasos);
 		
-		JTextField txtPasos = new JTextField(5);
+		txtPasos = new JTextField(5);
+		txtPasos.setText(String.valueOf(maxNumeroPasos));
 		pnlPasos.add(txtPasos);
 		
 		getContentPane().add(BorderLayout.NORTH,pnlPasos);
@@ -157,9 +161,13 @@ public class dialogoAcciones extends JDialog
 		this.yCentral = yCentral;
 		
 		setResizable(false);
-		int ancho = 470;
+		int ancho = 750;//470;
 		int alto = 250;
 		setBounds(xCentral-ancho/2, yCentral-alto/2, ancho, alto);
+	}
+	
+	public int getCantidadPasos(){
+		return Integer.valueOf(txtPasos.getText());
 	}
 	
 	/** Funcion que controla los eventos de los botones 
@@ -296,9 +304,10 @@ public class dialogoAcciones extends JDialog
 	/** Metodo para poner objetos JComboBox para los nombres de las maquinas */
 	private void ponColumnas()
 	{
-		tabla.getColumnModel().getColumn(1).setPreferredWidth(5);
-		tabla.getColumnModel().getColumn(2).setPreferredWidth(25);
-
+		tabla.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tabla.getColumnModel().getColumn(1).setPreferredWidth(100);
+		tabla.getColumnModel().getColumn(2).setPreferredWidth(600);
+		
 //		if (nombresOrdenadores != null)
 //			for (int i=0; i<1; i++)
 //			{
