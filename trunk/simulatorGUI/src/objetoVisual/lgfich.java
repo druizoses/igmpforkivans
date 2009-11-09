@@ -10,8 +10,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Vector;
 
+import objetoVisual.accionVisual.accionEnviarPaqueteIPVisual;
+import objetoVisual.accionVisual.accionVisual;
+
 import util.nomiconos;
 import util.simuGrafico;
+import visSim.listaInterfaces;
 
 
 /** Clase encargada de leer y almacenar en fichero los datos de las topologias */
@@ -108,7 +112,10 @@ public class lgfich
 			XMLDecoder d = new XMLDecoder(new BufferedInputStream(new FileInputStream(nomfich)));
 
 			lista.setPropiedades(new propiedadesTopologia((String)d.readObject(), (String)d.readObject(), (String)d.readObject()));
-			lista.setlistaAcciones(new Vector((Vector)d.readObject()));
+			if (nomfich.substring(nomfich.indexOf(".")+1).equals("net2"))
+				lista.setlistaAcciones(new Vector((Vector)d.readObject()));
+			else
+				lista.setlistaAcciones(crearListaAcciones(new Vector((Vector)d.readObject())));
 			
 			while(sigueLeyendo)
 			{
@@ -143,6 +150,9 @@ public class lgfich
 					d.close();
 				}
 			}
+			if (!nomfich.substring(nomfich.indexOf(".")+1).equals("net2"))
+				setInterfacesCorrectas(lista);
+			
 		}
 		catch(Exception e)
 		{
@@ -151,5 +161,47 @@ public class lgfich
 		}
 		
 		return sinFallos;
+	}
+
+	private static void setInterfacesCorrectas(listaObjetos lista) {
+		for (int i = 0;i < lista.listaAcciones.size(); i++)
+		{
+			accionEnviarPaqueteIPVisual accion = (accionEnviarPaqueteIPVisual) lista.listaAcciones.elementAt(i);
+			int iEquipo = lista.buscaEquipo(accion.getEquipo());
+			listaInterfaces tempInter = lista.getInterfaces(iEquipo);
+			for (int j=0; j<tempInter.tam(); j++)
+				if (tempInter.getInterfaz(j).getIP().equals(accion.getInterfaz()))
+				{
+					accion.setInterfaz(tempInter.getInterfaz(j).getNombre());
+					break;
+				}
+		}
+	}
+
+	private static Vector crearListaAcciones(Vector vector) {
+		Vector v = new Vector();
+		for (int i=0;i<vector.size();i+=5)
+		{
+			String aux1 = (String)vector.elementAt(i);
+			String aux2 = (String)vector.elementAt(i+1);
+			String aux3 = (String)vector.elementAt(i+2);
+			String aux4 = (String)vector.elementAt(i+3);
+			Boolean aux5 = (Boolean)vector.elementAt(i+4);
+			String ipOrigen = aux1.substring(aux1.indexOf("(")+1, aux1.indexOf(")"));
+			String nombreEquipoOrigen = aux1.substring(0, aux1.indexOf("(")-1);
+			accionEnviarPaqueteIPVisual accion = new accionEnviarPaqueteIPVisual();
+			accion.setEquipo(nombreEquipoOrigen);
+			String ipDestino = aux1.substring(aux1.indexOf("(")+1, aux1.indexOf(")"));
+			accion.setDireccionDestino(ipDestino);
+			accion.setTamanioPaquete(Integer.valueOf(aux3));
+			accion.setCopias(Integer.valueOf(aux4));
+			accion.setFragmentable(aux5);
+			
+			accion.setInstante(0);
+			accion.setInterfaz(ipOrigen);
+			
+			v.add(accion);
+		}
+		return v;
 	}
 }
