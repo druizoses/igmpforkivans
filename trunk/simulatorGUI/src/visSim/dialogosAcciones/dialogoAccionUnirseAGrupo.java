@@ -31,12 +31,15 @@ public class dialogoAccionUnirseAGrupo extends dialogoAccionBase {
 	
 	public dialogoAccionUnirseAGrupo(Dialog parent, int xCentral, int yCentral, listaObjetos lista)
 	{
-		super(parent, xCentral, yCentral, lista);		
+		super(parent, xCentral, yCentral, lista);
+		this.setTitle("Unirse a un Grupo");
 	}
 	
 	protected void init(listaObjetos lista)
 	{
 		txtInstante = new JTextField(5);
+		txtInstante.setText("0");
+		txtInstante.setCaretPosition(0);
 		super.addField("Instante",txtInstante);
 
 		equiposDisponibles = new JComboBox(lista.getNombresEquipos());
@@ -55,7 +58,7 @@ public class dialogoAccionUnirseAGrupo extends dialogoAccionBase {
 	{
 		int iEquipo = lista.buscaEquipo(equiposDisponibles.getSelectedItem().toString());
 		listaInterfaces tempInter = lista.getInterfaces(iEquipo);
-		equiposDisponibles.setModel(new DefaultComboBoxModel(tempInter));
+		interfaces.setModel(new DefaultComboBoxModel(tempInter));
 	}
 
 	protected accionVisual crearAccionVisual()

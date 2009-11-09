@@ -1,7 +1,12 @@
 package visSim.dialogosAcciones;
 
+import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
@@ -27,13 +32,25 @@ public abstract class dialogoAccionBase extends JDialog {
 	public static final String ACEPTAR = "aceptar";
 	public static final String CANCELAR = "cancelar";
 	
+	private JPanel fields;
+	private GridBagConstraints constraints;
+	
 	public dialogoAccionBase(Dialog parent, int xCentral, int yCentral, listaObjetos lista)
 	{
 		super(parent, true);
 		
-		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-		
+		fields = new JPanel();
+		fields.setLayout(new GridBagLayout());
+		constraints = new GridBagConstraints();
+	    constraints.insets = new Insets(3, 3, 3, 3);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+
 		init(lista);
+		
+		getContentPane().setLayout(new BorderLayout());
+		
+		getContentPane().add(fields, BorderLayout.CENTER);
 		
 		JPanel pnlBotones = new JPanel();
 		pnlBotones.setLayout(new FlowLayout());
@@ -54,26 +71,27 @@ public abstract class dialogoAccionBase extends JDialog {
 		});
 		pnlBotones.add(btnCancelar);
 				
-		getContentPane().add(pnlBotones);
+		getContentPane().add(pnlBotones, BorderLayout.SOUTH);
 		
 		setResizable(false);
 		pack();
 		doLayout();
 		this.setLocation(xCentral-this.getSize().width/2, yCentral-this.getSize().height/2);
-		
 	}
-	
+
 	protected void addField(String label, JComponent componente)
 	{
-		JPanel pnl = new JPanel();
-		pnl.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
-
-		JLabel lbl = new JLabel(label);
-		pnl.add(lbl);
-
-		pnl.add(componente);
-		
-		getContentPane().add(pnl);
+		constraints.gridx = 0;
+        constraints.weightx = 0;
+        constraints.weighty = 0;
+        JLabel jlabel = new JLabel(label);
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.anchor = GridBagConstraints.LINE_END;
+        fields.add(jlabel, constraints);
+        constraints.gridx = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        fields.add(componente, constraints);
+        constraints.gridy++;
 	}
 
 	public void resultadoCancelar(){

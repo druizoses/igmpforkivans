@@ -116,7 +116,7 @@ class filtroNet extends FileFilter
 		
 		String extension = getExtension(f);
 		
-		if(extension != null && (extension.compareTo("net")==0 || extension.compareTo("csv")==0))
+		if(extension != null && (extension.compareTo("net")==0 || extension.compareTo("net2")==0 || extension.compareTo("csv")==0))
 			return true;
 
 		return false;

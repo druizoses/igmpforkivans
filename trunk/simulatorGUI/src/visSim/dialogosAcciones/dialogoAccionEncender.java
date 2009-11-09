@@ -29,11 +29,14 @@ public class dialogoAccionEncender extends dialogoAccionBase {
 	
 	public dialogoAccionEncender(Dialog parent, int xCentral, int yCentral, listaObjetos lista)
 	{
-		super(parent, xCentral, yCentral, lista);		
+		super(parent, xCentral, yCentral, lista);
+		this.setTitle("Encender Equipo");
 	}
 	
 	protected void init(listaObjetos lista){
 		txtInstante = new JTextField(5);
+		txtInstante.setText("0");
+		txtInstante.setCaretPosition(0);
 		super.addField("Instante",txtInstante);
 
 		equiposDisponibles = new JComboBox(lista.getNombresEquipos());
