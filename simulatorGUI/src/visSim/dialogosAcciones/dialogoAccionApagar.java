@@ -1,5 +1,6 @@
 package visSim.dialogosAcciones;
 
+import java.awt.Cursor;
 import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.util.Vector;
@@ -25,13 +26,15 @@ public class dialogoAccionApagar extends dialogoAccionBase {
 	
 	public dialogoAccionApagar(Dialog parent, int xCentral, int yCentral, listaObjetos lista)
 	{
-		super(parent, xCentral, yCentral, lista);		
+		super(parent, xCentral, yCentral, lista);
+		this.setTitle("Apagar Equipo");
 	}
 	
 	protected void init(listaObjetos lista){
 		txtInstante = new JTextField(5);
 		super.addField("Instante",txtInstante);
-
+		txtInstante.setText("0");
+		txtInstante.setCaretPosition(0);
 		equiposDisponibles = new JComboBox(lista.getNombresEquipos());
 		super.addField("Equipo",equiposDisponibles);
 	}

@@ -35,12 +35,15 @@ public class dialogoAccionEnviarPaqueteIP extends dialogoAccionBase {
 	
 	public dialogoAccionEnviarPaqueteIP(Dialog parent, int xCentral, int yCentral, listaObjetos lista)
 	{
-		super(parent, xCentral, yCentral, lista);		
+		super(parent, xCentral, yCentral, lista);
+		this.setTitle("Enviar paquete IP");
 	}
 	
 	protected void init(listaObjetos lista)
 	{
 		txtInstante = new JTextField(5);
+		txtInstante.setText("0");
+		txtInstante.setCaretPosition(0);
 		super.addField("Instante",txtInstante);
 
 		equiposDisponibles = new JComboBox(lista.getNombresEquipos());
@@ -59,7 +62,8 @@ public class dialogoAccionEnviarPaqueteIP extends dialogoAccionBase {
 		txtTamanio.setText("1000");
 
 		txtCopias = new JTextField(5);
-		super.addField("Tamaño",txtTamanio);
+		super.addField("Copias",txtCopias);
+		txtCopias.setCaretPosition(0);
 		txtCopias.setText("1");
 
 		chkFragmentable = new JCheckBox();
@@ -70,7 +74,10 @@ public class dialogoAccionEnviarPaqueteIP extends dialogoAccionBase {
 	{
 		int iEquipo = lista.buscaEquipo(equiposDisponibles.getSelectedItem().toString());
 		listaInterfaces tempInter = lista.getInterfaces(iEquipo);
-		interfaces.setModel(new DefaultComboBoxModel(tempInter));
+		Vector nombresInterfaces = new Vector();
+		for (int j=0; j<tempInter.tam(); j++)
+			nombresInterfaces.add(tempInter.getInterfaz(j).getNombre());
+		interfaces.setModel(new DefaultComboBoxModel(nombresInterfaces));
 	}
 
 	protected accionVisual crearAccionVisual()
