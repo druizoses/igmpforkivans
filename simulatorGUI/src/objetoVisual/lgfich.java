@@ -191,7 +191,7 @@ public class lgfich
 			String nombreEquipoOrigen = aux1.substring(0, aux1.indexOf("(")-1);
 			accionEnviarPaqueteIPVisual accion = new accionEnviarPaqueteIPVisual();
 			accion.setEquipo(nombreEquipoOrigen);
-			String ipDestino = aux1.substring(aux1.indexOf("(")+1, aux1.indexOf(")"));
+			String ipDestino = aux2.substring(aux2.indexOf("(")+1, aux2.indexOf(")"));
 			accion.setDireccionDestino(ipDestino);
 			accion.setTamanioPaquete(Integer.valueOf(aux3));
 			accion.setCopias(Integer.valueOf(aux4));
