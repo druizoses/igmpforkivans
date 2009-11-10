@@ -337,7 +337,7 @@ public class NivelIPv4 extends Nivel
 		    {
 		    	Dato dato=(Dato)enEspera.get(i);
 		    	//Objeto.DEBUG(equipo.getNombre()+": Procesando datagrama en espera de ARP ->");
-		    	NuevoEvento('E',instanteActual,dato.paquete,equipo.getNombre()+": Procesando datagrama en espera de ARP ->");		    	
+		    	//NuevoEvento('E',instanteActual,dato.paquete,equipo.getNombre()+": Procesando datagrama en espera de ARP ->");		    	
 		    			    
 				// 1. Comprobamos si se ha cumplido el 'time out'
 		    	if(instanteActual-dato.instante>=arp_timeout)
