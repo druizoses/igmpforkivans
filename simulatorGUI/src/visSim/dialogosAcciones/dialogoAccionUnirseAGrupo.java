@@ -58,7 +58,10 @@ public class dialogoAccionUnirseAGrupo extends dialogoAccionBase {
 	{
 		int iEquipo = lista.buscaEquipo(equiposDisponibles.getSelectedItem().toString());
 		listaInterfaces tempInter = lista.getInterfaces(iEquipo);
-		interfaces.setModel(new DefaultComboBoxModel(tempInter));
+		Vector nombresInterfaces = new Vector();
+		for (int j=0; j<tempInter.tam(); j++)
+			nombresInterfaces.add(tempInter.getInterfaz(j).getNombre());
+		interfaces.setModel(new DefaultComboBoxModel(nombresInterfaces));
 	}
 
 	protected accionVisual crearAccionVisual()

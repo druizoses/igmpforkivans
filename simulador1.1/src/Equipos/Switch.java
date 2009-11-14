@@ -59,8 +59,8 @@ public class Switch extends Equipo {
         	temp = defaultTemp;*/
         tabla = new TablaDeDirecciones(this, temp);
     }
-    public void encender(){
-    	super.encender();
+    public void encender(Equipo e, int instante){
+    	super.encender(e,instante);
     	int temp = 0;
         MemoriaIntermedia = new Vector();
     	tabla = new TablaDeDirecciones(this, temp);

@@ -86,8 +86,8 @@ public class Router extends Equipo
         tablaDeRutas=nivelIPv4.tablaDeRutas;
     }
 
-    public void encender(){
-    	super.encender();
+    public void encender(Equipo e, int instante){
+    	super.encender(e,instante);
     	nivelIPv4.tablaDeRutas=tablaDeRutas;
     }
     
