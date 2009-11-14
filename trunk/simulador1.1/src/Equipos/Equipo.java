@@ -67,15 +67,26 @@ public abstract class Equipo extends Objeto
         iniciar();
     } 
 
-    public void encender(){
-    	encendido = true;
-    	iniciar();
+    public void encender(Equipo e, int instante){
+    	
+    	if (!encendido) {    	
+	    	encendido = true;
+	    	iniciar();
+	    	NuevoEvento('P',instante,null,"El equipo "+e.getNombre()+" se ha prendido.");
+    	} else {
+    		NuevoEvento('P',instante,null,"El equipo "+e.getNombre()+" ya se encontraba prendido.");
+    	}
     }
     
     protected abstract void iniciar();
 
-	public void apagar(){
-    	encendido = false;
+	public void apagar(Equipo e, int instante){
+		if (encendido){
+	    	encendido = false;
+	    	NuevoEvento('A',instante,null,"El equipo "+e.getNombre()+" se ha apagado.");
+		} else {
+			NuevoEvento('A',instante,null,"El equipo "+e.getNombre()+" ya se encontraba apagado.");
+		}
     }    
     
 	/**

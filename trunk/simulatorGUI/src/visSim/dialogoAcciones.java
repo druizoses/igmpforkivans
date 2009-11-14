@@ -212,14 +212,14 @@ public class dialogoAcciones extends JDialog
 			if (indice>=0)
 			{
 				lista.listaAcciones.remove(indice);	
-				tabla.setModel(new modeloTablaAcciones(lista));
+				tabla.setModel(new modeloTablaAcciones(lista.listaAcciones));
 				ponColumnas();
 			}
 		}
 		else if (nombre.compareTo("Borrar todos")==0)
 		{
 			lista.listaAcciones.removeAllElements();
-			tabla.setModel(new modeloTablaAcciones(lista));
+			tabla.setModel(new modeloTablaAcciones(lista.listaAcciones));
 			ponColumnas();
 		}
 		else if (nombre.compareTo("Aceptar")==0)

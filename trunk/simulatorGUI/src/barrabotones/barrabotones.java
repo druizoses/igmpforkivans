@@ -126,7 +126,7 @@ public class barrabotones extends JToolBar
 		add(btnSip);
 
 		btnEvt= new bboton();
-		btnEvt.setPBoton("btnEvt", nomiconos.nombotonSimulaEvento, oyente, ",16,", estado,"Simular evento a evento");
+		btnEvt.setPBoton("btnEvt", nomiconos.nombotonSimulaEvento, oyente, ",15,", estado,"Simular evento a evento");
 		add(btnEvt);
 
 		btnDS= new bboton();
@@ -166,6 +166,7 @@ public class barrabotones extends JToolBar
 		btnSE.establece(",14,",estado);
 		btnSi.establece(",15,",estado);
 		btnSip.establece(",15,",estado);
+		btnEvt.establece(",15,",estado);
 		btnDS.establece(",16,",estado);
 		btnEvS.establece(",17,",estado);
 		

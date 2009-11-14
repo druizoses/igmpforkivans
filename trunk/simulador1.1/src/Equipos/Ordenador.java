@@ -109,8 +109,8 @@ public class Ordenador extends Equipo
         		
 	}
     
-	public void encender(){
-    	super.encender();
+	public void encender(Equipo e, int instante){
+    	super.encender(e,instante);
     	nivelIPv4.tablaDeRutas=tablaDeRutas;
     }
     

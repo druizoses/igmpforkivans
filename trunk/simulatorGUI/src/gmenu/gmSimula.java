@@ -61,7 +61,7 @@ class gmSimula extends JMenu
 		add(gmsimulapaso);
 
 		gmsimulaevento = new gmOpcionMenu();
-		gmsimulaevento.estableceValores("Simular evento a evento", KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_MASK), oyente,oyenteRaton,  ",16,", cadena,'e');
+		gmsimulaevento.estableceValores("Simular evento a evento", KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_MASK), oyente,oyenteRaton,  ",15,", cadena,'e');
 		add(gmsimulaevento);
 
 		gmdetener = new gmOpcionMenu();
@@ -82,6 +82,7 @@ class gmSimula extends JMenu
 		gmenvios.establece(",14,",esta);
 		gmsimula.establece(",15,",esta);
 		gmsimulapaso.establece(",15,",esta);
+		gmsimulaevento.establece(",15,",esta);
 		gmdetener.establece(",16,",esta);
 		gmEventosSimulacion.establece(",17,",esta);
 	}
