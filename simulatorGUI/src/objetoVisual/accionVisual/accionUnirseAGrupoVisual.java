@@ -4,7 +4,6 @@ import java.awt.Dialog;
 
 import objetoVisual.listaObjetos;
 import visSim.dialogosAcciones.dialogoAccionBase;
-import visSim.dialogosAcciones.dialogoAccionEnviarPaqueteIP;
 import visSim.dialogosAcciones.dialogoAccionUnirseAGrupo;
 import Equipos.Equipo;
 import Proyecto.Acciones.Accion;
@@ -44,7 +43,9 @@ public class accionUnirseAGrupoVisual extends accionVisual{
 	public dialogoAccionBase createDialog(Dialog parent, int xCentral, int yCentral, listaObjetos lista) {
 		dialogoAccionUnirseAGrupo dlgAccion = new dialogoAccionUnirseAGrupo(parent,xCentral, yCentral, lista);
 		dlgAccion.setInstante(this.instante);
-		dlgAccion.setEquipo(this.equipo);		
+		dlgAccion.setEquipo(this.equipo);	
+		dlgAccion.setGrupo(this.direccionGrupo);	
+		dlgAccion.setInterfaz(this.interfaz);	
 		return dlgAccion;
 	}
 }
