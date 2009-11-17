@@ -1,5 +1,11 @@
 package objetoVisual.accionVisual;
 
+import java.awt.Dialog;
+
+import objetoVisual.listaObjetos;
+import visSim.dialogosAcciones.dialogoAccionApagar;
+import visSim.dialogosAcciones.dialogoAccionBase;
+import visSim.dialogosAcciones.dialogoAccionEnviarPaqueteIP;
 import Equipos.Equipo;
 import Proyecto.Acciones.Accion;
 import Proyecto.Acciones.AccionEnviarPaqueteIP;
@@ -59,6 +65,13 @@ public class accionEnviarPaqueteIPVisual extends accionVisual{
 
 	public Accion createAccion(Equipo e) {
 		return new AccionEnviarPaqueteIP(new DireccionIPv4(this.direccionDestino), this.tamanioPaquete, this.fragmentable, this.copias, e.getInterfaz(this.interfaz));
+	}
+	
+	public dialogoAccionBase createDialog(Dialog parent, int xCentral, int yCentral, listaObjetos lista) {
+		dialogoAccionEnviarPaqueteIP dlgAccion = new dialogoAccionEnviarPaqueteIP(parent,xCentral, yCentral, lista);
+		dlgAccion.setInstante(this.instante);
+		dlgAccion.setEquipo(this.equipo);		
+		return dlgAccion;
 	}
 	
 }
