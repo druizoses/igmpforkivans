@@ -123,5 +123,24 @@ public class dialogoAccionEnviarPaqueteIP extends dialogoAccionBase {
 	public void setEquipo(String equipo) {
 		this.equiposDisponibles.setSelectedItem(equipo);
 	}
+	
+	public void setCopias(int copias) {
+		this.txtCopias.setText(String.valueOf(copias));
+	}
+	
+	public void setFragmentable(boolean fragmentable) {
+		this.chkFragmentable.setSelected(fragmentable);
+	}
+	
+	public void setTamanio(int fragmentable) {
+		this.txtTamanio.setText(String.valueOf(fragmentable));
+	}
+	
+	public void setDireccionDestino(String direccionDestino) {
+		this.txtDireccionDestino.setText(String.valueOf(direccionDestino));		
+	}
 
+	public void setInterfaz(String interfaz) {
+		this.interfaces.setSelectedItem(interfaz);		
+	}
 }
