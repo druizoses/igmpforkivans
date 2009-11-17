@@ -1,9 +1,14 @@
 package objetoVisual.accionVisual;
 
+import java.awt.Dialog;
+
+import objetoVisual.listaObjetos;
+import visSim.dialogosAcciones.dialogoAccionBase;
 import Equipos.Equipo;
 import Proyecto.Acciones.Accion;
 
 public abstract class accionVisual {
+	
 	public static final String APAGAR="Apagar Equipo";
 	public static final String DEJAR_GRUPO="Dejar Grupo";
 	public static final String ENCENDER="Encender Equipo";	
@@ -31,4 +36,7 @@ public abstract class accionVisual {
 	public abstract String getDescripcion();
 	
 	public abstract Accion createAccion(Equipo e);
+	
+	public abstract dialogoAccionBase createDialog(Dialog parent, int xCentral, int yCentral, listaObjetos lista);
+	
 }

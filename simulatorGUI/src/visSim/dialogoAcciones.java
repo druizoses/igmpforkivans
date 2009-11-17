@@ -115,6 +115,15 @@ public class dialogoAcciones extends JDialog
 			}
 		});
 
+		JButton btn7 = new JButton("Editar");
+		btn7.addMouseListener(new MouseAdapter()
+		{
+			public void mouseClicked(MouseEvent evt)
+			{
+				botonPulsado("Editar");
+			}
+		});
+
 		JButton btn3 = new JButton("Borrar todos");
 		btn3.addMouseListener(new MouseAdapter()
 		{
@@ -140,6 +149,7 @@ public class dialogoAcciones extends JDialog
 		
 		botones.add(accionesDisponibles);
 		botones.add(btn1);
+		botones.add(btn7);
 		botones.add(btn4);
 		botones.add(btn3);
 		botones.add(btn2);
@@ -205,6 +215,26 @@ public class dialogoAcciones extends JDialog
 			}
 
 		}
+
+		else if (nombre.compareTo("Editar")==0)
+		{
+			int indice = tabla.getSelectedRow();
+			
+			if (indice>=0)
+			{
+				accionVisual acc = (accionVisual) lista.listaAcciones.elementAt(indice);
+				tabla.setModel(new modeloTablaAcciones(lista.listaAcciones));
+				dialogoAccionBase dlgAccion = acc.createDialog(this,this.xCentral, this.yCentral, lista);
+				dlgAccion.setVisible(true);
+				if (dlgAccion.getResultado().equals(dialogoAccionBase.ACEPTAR)){
+					accionVisual accion = dlgAccion.getAccionVisual();
+					lista.listaAcciones.set(indice, accion);
+					tabla.setModel(new modeloTablaAcciones(lista.listaAcciones));
+					ponColumnas();
+				}
+			}
+		}
+		
 		else if (nombre.compareTo("Borrar")==0)
 		{
 			int indice = tabla.getSelectedRow();
