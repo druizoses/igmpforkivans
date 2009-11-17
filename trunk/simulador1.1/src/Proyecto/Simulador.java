@@ -225,4 +225,12 @@ public class Simulador
         if(numPasos>0)
             numPasosMax=numPasos;
     }
+
+	public int getInstanteActual() {
+		return instante_actual;
+	}
+
+	public int getNumPasosMax() {
+		return numPasosMax;
+	}
 }
