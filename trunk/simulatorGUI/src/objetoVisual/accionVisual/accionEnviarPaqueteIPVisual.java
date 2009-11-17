@@ -70,7 +70,12 @@ public class accionEnviarPaqueteIPVisual extends accionVisual{
 	public dialogoAccionBase createDialog(Dialog parent, int xCentral, int yCentral, listaObjetos lista) {
 		dialogoAccionEnviarPaqueteIP dlgAccion = new dialogoAccionEnviarPaqueteIP(parent,xCentral, yCentral, lista);
 		dlgAccion.setInstante(this.instante);
-		dlgAccion.setEquipo(this.equipo);		
+		dlgAccion.setEquipo(this.equipo);	
+		dlgAccion.setDireccionDestino(this.direccionDestino);
+		dlgAccion.setTamanio(this.tamanioPaquete);
+		dlgAccion.setFragmentable(this.fragmentable);
+		dlgAccion.setCopias(this.copias);
+		dlgAccion.setInterfaz(this.interfaz);		
 		return dlgAccion;
 	}
 	
