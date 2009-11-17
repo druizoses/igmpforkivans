@@ -105,4 +105,11 @@ public class dialogoAccionUnirseAGrupo extends dialogoAccionBase {
 		this.equiposDisponibles.setSelectedItem(equipo);
 	}
 	
+	public void setInterfaz(String interfaz) {
+		this.interfaces.setSelectedItem(interfaz);		
+	}
+
+	public void setGrupo(String direccionGrupo) {
+		this.txtGrupo.setText(String.valueOf(direccionGrupo));		
+	}
 }
