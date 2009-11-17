@@ -3,7 +3,6 @@ package objetoVisual.accionVisual;
 import java.awt.Dialog;
 
 import objetoVisual.listaObjetos;
-import visSim.dialogosAcciones.dialogoAccionApagar;
 import visSim.dialogosAcciones.dialogoAccionBase;
 import visSim.dialogosAcciones.dialogoAccionEnviarPaqueteIP;
 import Equipos.Equipo;

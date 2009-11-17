@@ -3,7 +3,6 @@ package objetoVisual.accionVisual;
 import java.awt.Dialog;
 
 import objetoVisual.listaObjetos;
-import visSim.dialogosAcciones.dialogoAccionApagar;
 import visSim.dialogosAcciones.dialogoAccionBase;
 import visSim.dialogosAcciones.dialogoAccionDejarGrupo;
 import Equipos.Equipo;
@@ -43,6 +42,8 @@ public class accionDejarGrupoVisual extends accionVisual{
 		dialogoAccionDejarGrupo dlgAccion = new dialogoAccionDejarGrupo(parent,xCentral, yCentral, lista);
 		dlgAccion.setInstante(this.instante);
 		dlgAccion.setEquipo(this.equipo);
+		dlgAccion.setGrupo(this.direccionGrupo);	
+		dlgAccion.setInterfaz(this.interfaz);
 		return dlgAccion;
 	}
 	
