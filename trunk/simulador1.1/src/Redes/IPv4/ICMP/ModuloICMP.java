@@ -126,6 +126,7 @@ public class ModuloICMP extends Nivel
 	                       Dato datoAux=new Dato(instante,mensajeICMP);
 	                       datoAux.direccion=dato.direccion;
 	                       datoAux.protocolo=getID(nivel.ID());
+	                       datoAux.interfaz=dato.interfaz;
 	                
 	                       // Registramos el evento
 	                       int tipo=mensajeICMP.getType();
@@ -172,7 +173,7 @@ public class ModuloICMP extends Nivel
 	               equipo.NuevoEvento('R',instante,mensajeICMP,"Mensaje ICMP ["+tipo+"|"+codigo+"] "+MensajeICMP.Descripcion(tipo,codigo));
 	            
 	               // 4. Actuamos segun el tipo de mensaje recibido
-	               ProcesaMensaje(instante,mensajeICMP,dato.direccion);
+	               ProcesaMensaje(instante,mensajeICMP,dato);
 	               
 	               // 5. Enviamos el mensaje al nivel superior
 	               //...TCP/UDP/RAW sin implementar aun...
@@ -187,9 +188,9 @@ public class ModuloICMP extends Nivel
 	 * Procesa un mensaje ICMP
 	 * @param instante Instante de tiempo en el que se procesa el mensaje
 	 * @param mensajeICMP MensajeICMP que va a ser procesado
-	 * @param destino Direccion del equipo que genero el mensaje
+	 * @param dato Dato del equipo que genero el mensaje
 	 */
-	private void ProcesaMensaje(int instante, MensajeICMP mensajeICMP,Direccion destino)
+	private void ProcesaMensaje(int instante, MensajeICMP mensajeICMP,Dato dato)
 	{
 		if(mensajeICMP!=null)
 		{
@@ -207,7 +208,8 @@ public class ModuloICMP extends Nivel
 						MensajeICMP echoReply=new MensajeICMP(mensajeICMP,0,0);
 						
 						Dato datoAux=new Dato(instante+1,echoReply);
-						datoAux.direccion=destino;
+						datoAux.direccion=dato.direccion;
+						datoAux.interfaz=dato.interfaz;						
 						
 						ProgramarSalida(datoAux);
 					}

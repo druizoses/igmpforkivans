@@ -72,7 +72,8 @@ public class dialogoEventos extends JDialog
 		
 		txtInstante = new JTextField(5);
 		txtInstante.setEnabled(false);
-		txtInstante.setText(String.valueOf(simulacion.getInstanteSimulador()));
+		if (simulacion != null)
+			txtInstante.setText(String.valueOf(simulacion.getInstanteSimulador()));
 		
 		JPanel pnlInstante = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		
@@ -181,7 +182,8 @@ public class dialogoEventos extends JDialog
 					jspanel.validate();
 					jspanel.getVerticalScrollBar().setValue(jspanel.getVerticalScrollBar().getMaximum());
 				}
-				txtInstante.setText(String.valueOf(simulacion.getInstanteSimulador()));
+				if (simulacion != null)
+					txtInstante.setText(String.valueOf(simulacion.getInstanteSimulador()));
 			}
 		});
 
@@ -198,6 +200,9 @@ public class dialogoEventos extends JDialog
 		});
 		
 		JButton btnExportar = new JButton("Exportar");
+		
+		final dialogoEventos dialogo1 = this; 
+		
 		btnExportar.addMouseListener(new MouseAdapter()
 		{
 			public void mouseClicked(MouseEvent evt)
@@ -205,8 +210,8 @@ public class dialogoEventos extends JDialog
 				JButton fuente = null;
 				
 				fuente = (JButton)evt.getSource();
-				dialogoEventos padre = (dialogoEventos) fuente.getParent().getParent().getParent().getParent();
-				padre.lanzarDialogoProgreso();
+				//dialogoEventos padre = (dialogoEventos) fuente.getParent().getParent().getParent().getParent();
+				dialogo1.lanzarDialogoProgreso();
 			}
 		});
 

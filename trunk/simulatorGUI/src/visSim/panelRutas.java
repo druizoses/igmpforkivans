@@ -99,7 +99,7 @@ public class panelRutas extends JPanel
 		btn5.setBounds(10, 30, 20, 20);
 
 		// Las ethernet y las tokenring no pueden modificar rutas ni interfaces		
-		if (!(id.compareTo("pc")==0 || id.compareTo("ro")==0))
+		if (!(id.compareTo("pc")==0 || id.compareTo("ro")==0 || id.compareTo("mc")==0))
 		{
 			btn1.setEnabled(false);
 			btn2.setEnabled(false);

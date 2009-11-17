@@ -306,6 +306,7 @@ public class NivelIPv4 extends Nivel
                     }
                 }
 				catch(Exception e) {
+					e.printStackTrace();
 					equipo.NuevoEvento('X',instanteActual,dato.paquete,"Error procesando la salida:" + e.getMessage());
 				}
 			}
@@ -391,6 +392,7 @@ public class NivelIPv4 extends Nivel
 	            MensajeICMP mensaje=new MensajeICMP(tipo,codigo,datagramaOriginal);
 	            Dato datoAux=new Dato(instanteActual+retardo,mensaje,0);
 	            datoAux.direccion=datagramaOriginal.getOrigen();
+	            datoAux.interfaz=dato.interfaz;
 	        
 	            if(EsParaMi(destino,null))
 	            {    
@@ -410,6 +412,7 @@ public class NivelIPv4 extends Nivel
 	            MensajeICMP mensaje=new MensajeICMP(tipo,codigo,datagramaOriginal);
 	            Dato datoAux=new Dato(instanteActual+retardo,mensaje,0);
 	            datoAux.direccion=datagramaOriginal.getOrigen();
+	            datoAux.interfaz=dato.interfaz;
 
 	            //Autoenvio (marcamos en 'virtual' envio, por claridad en los eventos)
                 MensajeICMP m2=new MensajeICMP(mensaje);
@@ -439,6 +442,7 @@ public class NivelIPv4 extends Nivel
 	        MensajeICMP mensaje=new MensajeICMP(tipo,codigo,datagrama);
 	        Dato datoAux=new Dato(instanteActual+retardo,mensaje,0);
 	        datoAux.protocolo=0;
+	        datoAux.interfaz=dato.interfaz;
 	        
 	        //Autoenvio (marcamos el 'virtual' envio, por claridad en los eventos)
 	        MensajeICMP m2=new MensajeICMP(mensaje);

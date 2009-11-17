@@ -131,9 +131,12 @@ public class visual extends JFrame implements MouseListener, ActionListener
 		
 		// Cambiamos la interfaz a tipo Windows
 		
-		try { UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel"); }
-		catch (Exception e)
-			 { System.out.println("No se ha podido cambiar la interfaz"); }
+		try {
+			//UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+		} catch (Exception e) {
+			System.out.println("No se ha podido cambiar la interfaz");
+		}
 
 		// Scroller que va a contener a paneldibujo
 		JScrollPane scrollerBotones = new JScrollPane(new panelbotones(this));
@@ -473,8 +476,10 @@ public class visual extends JFrame implements MouseListener, ActionListener
 		{
 			String fichero = eligeFichero.getNomFich();
 			
+			String ficheroNet2 = fichero.endsWith("2")?fichero:fichero+"2";
+			
 			//busca el fichero en las ventanas
-			pos = ventanas.buscaVentana(fichero);
+			pos = ventanas.buscaVentana(ficheroNet2);
 			valor = JOptionPane.NO_OPTION;
 			
 			// El fichero ya se encuentra abierto
@@ -497,13 +502,13 @@ public class visual extends JFrame implements MouseListener, ActionListener
 				mnuOpcNuevo();
 				pos = ventanas.getActivo();
 		
-				ventanas.setFicheroTopo(pos, fichero);
+				ventanas.setFicheroTopo(pos, ficheroNet2);
 				ventanas.maximiza(pos);
 					
 				//si no se carga el fichero
 				if (!ventanas.leeFichero(pos, fichero))
 				{
-					ponTextoBarra("Error durante la lectura de " + fichero);
+					ponTextoBarra("Error durante la lectura de " + ficheroNet2);
 					
 					// Cerramos la ventana que se acaba de crear
 					mnuOpcCerrar();
