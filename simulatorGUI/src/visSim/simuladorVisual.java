@@ -45,6 +45,7 @@ public class simuladorVisual
 			// registramos los tipos de equipos
 			LocalizadorEquipos.Registrar("Ordenador");
 			LocalizadorEquipos.Registrar("Router");
+			LocalizadorEquipos.Registrar("RouterMultiCast");
 			LocalizadorEquipos.Registrar("Switch");
 			
 			for (i=0; i<lista.tam(); i++)
