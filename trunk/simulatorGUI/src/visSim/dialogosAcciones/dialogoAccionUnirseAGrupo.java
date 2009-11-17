@@ -97,4 +97,12 @@ public class dialogoAccionUnirseAGrupo extends dialogoAccionBase {
 		return true;
 	}
 	
+	public void setInstante(int instante) {
+		this.txtInstante.setText(String.valueOf(instante));
+	}
+
+	public void setEquipo(String equipo) {
+		this.equiposDisponibles.setSelectedItem(equipo);
+	}
+	
 }
