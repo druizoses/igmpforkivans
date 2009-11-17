@@ -737,6 +737,9 @@ public class visual extends JFrame implements MouseListener, ActionListener
 
 			// Opcion simular un paso
 			else if (nombre.compareTo("btnSip")==0)	ventanas.simulaPaso();
+			
+			// Opcion simular un paso
+			else if (nombre.compareTo("btnEvt")==0)	ventanas.simulaEvento();
 
 			// Opcion envia datos
 			else if (nombre.compareTo("btnSE")==0)	ventanas.configuraAcciones(puntoCentralW.x, puntoCentralW.y);

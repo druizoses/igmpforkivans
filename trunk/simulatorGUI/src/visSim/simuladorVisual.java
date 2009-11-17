@@ -232,9 +232,19 @@ public class simuladorVisual
 				dev.add(evt.instante+"\t["+evt.indicador+"]\t"+nombre+"\t"+evt.mensaje);
 			}
 		}
-		
+
 		// Ordenamos el vector segun el instante y lo devolvemos
 		return new Vector(ordenaVector.getOrdenadoNumero(dev));
+	}
+	
+	public int getInstanteSimulador()
+	{
+		return simulador.getInstanteActual();
+	}
+	
+	public int getMaxCantPasos()
+	{
+		return simulador.getNumPasosMax();
 	}
 	
 	public void simulacionCompleta()

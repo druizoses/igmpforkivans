@@ -1,7 +1,9 @@
 /** @author: tlfs & afzs */
 package visSim;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.LayoutManager;
 import java.awt.event.MouseAdapter;
@@ -21,6 +23,7 @@ import javax.swing.JTable;
 import javax.swing.JProgressBar;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 import paneldibujo.dialogoFichero;
 
@@ -44,6 +47,7 @@ public class dialogoEventos extends JDialog
 	private JOptionPane Exportado;
 	private int numFilas; 
 	private Runnable tarea = null;
+	public JTextField txtInstante;
 	
 	/** Constructor de la clase
 	 * @param parent Frame sobre el que se muestra el cuadro
@@ -66,8 +70,19 @@ public class dialogoEventos extends JDialog
 		
 		copiaEventos = new Vector(listaEventos);
 		
+		txtInstante = new JTextField(5);
+		txtInstante.setEnabled(false);
+		txtInstante.setText(String.valueOf(simulacion.getInstanteSimulador()));
+		
+		JPanel pnlInstante = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		
+		pnlInstante.add(new JLabel("Instante actual:"));
+		pnlInstante.add(txtInstante);
+		
 		// Preparamos las cosas de la ventana
-		getContentPane().setLayout(null);
+		getContentPane().setLayout(new BorderLayout());
+		
+		JPanel botones = new JPanel(new FlowLayout());
 		
 		panelProceso = new JPanel();//Dialog(this, true);
 		panelProceso.setPreferredSize(new Dimension(200,200));
@@ -75,12 +90,6 @@ public class dialogoEventos extends JDialog
 		panelProceso.setMinimumSize(new Dimension(200,200));
 		progreso = new JProgressBar();
 		progreso.setMinimum(0);
-		
-		jlExportar = new JLabel("Exportando:");
-		
-		getContentPane().add(jlExportar);
-		jlExportar.setBounds(2, 218, 80, 10);
-		jlExportar.setVisible(false);
 
 		addWindowListener(new WindowAdapter()
 		{
@@ -90,9 +99,9 @@ public class dialogoEventos extends JDialog
 			}
 		});
 		
-		JButton btn1 = new JButton("Copiar");
-		btn1.setToolTipText("Copia el contenido de la tabla al portapapeles");
-		btn1.addMouseListener(new MouseAdapter()
+		JButton btnCopiar = new JButton("Copiar");
+		btnCopiar.setToolTipText("Copia el contenido de la tabla al portapapeles");
+		btnCopiar.addMouseListener(new MouseAdapter()
 		{
 			public void mouseClicked(MouseEvent evt)
 			{
@@ -100,8 +109,8 @@ public class dialogoEventos extends JDialog
 			}
 		});
 
-		JButton btn2 = new JButton("Aceptar");
-		btn2.addMouseListener(new MouseAdapter()
+		JButton btnAceptar = new JButton("Aceptar");
+		btnAceptar.addMouseListener(new MouseAdapter()
 		{
 			public void mouseClicked(MouseEvent evt)
 			{
@@ -114,12 +123,12 @@ public class dialogoEventos extends JDialog
 		jspanel = new JScrollPane();
 		jspanel.setViewportView(tabla);
 		
-		getContentPane().add(jspanel);
-		jspanel.setBounds(5,5, 450, 150);
+		/*getContentPane().add(jspanel);
+		jspanel.setBounds(5,5, 450, 150);*/
 		ponDatos(listaEventos);
 
-		final JButton btn3 = new JButton("Da un paso");
-		btn3.addMouseListener(new MouseAdapter()
+		final JButton btnDarPaso = new JButton("Da un paso");
+		btnDarPaso.addMouseListener(new MouseAdapter()
 		{
 			public void mouseClicked(MouseEvent evt)
 			{
@@ -129,12 +138,36 @@ public class dialogoEventos extends JDialog
 					leeEventos(simulacion);
 					jspanel.validate();
 					jspanel.getVerticalScrollBar().setValue(jspanel.getVerticalScrollBar().getMaximum() + jspanel.getVerticalScrollBar().getUnitIncrement(1));
+					txtInstante.setText(String.valueOf(simulacion.getInstanteSimulador()));
 				}
 			}
 		});
 
-		final JButton btn4 = new JButton("Simulacion completa");
-		btn4.addMouseListener(new MouseAdapter()
+		final JButton btnDaEvento = new JButton("Siguiente Evento");
+		btnDaEvento.addMouseListener(new MouseAdapter()
+		{
+			public void mouseClicked(MouseEvent evt)
+			{
+				if (simulacion!=null && simulacion.getInstanteSimulador() < simulacion.getMaxCantPasos())
+				{
+					Vector salidaEventos = new Vector(simulacion.getEventos());
+					int cantidadEventos = salidaEventos.size();
+					
+					boolean masPasos=true;
+					while (salidaEventos.size() == cantidadEventos && masPasos){
+						masPasos = simulacion.darUnPaso();
+						salidaEventos = new Vector(simulacion.getEventos());
+					}
+					leeEventos(simulacion);
+					jspanel.validate();
+					jspanel.getVerticalScrollBar().setValue(jspanel.getVerticalScrollBar().getMaximum() + jspanel.getVerticalScrollBar().getUnitIncrement(1));
+				}
+				txtInstante.setText(String.valueOf(simulacion.getInstanteSimulador()));
+			}
+		});
+
+		final JButton btnSimular = new JButton("Simulacion completa");
+		btnSimular.addMouseListener(new MouseAdapter()
 		{
 			public void mouseClicked(MouseEvent evt)
 			{
@@ -143,16 +176,17 @@ public class dialogoEventos extends JDialog
 					textoBoton = "completa";
 					simulacion.simulacionCompleta();
 					leeEventos(simulacion);
-					btn3.setEnabled(false);
-					btn4.setEnabled(false);
+					btnDarPaso.setEnabled(false);
+					btnSimular.setEnabled(false);
 					jspanel.validate();
 					jspanel.getVerticalScrollBar().setValue(jspanel.getVerticalScrollBar().getMaximum());
 				}
+				txtInstante.setText(String.valueOf(simulacion.getInstanteSimulador()));
 			}
 		});
 
-		JButton btn5 = new JButton("Leyenda");
-		btn5.addMouseListener(new MouseAdapter()
+		JButton btnLeyenda = new JButton("Leyenda");
+		btnLeyenda.addMouseListener(new MouseAdapter()
 		{
 			public void mouseClicked(MouseEvent evt)
 			{
@@ -163,8 +197,8 @@ public class dialogoEventos extends JDialog
 			}
 		});
 		
-		JButton btn6 = new JButton("Exportar");
-		btn6.addMouseListener(new MouseAdapter()
+		JButton btnExportar = new JButton("Exportar");
+		btnExportar.addMouseListener(new MouseAdapter()
 		{
 			public void mouseClicked(MouseEvent evt)
 			{
@@ -179,25 +213,24 @@ public class dialogoEventos extends JDialog
 		// Si no ha comenzado la simulacion, los botones de simulacion se muestran desactivados
 		if (simulacion==null)
 		{
-			btn3.setEnabled(false);
-			btn4.setEnabled(false);
+			btnDarPaso.setEnabled(false);
+			btnSimular.setEnabled(false);
 		}
+
+		botones.add(btnCopiar);
+		botones.add(btnDarPaso);
+		botones.add(btnDaEvento);
+		botones.add(btnSimular);
+		botones.add(btnLeyenda);
+		botones.add(btnExportar);
+		botones.add(btnAceptar);
 		
-		getContentPane().add(btn1);
-		btn1.setBounds(4, 170, 100, 26);
-		getContentPane().add(btn2);
-		btn2.setBounds(380, 210, 81, 26);
-		getContentPane().add(btn3);
-		btn3.setBounds(110, 170, 100, 26);
-		getContentPane().add(btn4);
-		btn4.setBounds(216, 170, 150, 26);
-		getContentPane().add(btn5);
-		btn5.setBounds(380, 170, 81, 26);
-		getContentPane().add(btn6);
-		btn6.setBounds(216, 210, 81, 26);
+		getContentPane().add(pnlInstante,BorderLayout.NORTH);
+		getContentPane().add(jspanel,BorderLayout.CENTER);
+		getContentPane().add(botones,BorderLayout.SOUTH);
 
 		setResizable(false);
-		int ancho = 470;
+		int ancho = 670;
 		int alto = 265;
 		setBounds(xCentral-ancho/2, yCentral-alto/2, ancho, alto);
 		
