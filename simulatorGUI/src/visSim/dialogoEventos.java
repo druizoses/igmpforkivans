@@ -179,6 +179,7 @@ public class dialogoEventos extends JDialog
 					leeEventos(simulacion);
 					btnDarPaso.setEnabled(false);
 					btnSimular.setEnabled(false);
+					btnDaEvento.setEnabled(false);
 					jspanel.validate();
 					jspanel.getVerticalScrollBar().setValue(jspanel.getVerticalScrollBar().getMaximum());
 				}
@@ -220,6 +221,7 @@ public class dialogoEventos extends JDialog
 		{
 			btnDarPaso.setEnabled(false);
 			btnSimular.setEnabled(false);
+			btnDaEvento.setEnabled(false);
 		}
 
 		botones.add(btnCopiar);
