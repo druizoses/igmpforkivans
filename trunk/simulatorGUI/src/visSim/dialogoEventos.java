@@ -72,6 +72,13 @@ public class dialogoEventos extends JDialog
 		
 		txtInstante = new JTextField(5);
 		txtInstante.setEnabled(false);
+		
+		jlExportar = new JLabel("Exportando:");
+		
+		getContentPane().add(jlExportar);
+		jlExportar.setBounds(2, 218, 80, 10);
+		jlExportar.setVisible(false);
+		
 		if (simulacion != null)
 			txtInstante.setText(String.valueOf(simulacion.getInstanteSimulador()));
 		

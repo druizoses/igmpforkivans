@@ -203,7 +203,7 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 		}
 
 		public void enviarSpecificQueries(int instante) {
-			List<DireccionIPv4> datosARemover = new ArrayList<DireccionIPv4>();
+			
 			for (Iterator iterator = gruposActivos.keySet().iterator(); iterator.hasNext();) {
 				DireccionIPv4 direccionIPv4 = (DireccionIPv4) iterator.next();
 				GroupTimers groupTimers = (GroupTimers)gruposActivos.get(direccionIPv4);
@@ -219,7 +219,8 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 						countSpecificQueryToSend--;
 						
 						if (countSpecificQueryToSend == 0)
-							datosARemover.add(direccionIPv4);
+							//datosARemover.add(direccionIPv4);
+							groupTimers.setTimerToDeleteGroup(ModuloIGMP.GROUP_MEMBERSHIP_INTERVAL);
 						else
 							groupTimers.setCountSpecificQueryToSend(countSpecificQueryToSend);
 					}
@@ -229,9 +230,7 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 					
 				}
 			}
-			for (DireccionIPv4 direccionIPv4 : datosARemover) {
-				gruposActivos.remove(direccionIPv4);
-			}
+			
 		}
 		private void enviarSpecificMembershipQueryMessage(int instante,Interfaz interfaz,DireccionIPv4 direccionIPv4) {
 			MensajeIGMP mensaje = MensajeIGMP.createMembershipQueryMessage(direccionIPv4);
