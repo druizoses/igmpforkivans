@@ -112,7 +112,8 @@ class gmArchivo extends JMenu
 		gmabrir.establece(",99,",esta);
 		gmcerr.establece(",12,",esta);
 		
-		gmguarda.establece(",18,",esta);
+		//gmguarda.establece(",18,",esta);
+		gmguarda.establece(",9,10,",esta);
 		gmguardc.establece(",9,10,",esta);
 		
 		gmconfig.establece(",99,",esta);

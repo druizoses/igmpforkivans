@@ -38,7 +38,7 @@ public class listaFramesInternos extends Vector
 	public void add(ActionListener oyente, Frame framePadre, String nombre)
 	{
 		add(new frameInternoDibujo(oyente, framePadre, nombre));
-		setFicheroTopo(size()-1, nombre + ".net");
+		setFicheroTopo(size()-1, nombre + ".net2");
 		
 		// Ahora copiamos el buffer para pegar objetos (si existe)
 		if (objetosCopiados != null)
