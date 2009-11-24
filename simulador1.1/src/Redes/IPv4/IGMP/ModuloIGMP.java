@@ -315,7 +315,7 @@ public abstract class ModuloIGMP extends Nivel {
 	 * Group-Specific Queries sent in response to Leave Group messages, and
 	 * is also the amount of time between Group-Specific Query messages. (seconds).
 	 */
-	public static int LAST_MEMBER_QUERY_INTERVAL = 1*10;
+	public static int LAST_MEMBER_QUERY_INTERVAL = 2*10;
 	
 	/*
 	 * The Last Member Query Count is the number of Group-Specific Queries

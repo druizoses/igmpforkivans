@@ -41,8 +41,8 @@ public class MensajeIGMP extends Buffer {
 	 * @param dirGrupo grupo por el cual se realizará la consulta
 	 * @return mensaje creado
 	 */
-	public static MensajeIGMP createMembershipQueryMessage(DireccionIPv4 dirGrupo){
-		MensajeIGMP msg = new MensajeIGMP(MensajeIGMP.MEMBERSHIP_QUERY,0,0,dirGrupo);
+	public static MensajeIGMP createMembershipQueryMessage(DireccionIPv4 dirGrupo, int responseTime){
+		MensajeIGMP msg = new MensajeIGMP(MensajeIGMP.MEMBERSHIP_QUERY,responseTime,0,dirGrupo);
 		msg.setChecksum(msg.getChecksum());
 		return msg;
 	}
