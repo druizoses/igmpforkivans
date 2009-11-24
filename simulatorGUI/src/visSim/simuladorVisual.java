@@ -250,7 +250,8 @@ public class simuladorVisual
 	
 	public void simulacionCompleta()
 	{
-		while(simulador.SimularUnPaso());
+		if (simulador != null)
+			while(simulador.SimularUnPaso());
 
 		System.gc();
 		System.runFinalization();
