@@ -73,7 +73,7 @@ public class paneldibujoVisual extends JPanel implements Printable
 		lista = new listaObjetos();
 		copias = new listaObjetos();
 		salidaEventos = new Vector();
-		maxNumeroPasos=1000;
+		maxNumeroPasos=20000;
 		ficheroTopo = "";
 		cambios = false;
 		quitaSelecciones = false;

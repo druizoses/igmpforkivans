@@ -650,8 +650,8 @@ public class visual extends JFrame implements MouseListener, ActionListener
 						//si se elige la opcion net
 						else if (eligeFichero.getFiltro().compareTo("Ficheros de red (.net)")==0)
 						{
-							if (!ficheroTopo.endsWith(".net"))
-								ficheroTopo += ".net";
+							if (!ficheroTopo.endsWith(".net2"))
+								ficheroTopo += ".net2";
 
 							ventanas.setFicheroTopo(pos, ficheroTopo);
 							ventanas.grabaFichero(pos);
