@@ -35,7 +35,7 @@ public class ModuloIGMPOrdenador extends ModuloIGMP{
 					equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP));
 					for (Iterator it = grupos.get(interfaz).keySet().iterator();it.hasNext();){
 						DireccionIPv4 dirGrupo = (DireccionIPv4)it.next();
-						enviarReport(interfaz,dirGrupo, instante);
+						enviarReport(interfaz, dirGrupo, instante, mensajeIGMP.getTiempoResp());
 						grupos.get(interfaz).put(dirGrupo, true);
 					}
 				}
@@ -45,7 +45,7 @@ public class ModuloIGMPOrdenador extends ModuloIGMP{
 					equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP));
 					DireccionIPv4 dirGrupo = mensajeIGMP.getDirGrupo();
 					if (grupos.get(interfaz).containsKey(dirGrupo)){
-						enviarReport(interfaz,dirGrupo,instante);
+						enviarReport(interfaz, dirGrupo, instante, mensajeIGMP.getTiempoResp());
 						grupos.get(interfaz).put(dirGrupo, true);
 					}
 				}
@@ -88,7 +88,7 @@ public class ModuloIGMPOrdenador extends ModuloIGMP{
 	public void joinGroup(Interfaz interfaz,DireccionIPv4 dirGroup,int instante){
 		if (!grupos.get(interfaz).containsKey(dirGroup)){
 			grupos.get(interfaz).put(dirGroup, true);
-			enviarReport(interfaz,dirGroup,instante);
+			enviarReport(interfaz,dirGroup,instante, 0);
 		}
 	}
 	
@@ -128,10 +128,11 @@ public class ModuloIGMPOrdenador extends ModuloIGMP{
 	 * @param interfaz Interfaz por la cual se envia el mensaje
 	 * @param dirGroup Direccion del grupo
 	 * @param instante
+	 * @param responseTime 
 	 */
-	private void enviarReport(Interfaz interfaz,DireccionIPv4 dirGroup,int instante){
+	private void enviarReport(Interfaz interfaz,DireccionIPv4 dirGroup,int instante, int responseTime){
 		MensajeIGMP mensaje = MensajeIGMP.createMembershipReportV2Message(dirGroup);
-		int retardo = (int) Math.round((Math.random() * QUERY_RESPONSE_INTERVAL));
+		int retardo = (int) Math.round((Math.random() * responseTime));
 		Dato datoAux=new Dato(instante+1+retardo,mensaje,1);
         datoAux.direccion=ModuloIGMP.ALL_SYSTEMS_MULTICAST_GROUP;
         datoAux.interfaz=interfaz;
