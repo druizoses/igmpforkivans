@@ -73,7 +73,7 @@ public class paneldibujoVisual extends JPanel implements Printable
 		lista = new listaObjetos();
 		copias = new listaObjetos();
 		salidaEventos = new Vector();
-		maxNumeroPasos=20000;
+		maxNumeroPasos=100000;
 		ficheroTopo = "";
 		cambios = false;
 		quitaSelecciones = false;
@@ -292,7 +292,7 @@ public class paneldibujoVisual extends JPanel implements Printable
 	/** Muestra el dialogo de eventos con la salida de la simulacion */
 	public void muestraEventos()
 	{
-		dialogoEventos dialogo = new dialogoEventos(padreFrame, xCentral, yCentral, salidaEventos, simulacion);
+		dialogoEventos dialogo = new dialogoEventos(padreFrame, xCentral, yCentral, salidaEventos, simulacion, maxNumeroPasos);
 		
 		// Si se ha finalizado la ejecucion desde la ventana entonces desactivamos botones
 		if (dialogo.getBoton().compareTo("completa")==0)

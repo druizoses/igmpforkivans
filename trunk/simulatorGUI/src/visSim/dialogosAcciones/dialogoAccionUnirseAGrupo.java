@@ -2,6 +2,8 @@ package visSim.dialogosAcciones;
 
 import java.awt.Dialog;
 import java.awt.FlowLayout;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Vector;
@@ -19,12 +21,14 @@ import javax.swing.JTextField;
 import objetoVisual.listaObjetos;
 import objetoVisual.accionVisual.accionUnirseAGrupoVisual;
 import objetoVisual.accionVisual.accionVisual;
+import util.utilTexto;
 import visSim.listaInterfaces;
 
 
 public class dialogoAccionUnirseAGrupo extends dialogoAccionBase {
 
 	private JTextField txtInstante;
+	private JLabel lblInstante;
 	private JComboBox equiposDisponibles;
 	private JComboBox interfaces;
 	private JTextField txtGrupo;
@@ -41,6 +45,13 @@ public class dialogoAccionUnirseAGrupo extends dialogoAccionBase {
 		txtInstante.setText("0");
 		txtInstante.setCaretPosition(0);
 		super.addField("Instante",txtInstante);
+		lblInstante = new JLabel("(" + utilTexto.convertToTime(new Integer(txtInstante.getText())) + ")");
+		txtInstante.addFocusListener(new FocusAdapter(){
+			@Override
+			public void focusLost(FocusEvent e) {
+				lblInstante.setText("(" + utilTexto.convertToTime(new Integer(txtInstante.getText())) + ")");
+			}});
+		super.addField("",lblInstante);
 
 		equiposDisponibles = new JComboBox(lista.getNombresEquipos());
 		equiposDisponibles.addItemListener(new LocalItemListener(lista));
@@ -99,6 +110,7 @@ public class dialogoAccionUnirseAGrupo extends dialogoAccionBase {
 	
 	public void setInstante(int instante) {
 		this.txtInstante.setText(String.valueOf(instante));
+		lblInstante.setText("(" + utilTexto.convertToTime(new Integer(txtInstante.getText())) + ")");
 	}
 
 	public void setEquipo(String equipo) {
