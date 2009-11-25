@@ -232,7 +232,7 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 			
 		}
 		private void enviarSpecificMembershipQueryMessage(int instante,Interfaz interfaz,DireccionIPv4 direccionIPv4) {
-			MensajeIGMP mensaje = MensajeIGMP.createMembershipQueryMessage(direccionIPv4, ModuloIGMP.LAST_MEMBER_QUERY_INTERVAL);
+			MensajeIGMP mensaje = MensajeIGMP.createMembershipQueryMessage(direccionIPv4, ModuloIGMP.LAST_MEMBER_QUERY_INTERVAL / ModuloIGMP.PASOS_POR_SEGUNDO);
 			Dato datoAux=new Dato(instante,mensaje,1);
 	        datoAux.direccion=ModuloIGMP.ALL_SYSTEMS_MULTICAST_GROUP;
 	        datoAux.interfaz=interfaz;
@@ -329,7 +329,7 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 	}
 	
 	private void enviarGeneralMembershipQueryMessage(int instante,Interfaz interfaz) {
-		MensajeIGMP mensaje = MensajeIGMP.createMembershipQueryMessage(new DireccionIPv4("0.0.0.0"), ModuloIGMP.QUERY_RESPONSE_INTERVAL);
+		MensajeIGMP mensaje = MensajeIGMP.createMembershipQueryMessage(new DireccionIPv4("0.0.0.0"), ModuloIGMP.QUERY_RESPONSE_INTERVAL / ModuloIGMP.PASOS_POR_SEGUNDO);
 		Dato datoAux=new Dato(instante,mensaje,1);
         datoAux.direccion=ModuloIGMP.ALL_SYSTEMS_MULTICAST_GROUP;
         datoAux.interfaz=interfaz;
