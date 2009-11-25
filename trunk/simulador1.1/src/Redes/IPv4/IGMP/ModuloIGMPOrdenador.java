@@ -132,7 +132,7 @@ public class ModuloIGMPOrdenador extends ModuloIGMP{
 	 */
 	private void enviarReport(Interfaz interfaz,DireccionIPv4 dirGroup,int instante, int responseTime){
 		MensajeIGMP mensaje = MensajeIGMP.createMembershipReportV2Message(dirGroup);
-		int retardo = (int) Math.round((Math.random() * responseTime));
+		int retardo = (int) Math.round((Math.random() * (responseTime * ModuloIGMP.PASOS_POR_SEGUNDO)));
 		Dato datoAux=new Dato(instante+1+retardo,mensaje,1);
         datoAux.direccion=ModuloIGMP.ALL_SYSTEMS_MULTICAST_GROUP;
         datoAux.interfaz=interfaz;
