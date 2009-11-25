@@ -41,9 +41,7 @@ public class dialogoEventos extends JDialog
 	private JTable tabla;
 	private String textoBoton;
 	private Frame parent;
-	public JProgressBar progreso;
 	public JPanel panelProceso;
-	public JLabel jlExportar;
 	private JOptionPane Exportado;
 	private int numFilas; 
 	private Runnable tarea = null;
@@ -54,7 +52,7 @@ public class dialogoEventos extends JDialog
 	 * @param xCentral Coordenada x central
 	 * @param yCentral Coordenada y central
 	 */
-	public dialogoEventos(Frame parent, int xCentral, int yCentral, Vector listaEventos, final simuladorVisual simulacion)
+	public dialogoEventos(Frame parent, int xCentral, int yCentral, Vector listaEventos, final simuladorVisual simulacion, int maxNumeroPasos)
 	{
 		super(parent, true);
 		
@@ -70,22 +68,19 @@ public class dialogoEventos extends JDialog
 		
 		copiaEventos = new Vector(listaEventos);
 		
-		txtInstante = new JTextField(5);
+		txtInstante = new JTextField(8);
 		txtInstante.setEnabled(false);
-		
-		jlExportar = new JLabel("Exportando:");
-		
-		getContentPane().add(jlExportar);
-		jlExportar.setBounds(2, 218, 80, 10);
-		jlExportar.setVisible(false);
 		
 		if (simulacion != null)
 			txtInstante.setText(String.valueOf(simulacion.getInstanteSimulador()));
-		
+		else
+			txtInstante.setText(String.valueOf(maxNumeroPasos));
+			
 		JPanel pnlInstante = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		
 		pnlInstante.add(new JLabel("Instante actual:"));
 		pnlInstante.add(txtInstante);
+		pnlInstante.add(new JLabel(" (100 Pasos representan 1 segundo)"));
 		
 		// Preparamos las cosas de la ventana
 		getContentPane().setLayout(new BorderLayout());
@@ -96,8 +91,6 @@ public class dialogoEventos extends JDialog
 		panelProceso.setPreferredSize(new Dimension(200,200));
 		panelProceso.setMaximumSize(new Dimension(200,200));
 		panelProceso.setMinimumSize(new Dimension(200,200));
-		progreso = new JProgressBar();
-		progreso.setMinimum(0);
 
 		addWindowListener(new WindowAdapter()
 		{
@@ -245,28 +238,18 @@ public class dialogoEventos extends JDialog
 
 		setResizable(false);
 		int ancho = 670;
-		int alto = 265;
+		int alto = 350;
 		setBounds(xCentral-ancho/2, yCentral-alto/2, ancho, alto);
 		
 		setVisible(true);
 	}
 	
 	public void lanzarDialogoProgreso(){
-		
-		progreso.setMaximum(tabla.getRowCount()-1);
-		progreso.setValue(0);
-		progreso.setIndeterminate(false);
-		progreso.setPreferredSize(new Dimension(100,100));
-		getContentPane().add(progreso);
-		progreso.setBounds(80, 215, 100, 15);
-		
+
 		dialogoFichero elige = new dialogoFichero("csv");
 		
 		
 		if(elige.mostrar(this.parent, "Exportar a...", "fichero.csv") != JFileChooser.CANCEL_OPTION){//elige.getNomFich() != null || elige.getNomFich().compareTo("") != 0){
-
-			jlExportar.setVisible(true);
-			progreso.setVisible(true);
 //			 Creamos el dialogo de progreso
 			tarea = new Runnable() {
 				
@@ -289,7 +272,6 @@ public class dialogoEventos extends JDialog
 					for(int j=0; j < tabla.getColumnCount(); j++)
 						buffer.write((tabla.getValueAt(i, j)+";").getBytes());
 					buffer.write("\n".getBytes());
-					actualizaProgreso(i);
 				}
 				
 				buffer.close();
@@ -305,18 +287,11 @@ public class dialogoEventos extends JDialog
 			;
 		}
 	}
-		
-	
-	public void actualizaProgreso(int valor){
-		progreso.setValue(valor);
-	}
 	
 	public void cerrarProgreso(){
 		
 		Exportado = new JOptionPane();
 		Exportado.showMessageDialog(this, "Fichero generado correctamente");
-		jlExportar.setVisible(false);
-		progreso.setVisible(false);
 		//progreso = null;
 	}
 	
@@ -348,14 +323,15 @@ public class dialogoEventos extends JDialog
 	{
 		tabla.setModel(new modeloTablaEventos(datos));
 		tabla.setDefaultRenderer(String.class, new modeloColoresEventos(datos));
-		tabla.setPreferredScrollableViewportSize(new Dimension(300, 70));
+		tabla.setPreferredScrollableViewportSize(new Dimension(650, 70));
 		
 		// Ajustamos los anchos de las columnas
-		tabla.getColumnModel().getColumn(0).setPreferredWidth(30);
-		tabla.getColumnModel().getColumn(1).setPreferredWidth(15);
-		tabla.getColumnModel().getColumn(2).setPreferredWidth(25);
-		tabla.getColumnModel().getColumn(3).setPreferredWidth(190);
-		tabla.getColumnModel().getColumn(4).setPreferredWidth(25);
+		tabla.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tabla.getColumnModel().getColumn(1).setPreferredWidth(70);		
+		tabla.getColumnModel().getColumn(2).setPreferredWidth(30);
+		tabla.getColumnModel().getColumn(3).setPreferredWidth(70);
+		tabla.getColumnModel().getColumn(4).setPreferredWidth(370);
+		tabla.getColumnModel().getColumn(5).setPreferredWidth(50);
 		
 		// TODO: Esto produce un parpadeo en cada refresco
 		//jspanel.getVerticalScrollBar().setValue(Integer.MAX_VALUE);

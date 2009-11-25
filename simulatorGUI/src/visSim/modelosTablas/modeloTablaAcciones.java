@@ -10,12 +10,13 @@ import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 
 import objetoVisual.accionVisual.accionVisual;
+import util.utilTexto;
 
 
 /** Clase creada como modelo para la tabla de envios*/
 public class modeloTablaAcciones extends AbstractTableModel
 {
-	final String columnNames[] = {"Instante","Accion", "Descripcion"};
+	final String columnNames[] = {"Instante","Tiempo","Accion", "Descripcion"};
 	final Object[][] data;
 
 	public modeloTablaAcciones(Vector listaAcciones)
@@ -28,17 +29,18 @@ public class modeloTablaAcciones extends AbstractTableModel
 					return new Integer(accion1.getInstante()).compareTo(new Integer(accion2.getInstante()));
 				}
 			});
-			data = new Object[listaAcciones.size()][3];
+			data = new Object[listaAcciones.size()][4];
 			
 			for (int i=0; i<listaAcciones.size(); i+=1)
 			{
 				accionVisual accion = (accionVisual)listaAcciones.elementAt(i);
 				data[i][0] = accion.getInstante();
-				data[i][1] = accion.getTipo();
-				data[i][2] = accion.getDescripcion();
+				data[i][1] = utilTexto.convertToTime(accion.getInstante());
+				data[i][2] = accion.getTipo();
+				data[i][3] = accion.getDescripcion();
 			}
 		} else
-			data = new Object[0][3];
+			data = new Object[0][4];
 	}
 
 	public Class getColumnClass(int c)

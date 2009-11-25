@@ -4,6 +4,12 @@ package util;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Formatter;
+import java.util.GregorianCalendar;
 
 /** Clase para representar graficamente cadenas de texto */
 public class utilTexto
@@ -88,4 +94,14 @@ public class utilTexto
 	{
 		return y;
 	}
+	
+	public static String convertToTime(int segundos)
+	{
+		Calendar cal = new GregorianCalendar(2000,1,1,0,0,0);
+		cal.add(Calendar.MILLISECOND, segundos * 10);
+		DateFormat dfm = new SimpleDateFormat("HH:mm:ss.SSS");
+		String s = dfm.format(cal.getTime()); 
+		return s.substring(0, s.length()-1);
+	}
+	
 }	

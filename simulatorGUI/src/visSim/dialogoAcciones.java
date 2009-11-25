@@ -5,6 +5,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -27,6 +30,7 @@ import objetoVisual.accionVisual.accionApagarVisual;
 import objetoVisual.accionVisual.accionVisual;
 
 import util.muestraAviso;
+import util.utilTexto;
 import visSim.dialogosAcciones.dialogoAccionApagar;
 import visSim.dialogosAcciones.dialogoAccionBase;
 import visSim.dialogosAcciones.dialogoAccionDejarGrupo;
@@ -51,6 +55,8 @@ public class dialogoAcciones extends JDialog
 	private JComboBox accionesDisponibles;
 	
 	private JTextField txtPasos;
+	
+	private JLabel lblPasos;
 	
 	/** Nombre del boton pulsado al finalizar la configuracion. Utilizado en paneldibujo
 	 * @see paneldibujo
@@ -161,17 +167,29 @@ public class dialogoAcciones extends JDialog
 		JLabel lblPasos = new JLabel("Cantidad de pasos:");
 		pnlPasos.add(lblPasos);
 		
+		lblPasos = new JLabel(utilTexto.convertToTime(maxNumeroPasos));
+		final JLabel lblPasosAux = lblPasos;
+		
 		txtPasos = new JTextField(5);
 		txtPasos.setText(String.valueOf(maxNumeroPasos));
 		pnlPasos.add(txtPasos);
-		
+		txtPasos.addFocusListener(new FocusAdapter(){
+			@Override
+			public void focusLost(FocusEvent e) {
+				lblPasosAux.setText(utilTexto.convertToTime(getCantidadPasos()));
+			}});
+
+		pnlPasos.add(new JLabel(" (Equivale a "));
+		pnlPasos.add(lblPasos);		
+		pnlPasos.add(new JLabel(")"));
+
 		getContentPane().add(BorderLayout.NORTH,pnlPasos);
 
 		this.xCentral = xCentral;
 		this.yCentral = yCentral;
 		
 		setResizable(false);
-		int ancho = 750;//470;
+		int ancho = 830;//470;
 		int alto = 250;
 		setBounds(xCentral-ancho/2, yCentral-alto/2, ancho, alto);
 	}
@@ -206,14 +224,14 @@ public class dialogoAcciones extends JDialog
 			
 			dlgAccion.setVisible(true);
 
+			String resultado = dlgAccion.getResultado();
 			//agregar la nueva accion a la lista
-			if (dlgAccion.getResultado().equals(dialogoAccionBase.ACEPTAR)){
+			if (resultado != null && resultado.equals(dialogoAccionBase.ACEPTAR)){
 				accionVisual accion = dlgAccion.getAccionVisual();
 				lista.listaAcciones.add(accion);
 				tabla.setModel(new modeloTablaAcciones(lista.listaAcciones));
 				ponColumnas();
 			}
-
 		}
 
 		else if (nombre.compareTo("Editar")==0)
@@ -224,9 +242,11 @@ public class dialogoAcciones extends JDialog
 			{
 				accionVisual acc = (accionVisual) lista.listaAcciones.elementAt(indice);
 				tabla.setModel(new modeloTablaAcciones(lista.listaAcciones));
+				ponColumnas();
 				dialogoAccionBase dlgAccion = acc.createDialog(this,this.xCentral, this.yCentral, lista);
 				dlgAccion.setVisible(true);
-				if (dlgAccion.getResultado().equals(dialogoAccionBase.ACEPTAR)){
+				String resultado = dlgAccion.getResultado();
+				if (resultado != null && resultado.equals(dialogoAccionBase.ACEPTAR)){
 					accionVisual accion = dlgAccion.getAccionVisual();
 					lista.listaAcciones.set(indice, accion);
 					tabla.setModel(new modeloTablaAcciones(lista.listaAcciones));
@@ -335,8 +355,9 @@ public class dialogoAcciones extends JDialog
 	private void ponColumnas()
 	{
 		tabla.getColumnModel().getColumn(0).setPreferredWidth(50);
-		tabla.getColumnModel().getColumn(1).setPreferredWidth(100);
-		tabla.getColumnModel().getColumn(2).setPreferredWidth(600);
+		tabla.getColumnModel().getColumn(1).setPreferredWidth(80);
+		tabla.getColumnModel().getColumn(2).setPreferredWidth(100);
+		tabla.getColumnModel().getColumn(3).setPreferredWidth(600);
 		
 //		if (nombresOrdenadores != null)
 //			for (int i=0; i<1; i++)

@@ -55,11 +55,14 @@ public class modeloColoresEventos extends JLabel implements TableCellRenderer
 		else
 			setForeground(colores.negro);
 
-		setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-		if (column<=2)
+		if (column == 0)
+			setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		else if (column == 1)
 			setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		if(column == 4)
+		else if (column == 2)
 			setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+		else
+			setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 		
 		setText(valor.toString());
 		
