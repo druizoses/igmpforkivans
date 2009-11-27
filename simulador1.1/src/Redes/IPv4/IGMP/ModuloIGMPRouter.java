@@ -32,12 +32,12 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 		switch (mensajeIGMP.getTipo()){
 			case MensajeIGMP.MEMBERSHIP_QUERY:{
 				int tipo=mensajeIGMP.getTipo();
-				equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP));
+				equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP)+";"+interfaz.getNombre());
 				if (mensajeIGMP.getDirGrupo().equals(new DireccionIPv4("0.0.0.0"))){
 					//si la direccion ip del que envio el mensaje igmp es menor a la mia me pongo como non-querier
 					if (((DireccionIPv4)dato.direccion).compareTo(interfaz.getIP()) < 0) {
 						if (interfacesMap.get(interfaz).isQuerier())
-							equipo.NuevoEvento('I',instante,null,equipo.getNombre()+" deja de ser Querier en la interfaz "+interfaz.getNombre());
+							equipo.NuevoEvento('I',instante,null,equipo.getNombre()+" deja de ser Querier en la interfaz "+interfaz.getNombre()+";"+interfaz.getNombre());
 						
 						interfacesMap.get(interfaz).setQuerier(false);
 						interfacesMap.get(interfaz).setTimerToQuerier(ModuloIGMP.OTHER_QUERIER_PRESENT_INTERVAL);
@@ -47,13 +47,13 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 			}
 			case MensajeIGMP.MEMBERSHIP_REPORT_V2:{
 				int tipo=mensajeIGMP.getTipo();
-				equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP));
+				equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP)+";"+interfaz.getNombre());
 				interfacesMap.get(interfaz).activarGrupo(mensajeIGMP.getDirGrupo());
 				break;
 			}
 			case MensajeIGMP.MEMBERSHIP_LEAVE_GROUP:{
 				int tipo=mensajeIGMP.getTipo();
-				equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP));
+				equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP)+";"+interfaz.getNombre());
 				interfacesMap.get(interfaz).desactivarGrupo(mensajeIGMP.getDirGrupo());
 				break;
 			}
@@ -99,8 +99,8 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 		}
 
 		public void resetTimerToMembershipQuery(){
+			countMembershipQuerySent++;
 			if (countMembershipQuerySent < ModuloIGMP.STARTUP_QUERY_COUNT) {
-				countMembershipQuerySent++;
 				timerToMembershipQuery = ModuloIGMP.STARTUP_QUERY_INTERVAL;
 			}
 			else {
@@ -120,7 +120,7 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 				if (timerToDeleteGroup == 0) {
 					//gruposActivos.remove(direccionIPv4);
 					datosARemover.add(direccionIPv4);
-					equipo.NuevoEvento('I',instante,null,equipo.getNombre()+" elimina el grupo " +direccionIPv4.getIP()+ " de la interfaz "+this.interfaz.getNombre());
+					equipo.NuevoEvento('I',instante,null,equipo.getNombre()+" elimina el grupo " +direccionIPv4.getIP()+ " de la interfaz "+this.interfaz.getNombre()+";"+interfaz.getNombre());
 				}
 				else {
 					groupTimers.decrementarTimerToDeleteGroup();
@@ -260,7 +260,7 @@ public class ModuloIGMPRouter extends ModuloIGMP{
 			} else {
 				if (datosInterfaz.getTimerToQuerier() == 0) {
 					datosInterfaz.setQuerier(true);
-					equipo.NuevoEvento('I',instante,null,equipo.getNombre()+" pasa a ser Querier en la interfaz "+interfaz.getNombre());
+					equipo.NuevoEvento('I',instante,null,equipo.getNombre()+" pasa a ser Querier en la interfaz "+interfaz.getNombre()+";"+interfaz.getNombre());
 					enviarGeneralMembershipQueryMessage(instante, interfaz);
 					datosInterfaz.setCountMembershipQuerySent(ModuloIGMP.STARTUP_QUERY_COUNT);
 					datosInterfaz.resetTimerToMembershipQuery();

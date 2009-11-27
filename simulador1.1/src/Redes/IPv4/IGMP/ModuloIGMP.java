@@ -226,7 +226,7 @@ public abstract class ModuloIGMP extends Nivel {
                        datoAux.interfaz=dato.interfaz;
                        // Registramos el evento
                        int tipo=mensajeIGMP.getTipo();	                       
-                       equipo.NuevoEvento('E',datoAux.instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP));
+                       equipo.NuevoEvento('E',datoAux.instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP)+";"+dato.interfaz.getNombre());
                        datoAux.instante+=getRetardo();
                     
                        // Pasamos el dato al nivel inferior
