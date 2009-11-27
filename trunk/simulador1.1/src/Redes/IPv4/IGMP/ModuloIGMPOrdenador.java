@@ -32,7 +32,7 @@ public class ModuloIGMPOrdenador extends ModuloIGMP{
 				if (mensajeIGMP.getDirGrupo().equals(new DireccionIPv4("0.0.0.0"))){
 					//envio todos los grupos a los que estoy suscripto
 					int tipo=mensajeIGMP.getTipo();
-					equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP));
+					equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP)+";"+interfaz.getNombre());
 					for (Iterator it = grupos.get(interfaz).keySet().iterator();it.hasNext();){
 						DireccionIPv4 dirGrupo = (DireccionIPv4)it.next();
 						enviarReport(interfaz, dirGrupo, instante, mensajeIGMP.getTiempoResp());
@@ -42,7 +42,7 @@ public class ModuloIGMPOrdenador extends ModuloIGMP{
 				else{
 					//si estoy registrado a ese grupo, mandarle la respuesta
 					int tipo=mensajeIGMP.getTipo();
-					equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP));
+					equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP)+";"+interfaz.getNombre());
 					DireccionIPv4 dirGrupo = mensajeIGMP.getDirGrupo();
 					if (grupos.get(interfaz).containsKey(dirGrupo)){
 						enviarReport(interfaz, dirGrupo, instante, mensajeIGMP.getTiempoResp());
@@ -55,14 +55,14 @@ public class ModuloIGMPOrdenador extends ModuloIGMP{
 				/* Si es un report de un grupo con confirmacion programada, la cancelo. */
 				int tipo=mensajeIGMP.getTipo();
 				DireccionIPv4 dirGrupo = mensajeIGMP.getDirGrupo();
-				equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP));
+				equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] "+MensajeIGMP.Descripcion(mensajeIGMP)+";"+interfaz.getNombre());
 				List<Dato> datosARemover = new ArrayList<Dato>();
 				for (Iterator it = colaSalida.iterator();it.hasNext();){
 					Dato datoAux = (Dato) it.next();
 					MensajeIGMP mensaje = (MensajeIGMP) datoAux.paquete; 
 					if ((mensaje.getDirGrupo().equals(dirGrupo))){ //los mensajes puden ser MEMBERSHIP_REPORT_V2 ó MEMBERSHIP_LEAVE_GROUP
 						//colaSalida.remove(datoAux);
-						equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] Cancelando envío de Version 2 Membership Report Grupo: "+mensajeIGMP.getDirGrupo().getIP());
+						equipo.NuevoEvento('R',instante,mensajeIGMP,"Mensaje IGMP ["+tipo+"] Cancelando envío de Version 2 Membership Report Grupo: "+mensajeIGMP.getDirGrupo().getIP()+";"+interfaz.getNombre());
 						datosARemover.add(datoAux);
 					}
 				}
@@ -116,7 +116,7 @@ public class ModuloIGMPOrdenador extends ModuloIGMP{
 			}
 			else {
 				MensajeIGMP mensaje =MensajeIGMP.createMembershipLeaveGroupMessage(dirGroup);
-				equipo.NuevoEvento('E',instante,mensaje,"Mensaje IGMP ["+mensaje.getTipo()+"] No se envía mensaje de leave group (no es su responsabilidad)");
+				equipo.NuevoEvento('E',instante,mensaje,"Mensaje IGMP ["+mensaje.getTipo()+"] No se envía mensaje de leave group (no es su responsabilidad)"+";"+interfaz.getNombre());
 			}
 			
 			grupos.get(interfaz).remove(dirGroup);
