@@ -148,6 +148,8 @@ public abstract class ModuloIGMP extends Nivel {
 	        correcto=true;
 	    return(correcto);
 	}
+	
+	public abstract void iniciar();
 
 	/**
 	 * Comprueba que el dato de salida sea correcto

@@ -22,14 +22,15 @@ public class RouterMultiCast extends Router{
     public RouterMultiCast()
     {
         super();
-    }
-    
-    protected void iniciar() {
-    	super.iniciar();
         moduloIGMP=new ModuloIGMPRouter(this);
         moduloIGMP.setNivelInferior(nivelIPv4);
         nivelIPv4.setNivelSuperior(moduloIGMP);
         nivelIPv4.setModuloIGMP(moduloIGMP);
+    }
+    
+    protected void iniciar() {
+    	super.iniciar();
+    	moduloIGMP.iniciar();
     }
     
     

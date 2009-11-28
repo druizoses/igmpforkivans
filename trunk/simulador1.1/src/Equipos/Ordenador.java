@@ -86,11 +86,7 @@ public class Ordenador extends Equipo
     public Ordenador()
     {
     	super();
-        // 3. Enlazamos la tabla de rutas
-        tablaDeRutas=nivelIPv4.tablaDeRutas;
-    }
-    
-	protected void iniciar(){
+    	
     	// 1. Definimos los niveles de la pila
     	moduloARP=new ModuloARP(this);
     	moduloICMP=new ModuloICMP(this);
@@ -106,7 +102,13 @@ public class Ordenador extends Equipo
     	nivelIPv4.setNivelSuperior(moduloIGMP);
     	nivelIPv4.setNivelSuperior(moduloICMP);
         nivelIPv4.IPForwarding(false);
-        		
+        
+        // 3. Enlazamos la tabla de rutas
+        tablaDeRutas=nivelIPv4.tablaDeRutas;
+    }
+    
+	protected void iniciar(){
+		moduloIGMP.iniciar();
 	}
     
 	public void encender(Equipo e, int instante){

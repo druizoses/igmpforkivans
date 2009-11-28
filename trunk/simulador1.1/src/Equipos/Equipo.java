@@ -64,7 +64,6 @@ public abstract class Equipo extends Objeto
     {
         super();
         tablaDeRutas=null; // se inicializa con la del nivel IP!!!
-        iniciar();
     } 
 
     public void encender(Equipo e, int instante){

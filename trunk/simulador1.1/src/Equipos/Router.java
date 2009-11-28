@@ -82,16 +82,6 @@ public class Router extends Equipo
     public Router()
     {
     	super();
-        // Enlazamos la tabla de rutas
-        tablaDeRutas=nivelIPv4.tablaDeRutas;
-    }
-
-    public void encender(Equipo e, int instante){
-    	super.encender(e,instante);
-    	nivelIPv4.tablaDeRutas=tablaDeRutas;
-    }
-    
-    protected void iniciar(){
         // 1. Definimos los niveles de la pila
         moduloARP=new ModuloARP(this);
         moduloICMP=new ModuloICMP(this);
@@ -104,6 +94,12 @@ public class Router extends Equipo
         
         // 3. Activamos el IP Forwarding
         nivelIPv4.IPForwarding(true);
+        // Enlazamos la tabla de rutas
+        tablaDeRutas=nivelIPv4.tablaDeRutas;
+    }
+    
+    protected void iniciar(){
+    	//No hacer nada
     }
     
     

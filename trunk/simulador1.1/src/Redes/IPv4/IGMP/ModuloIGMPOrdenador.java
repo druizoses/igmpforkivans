@@ -169,4 +169,11 @@ public class ModuloIGMPOrdenador extends ModuloIGMP{
 	public void addInterfaz(Interfaz interfaz) {
 		grupos.put(interfaz, new HashMap<DireccionIPv4,Boolean>());
 	}
+
+	@Override
+	public void iniciar() {
+		for (Iterator it = grupos.keySet().iterator();it.hasNext();){
+			addInterfaz((Interfaz) it.next());
+		}
+	}
 }
