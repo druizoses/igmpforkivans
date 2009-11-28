@@ -63,12 +63,15 @@ class panelEventos extends JPanel
 		tabla.setModel(new modeloTablaEventosFiltrados(eventos));
 		
 		TableColumn column = tabla.getColumnModel().getColumn(0);
-		column.setPreferredWidth(40);
+		column.setPreferredWidth(50);
 
 		column = tabla.getColumnModel().getColumn(1);
-		column.setPreferredWidth(30);
+		column.setPreferredWidth(70);
 
 		column = tabla.getColumnModel().getColumn(2);
-		column.setPreferredWidth(230);
-	}
+		column.setPreferredWidth(30);
+
+		column = tabla.getColumnModel().getColumn(3);
+		column.setPreferredWidth(250);
+}
 }
