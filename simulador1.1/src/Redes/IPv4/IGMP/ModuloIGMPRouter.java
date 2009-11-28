@@ -335,4 +335,12 @@ public class ModuloIGMPRouter extends ModuloIGMP{
         datoAux.interfaz=interfaz;
 		super.ProgramarSalida(datoAux);
 	}
+
+	@Override
+	public void iniciar() {
+		for (Iterator it = interfacesMap.keySet().iterator();it.hasNext();){
+			this.addInterfaz((Interfaz) it.next());
+		}
+	}
+	
 }
