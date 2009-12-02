@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0_16" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_07" class="java.beans.XMLDecoder"> 
  <string>Seba</string> 
  <string>Sat Nov 28 11:08:48 GMT-03:00 2009</string> 
  <string></string> 
- <object class="java.util.Vector"/> 
+ <object class="java.util.Vector"> 
+  <void method="add"> 
+   <object class="objetoVisual.accionVisual.accionEnviarPaqueteIPVisual"> 
+    <void property="copias"> 
+     <int>1</int> 
+    </void> 
+    <void property="direccionDestino"> 
+     <string>123.196.1.102</string> 
+    </void> 
+    <void property="equipo"> 
+     <string>Pc2</string> 
+    </void> 
+    <void property="instante"> 
+     <int>40000</int> 
+    </void> 
+    <void property="interfaz"> 
+     <string>eth1</string> 
+    </void> 
+    <void property="tamanioPaquete"> 
+     <int>1000</int> 
+    </void> 
+   </object> 
+  </void> 
+ </object> 
  <class>objetoVisual.pcVisual</class> 
  <string>Pc1</string> 
  <string>71</string> 
@@ -60,8 +83,8 @@
  </object> 
  <class>objetoVisual.pcVisual</class> 
  <string>Pc2</string> 
- <string>173</string> 
- <string>44</string> 
+ <string>175</string> 
+ <string>45</string> 
  <string>40</string> 
  <string>40</string> 
  <object class="objetoVisual.listaConexiones"> 
@@ -95,6 +118,18 @@
   </void> 
   <void method="add"> 
    <string>0.0.0.0</string> 
+  </void> 
+  <void method="add"> 
+   <string>eth1</string> 
+  </void> 
+  <void method="add"> 
+   <string>0.0.0.0</string> 
+  </void> 
+  <void method="add"> 
+   <string>255.255.255.255</string> 
+  </void> 
+  <void method="add"> 
+   <string>192.168.1.1</string> 
   </void> 
   <void method="add"> 
    <string>eth1</string> 
