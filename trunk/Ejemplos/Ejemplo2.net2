@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0_16" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_07" class="java.beans.XMLDecoder"> 
  <string>Seba</string> 
  <string>Wed Nov 25 20:53:59 GMT-03:00 2009</string> 
  <string></string> 
@@ -13,7 +13,7 @@
      <string>Pc1</string> 
     </void> 
     <void property="instante"> 
-     <int>200</int> 
+     <int>20000</int> 
     </void> 
     <void property="interfaz"> 
      <string>eth0</string> 
@@ -29,7 +29,7 @@
      <string>Pc2</string> 
     </void> 
     <void property="instante"> 
-     <int>500</int> 
+     <int>21000</int> 
     </void> 
     <void property="interfaz"> 
      <string>eth0</string> 
@@ -45,7 +45,7 @@
      <string>Pc1</string> 
     </void> 
     <void property="instante"> 
-     <int>3000</int> 
+     <int>22000</int> 
     </void> 
     <void property="interfaz"> 
      <string>eth0</string> 
@@ -61,7 +61,7 @@
      <string>Pc1</string> 
     </void> 
     <void property="instante"> 
-     <int>3700</int> 
+     <int>24000</int> 
     </void> 
     <void property="interfaz"> 
      <string>eth0</string> 
@@ -71,8 +71,8 @@
  </object> 
  <class>objetoVisual.routerMultiCastVisual</class> 
  <string>McRouter1</string> 
- <string>334</string> 
- <string>170</string> 
+ <string>342</string> 
+ <string>163</string> 
  <string>40</string> 
  <string>40</string> 
  <object class="objetoVisual.listaConexiones"> 
