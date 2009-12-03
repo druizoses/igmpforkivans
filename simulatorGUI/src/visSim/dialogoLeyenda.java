@@ -24,7 +24,7 @@ public class dialogoLeyenda extends JDialog
 	 */
 	public dialogoLeyenda(Frame parent, int xCentral, int yCentral)
 	{
-		super(parent, false);
+		super(parent, true);
 		
 		setTitle("Leyenda de colores");
 		

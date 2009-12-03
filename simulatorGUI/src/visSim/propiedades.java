@@ -284,7 +284,7 @@ public class propiedades extends JDialog implements MouseListener
 					nombre = interfaces.getNombre(indice);
 					
 					// Cambiamos la IP correspondiente en la lista de envios
-					String temp;
+					/*String temp;
 					int j;
 					for (int i=0; i<listaAcciones.size(); i+=5)
 						for (j=i; j<i+2; j++)
@@ -296,7 +296,7 @@ public class propiedades extends JDialog implements MouseListener
 								temp = temp + "(" + dialogo.getIP() + ")";
 								listaAcciones.setElementAt(temp, j);
 							}
-						}
+						}*/
 					
 					interfaces.modifica(nombre, interfaces.getIP(indice), interfaces.getMascara(indice), interfaces.getDirEnlace(indice), interfaces.getconecta(indice), dialogo.getNombre(), dialogo.getIP(), dialogo.getMascara(), dialogo.getMAC(), dialogo.getConecta());
 					panelInterfaces.setTabla(interfaces);
