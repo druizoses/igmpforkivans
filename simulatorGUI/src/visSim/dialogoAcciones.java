@@ -94,12 +94,12 @@ public class dialogoAcciones extends JDialog
 			}
 		});
 		
-		JButton btn1 = new JButton("Anyadir");
+		JButton btn1 = new JButton("Añadir");
 		btn1.addMouseListener(new MouseAdapter()
 		{
 			public void mouseClicked(MouseEvent evt)
 			{
-				botonPulsado("Anyadir");
+				botonPulsado("Añadir");
 			}
 		});
 
@@ -203,7 +203,7 @@ public class dialogoAcciones extends JDialog
 	 */
 	private void botonPulsado(String nombre)
 	{
-		if (nombre.compareTo("Anyadir")==0)
+		if (nombre.compareTo("Añadir")==0)
 		{
 			dialogoAccionBase dlgAccion = null;
 			if (accionesDisponibles.getSelectedItem().equals(accionVisual.ENCENDER)){

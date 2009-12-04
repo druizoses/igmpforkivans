@@ -255,9 +255,9 @@ public class propiedades extends JDialog implements MouseListener
 				nombre = "ModificarRuta";
 		}
 
-		if (nombre.compareTo("AnyadirInterfaz")==0 && panelInterfaces.estaActivo("AnyadirInterfaz"))
+		if (nombre.compareTo("AñadirInterfaz")==0 && panelInterfaces.estaActivo("AñadirInterfaz"))
 		{
-			dialogoInterfaz dialogo = new dialogoInterfaz(esteFrame, xCentral, yCentral, "Anyadir interfaz", "", "", "", interfaces.dameMACNoExistente(lista.getDirecsMac(interfaces, posicion)), "N/A", interfaces.dameNombresInterfaz(true, ""), lista.getListaIPConecta(conexiones, ""), conexiones, lista.getTipos(conexiones));
+			dialogoInterfaz dialogo = new dialogoInterfaz(esteFrame, xCentral, yCentral, "Añadir interfaz", "", "", "", interfaces.dameMACNoExistente(lista.getDirecsMac(interfaces, posicion)), "N/A", interfaces.dameNombresInterfaz(true, ""), lista.getListaIPConecta(conexiones, ""), conexiones, lista.getTipos(conexiones));
 			
 			if (dialogo.getBoton().compareTo("Aceptar")==0)
 			{
@@ -319,7 +319,7 @@ public class propiedades extends JDialog implements MouseListener
 				interfaces.borra(interfaces.getNombre(indice), interfaces.getIP(indice), interfaces.getMascara(indice), interfaces.getDirEnlace(indice), interfaces.getconecta(indice));
 				
 				// Borramos el envio configurado a traves de esta IP
-				for (int i=0; i<listaAcciones.size();)
+				/*for (int i=0; i<listaAcciones.size();)
 					if (((String)listaAcciones.elementAt(i)).indexOf(ip)!=-1 || ((String)listaAcciones.elementAt(i+1)).indexOf(ip)!=-1)
 					{
 						listaAcciones.removeElementAt(i);
@@ -330,14 +330,14 @@ public class propiedades extends JDialog implements MouseListener
 					}
 					else
 						i+=5;
-				
+				*/
 				if (rutas.cuentaRutas(nombre)>0)
 					muestraAviso.mensaje(esteFrame, "Es posible que alguna ruta haya quedado inutilizada.");
 
 				panelInterfaces.setTabla(interfaces);
 			}
 		}
-		else if (nombre.compareTo("AnyadirRuta")==0 && panelRuta.estaActivo("AnyadirRuta"))
+		else if (nombre.compareTo("AñadirRuta")==0 && panelRuta.estaActivo("AñadirRuta"))
 		{
 			rutas = panelRuta.getRutas();
 			Vector nombresInterfaces = new Vector(interfaces.dameNombresInterfaz(true, ""));

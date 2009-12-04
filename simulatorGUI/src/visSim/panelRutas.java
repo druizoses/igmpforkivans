@@ -45,8 +45,8 @@ public class panelRutas extends JPanel
 		tabla.setName("tablaRuta");
 		tabla.addMouseListener(oyente);
 
-		btn1 = new JButton("Anyadir");
-		btn1.setName("AnyadirRuta");
+		btn1 = new JButton("Añadir");
+		btn1.setName("AñadirRuta");
 		btn1.addMouseListener(oyente);
 
 		btn2 = new JButton("Modificar");
@@ -146,7 +146,7 @@ public class panelRutas extends JPanel
 	{
 		if (nombre.compareTo("tablaRuta")==0)
 			return tabla.isEnabled();
-		else if (nombre.compareTo("AnyadirRuta")==0)
+		else if (nombre.compareTo("AñadirRuta")==0)
 			return btn1.isEnabled();
 		else if (nombre.compareTo("ModificarRuta")==0)
 			return btn2.isEnabled();

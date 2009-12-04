@@ -29,8 +29,8 @@ class panelInterfaz extends JPanel
 	{
 		setLayout(null);
 		
-		btn1 = new JButton("Anyadir");
-		btn1.setName("AnyadirInterfaz");
+		btn1 = new JButton("Añadir");
+		btn1.setName("AñadirInterfaz");
 		btn1.addMouseListener(oyente);
 
 		btn3 = new JButton("Modificar");
@@ -76,7 +76,7 @@ class panelInterfaz extends JPanel
 	{
 		if (nombre.compareTo("tablaInterfaz")==0)
 			return tabla.isEnabled();
-		else if (nombre.compareTo("AnyadirInterfaz")==0)
+		else if (nombre.compareTo("AñadirInterfaz")==0)
 			return btn1.isEnabled();
 		else if (nombre.compareTo("ModificarInterfaz")==0)
 			return btn3.isEnabled();
